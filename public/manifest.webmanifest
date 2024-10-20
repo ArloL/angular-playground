@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "short_name": "my-app",
+  "name": "apezzi",
+  "short_name": "apezzi",
   "theme_color": "#14161a",
   "background_color": "#14161a",
   "display": "standalone",
