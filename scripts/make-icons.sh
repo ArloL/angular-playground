@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.." || exit 1
 input_image="icon.png"
 
 # Output sizes
-sizes=(72 96 128 152 192 384 512)
+sizes=(72 96 128 144 152 192 384 512)
 
 # Loop over the sizes and resize the image
 for size in "${sizes[@]}"; do
