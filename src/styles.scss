@@ -34,3 +34,40 @@ $beige-lighter: #eff0eb;
 
 // Import the themes so that all CSS variables have a value
 @forward "bulma/sass/themes";
+
+:root {
+  /* Default global value */
+  --bulma-body-font-size: 1.5rem;
+  --bulma-size-normal: 1.5rem;
+  --bulma-field-block-spacing: 1.5rem;
+  --bulma-weight-medium: 400;
+}
+
+html,
+body {
+  scroll-behavior: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  margin: 1rem;
+}
+
+.buttons.is-scrollable-x {
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  overflow: auto;
+  overflow-y: hidden;
+  padding-bottom: calc(var(--bulma-field-block-spacing) / 2);
+  margin-bottom: calc(var(--bulma-field-block-spacing) / 2);
+  mask-image: linear-gradient(to right, black calc(100% - 6rem), transparent);
+  padding-right: 6rem;
+  flex-wrap: nowrap;
+}
