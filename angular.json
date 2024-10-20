@@ -72,7 +72,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 58967
+            "port": 58967,
+            "servePath": "/angular-playground/"
           }
         },
         "extract-i18n": {
