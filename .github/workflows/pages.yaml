@@ -24,7 +24,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.2.1
-    - uses: actions/setup-node@v1 #this installs node and npm for us
+    - uses: actions/setup-node@v4 #this installs node and npm for us
       with:
         node-version: '20'
         cache: 'npm'
