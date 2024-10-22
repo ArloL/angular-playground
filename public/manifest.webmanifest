@@ -4,8 +4,8 @@
   "theme_color": "#14161a",
   "background_color": "#14161a",
   "display": "standalone",
-  "scope": "./",
-  "start_url": "./index.html",
+  "scope": "https://arlol.github.io/angular-playground/",
+  "start_url": "https://arlol.github.io/angular-playground/index.html",
   "icons": [
     {
       "src": "icons/icon-16x16.png",
