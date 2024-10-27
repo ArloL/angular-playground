@@ -10,4 +10,14 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'apezzi';
+  categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
+  selectedCategory = 0;
+  selectCategory(index: number) {
+    this.selectedCategory = index;
+  }
+  splits = [50, 100, 0, 70, 30];
+  selectedSplit = 0;
+  selectSplit(index: number) {
+    this.selectedSplit = index;
+  }
 }
