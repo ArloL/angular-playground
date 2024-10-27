@@ -1,6 +1,7 @@
 build:
 	mkdir -p _site
-	npm run build -- --base-href /angular-playground/
+	npm run build -- \
+		--base-href /angular-playground/
 	rsync \
 		--archive \
 		--verbose \
