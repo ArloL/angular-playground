@@ -1,9 +1,6 @@
 build:
 	mkdir -p _site
-	npm run build
-	cp -f \
-		patched-ngsw-worker.js \
-		dist/apezzi/browser/ngsw-worker.js
+	npm run build -- --base-href /angular-playground/
 	rsync \
 		--archive \
 		--verbose \
