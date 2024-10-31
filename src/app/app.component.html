@@ -6,12 +6,12 @@
     <p class="control">
       <span class="select is-success">
         <select>
-          <option>€</option>
+          <option>{{ currency }}</option>
         </select>
       </span>
     </p>
     <p class="control is-expanded">
-      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal" autofocus>
+      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal" (input)="parseAmountValue($event)" #inputRef>
     </p>
   </div>
   <div class="buttons has-addons is-scrollable-x">
@@ -37,7 +37,9 @@
   </div>
   <table class="table is-fullwidth is-striped">
   </table>
-  <button class="button is-medium is-fullwidth is-success" disabled>🍽️</button>
+  <button class="button is-fullwidth" [disabled]="amount == 0" [class.is-success]="amount > 0">
+    {{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currency }}
+  </button>
 </div>
 
 <router-outlet />
