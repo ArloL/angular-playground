@@ -19,6 +19,7 @@ export class AppComponent {
   selectedSplit = 0;
   selectSplit(index: number) {
     this.selectedSplit = index;
+    this.updateSplitted();
   }
   amount = 0;
   currency = '€';
@@ -43,10 +44,12 @@ export class AppComponent {
     }
     return number.toFixed(digits).toLocaleString();
   }
-  parseAmountValue(event : Event) {
+  parseAmountValue(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this.amount = this.customParseFloat(inputElement.value);
-
+    this.updateSplitted();
+  }
+  updateSplitted() {
     var part = Math.round(this.amount / 100 * this.splits[this.selectedSplit] * 100) / 100;
     this.splitted = [
       {
