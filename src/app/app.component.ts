@@ -22,6 +22,7 @@ export class AppComponent {
   }
   amount = 0;
   currency = '€';
+  splitted: any;
   customParseFloat(str: string) {
     const commas = (str.match(/,/g) || []).length;
     if (commas === 1) {
@@ -45,6 +46,19 @@ export class AppComponent {
   parseAmountValue(event : Event) {
     const inputElement = event.target as HTMLInputElement;
     this.amount = this.customParseFloat(inputElement.value);
+
+    var part = Math.round(this.amount / 100 * this.splits[this.selectedSplit] * 100) / 100;
+    this.splitted = [
+      {
+        "name": "Arlo",
+        "part": part,
+        "percentage": part / this.amount * 100
+      }, {
+        "name": "Roxy",
+        "part": this.amount - part,
+        "percentage": (this.amount - part) / this.amount * 100
+      }
+    ];
   }
 
   @ViewChild('inputRef') inputRef!: ElementRef;

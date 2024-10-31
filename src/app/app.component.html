@@ -11,7 +11,8 @@
       </span>
     </p>
     <p class="control is-expanded">
-      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal" (input)="parseAmountValue($event)" #inputRef>
+      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal"
+        (input)="parseAmountValue($event)" #inputRef>
     </p>
   </div>
   <div class="buttons has-addons is-scrollable-x">
@@ -36,6 +37,15 @@
     <button class="button">…</button>
   </div>
   <table class="table is-fullwidth is-striped">
+    <tbody>
+      @for (split of splitted; track $index) {
+      <tr>
+        <td>{{ split.name }}</td>
+        <td class="has-text-right">{{ formatNumber(split.part) }} {{ currency }}</td>
+        <td class="has-text-right">{{ formatNumber(split.percentage, 0) }}%</td>
+      </tr>
+      }
+    </tbody>
   </table>
   <button class="button is-fullwidth" [disabled]="amount == 0" [class.is-success]="amount > 0">
     {{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currency }}
