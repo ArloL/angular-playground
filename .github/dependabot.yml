@@ -8,3 +8,11 @@ updates:
   directory: "/"
   schedule:
     interval: "monthly"
+  groups:
+    angular:
+      applies-to: version-updates
+      patterns:
+      - "@angular*"
+      update-types:
+      - "minor"
+      - "patch"
