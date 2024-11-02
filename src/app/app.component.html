@@ -36,13 +36,13 @@
     }
     <button class="button">…</button>
   </div>
-  <table class="table is-fullwidth is-striped splits-table">
+  <table class="table is-fullwidth is-striped is-narrow">
     <tbody>
       @for (split of splitted; track $index) {
-      <tr>
+      <tr class="is-flex">
         <td>{{ split.name }}</td>
-        <td class="has-text-right">{{ formatNumber(split.part) }} {{ currency }}</td>
-        <td class="has-text-right">{{ formatNumber(split.percentage, 0) }}%</td>
+        <td class="is-flex-grow-1 has-text-right">{{ formatNumber(split.part) }} {{ currency }}</td>
+        <td class="has-text-right" style="width: 4.5em;">{{ formatNumber(split.percentage, 0) }}%</td>
       </tr>
       }
     </tbody>
