@@ -23,7 +23,17 @@ export class AppComponent {
   }
   amount = 0;
   currency = '€';
-  splitted: any;
+  splitted: any = [
+    {
+      "name": "Arlo",
+      "part": 0,
+      "percentage": this.splits[this.selectedSplit]
+    }, {
+      "name": "Roxy",
+      "part": 0,
+      "percentage": 100 - this.splits[this.selectedSplit]
+    }
+  ];
   customParseFloat(str: string) {
     const commas = (str.match(/,/g) || []).length;
     if (commas === 1) {
