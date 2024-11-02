@@ -41,3 +41,7 @@ body {
   padding-right: 6rem;
   flex-wrap: nowrap;
 }
+
+.buttons.has-addons .button.is-selected {
+  --bulma-button-border-width: 1px;
+}
