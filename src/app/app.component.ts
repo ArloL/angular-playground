@@ -23,7 +23,7 @@ export class AppComponent {
   }
   amount = 0;
   currency = '€';
-  splitted: any = [
+  splitted = [
     {
       "name": "Arlo",
       "part": 0,
