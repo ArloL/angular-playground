@@ -47,8 +47,9 @@
       }
     </tbody>
   </table>
-  <button class="button is-fullwidth" [disabled]="amount == 0" [class.is-success]="amount > 0">
-    {{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currency }}
+  <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0" [class.is-success]="amount > 0">
+    ➕
+    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currency }}</span>
   </button>
 </div>
 
