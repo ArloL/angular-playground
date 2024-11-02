@@ -52,6 +52,9 @@ export class AppComponent {
     if (isNaN(number)) {
       number = 0;
     }
+    if (number < 0) {
+      number = 0;
+    }
     return number.toFixed(digits).toLocaleString();
   }
   parseAmountValue(event: Event) {
