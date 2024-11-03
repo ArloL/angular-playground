@@ -1,1 +1,60 @@
-<p>add-expense works!</p>
+<div class="container">
+  <div class="field">
+    <button class="delete is-medium" aria-label="close"></button>
+  </div>
+  <div class="field has-addons">
+    <p class="control">
+      <span class="select is-success">
+        <select>
+          @for (currency of currencies; track $index) {
+          <option [value]="$index">{{ currency }}</option>
+          }
+        </select>
+      </span>
+    </p>
+    <p class="control is-expanded">
+      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal"
+        (input)="parseAmountValue($event)" #inputRef>
+    </p>
+  </div>
+  <div class="buttons has-addons is-scrollable-x">
+    @for (category of categories; track $index) {
+    <button class="button" [class.is-success]="selectedCategory === $index"
+      [class.is-selected]="selectedCategory === $index" (click)="selectCategory($index)">
+      {{ category }}
+    </button>
+    }
+    <button class="button">…</button>
+  </div>
+  <div class="field">
+    <p class="control">
+      <input class="input" type="text" placeholder="…">
+    </p>
+  </div>
+  <div class="buttons has-addons is-scrollable-x">
+    @for (split of splits; track $index) {
+    <button class="button" [class.is-success]="selectedSplit === $index" [class.is-selected]="selectedSplit === $index"
+      (click)="selectSplit($index)">
+      {{ split }}/{{ 100 - split }}
+    </button>
+    }
+    <button class="button">…</button>
+  </div>
+  <table class="table is-fullwidth is-striped is-narrow">
+    <tbody>
+      @for (split of splitted; track $index) {
+      <tr class="is-flex">
+        <td>{{ split.name }}</td>
+        <td class="is-flex-grow-1 has-text-right">{{ formatNumber(split.part) }} {{ currencies[selectedCurrency] }}</td>
+        <td class="has-text-right" style="width: 4.5em;">{{ formatNumber(split.percentage, 0) }}%</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
+    [class.is-success]="amount > 0">
+    ➕
+    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
+      currencies[selectedCurrency] }}</span>
+  </button>
+</div>
