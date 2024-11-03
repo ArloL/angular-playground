@@ -7,7 +7,7 @@
       <span class="select is-success">
         <select>
           @for (currency of currencies; track $index) {
-            <option [value]="$index">{{ currency }}</option>
+          <option [value]="$index">{{ currency }}</option>
           }
         </select>
       </span>
@@ -54,8 +54,17 @@
   <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
     [class.is-success]="amount > 0">
     ➕
-    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currencies[selectedCurrency] }}</span>
+    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
+      currencies[selectedCurrency] }}</span>
   </button>
 </div>
+
+<nav>
+  <ul>
+    <li><a routerLink="/add-expense-component" routerLinkActive="active" ariaCurrentWhenActive="page">Add Expense</a></li>
+    <li><a routerLink="/group-overview-component" routerLinkActive="active" ariaCurrentWhenActive="page">Group Overview</a>
+    </li>
+  </ul>
+</nav>
 
 <router-outlet />
