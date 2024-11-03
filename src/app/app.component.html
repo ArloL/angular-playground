@@ -6,7 +6,9 @@
     <p class="control">
       <span class="select is-success">
         <select>
-          <option>{{ currency }}</option>
+          @for (currency of currencies; track $index) {
+            <option [value]="$index">{{ currency }}</option>
+          }
         </select>
       </span>
     </p>
@@ -43,7 +45,7 @@
       @for (split of splitted; track $index) {
       <tr class="is-flex">
         <td>{{ split.name }}</td>
-        <td class="is-flex-grow-1 has-text-right">{{ formatNumber(split.part) }} {{ currency }}</td>
+        <td class="is-flex-grow-1 has-text-right">{{ formatNumber(split.part) }} {{ currencies[selectedCurrency] }}</td>
         <td class="has-text-right" style="width: 4.5em;">{{ formatNumber(split.percentage, 0) }}%</td>
       </tr>
       }
@@ -52,7 +54,7 @@
   <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
     [class.is-success]="amount > 0">
     ➕
-    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currency }}</span>
+    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{ currencies[selectedCurrency] }}</span>
   </button>
 </div>
 

@@ -22,7 +22,11 @@ export class AppComponent {
     this.updateSplitted();
   }
   amount = 0;
-  currency = '€';
+  currencies = ['€'];
+  selectedCurrency = 0;
+  selectCurrency(index: number) {
+    this.selectedCurrency = index;
+  }
   splitted = [
     {
       "name": "Arlo",
