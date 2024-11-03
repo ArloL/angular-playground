@@ -27,11 +27,11 @@ export class AppComponent {
     {
       "name": "Arlo",
       "part": 0,
-      "percentage": this.splits[this.selectedSplit]
+      "percentage": 0
     }, {
       "name": "Roxy",
       "part": 0,
-      "percentage": 100 - this.splits[this.selectedSplit]
+      "percentage": 0
     }
   ];
   customParseFloat(str: string) {
