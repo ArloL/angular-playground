@@ -84,7 +84,7 @@ export class AddExpenseComponent {
   @ViewChild('inputRef') inputRef!: ElementRef;
 
   ngAfterViewInit() {
-    this.inputRef.nativeElement.focus();
+    setTimeout(() => this.inputRef.nativeElement.focus(), 0);
   }
 
 }
