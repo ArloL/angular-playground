@@ -11,8 +11,6 @@ build:
 server:
 	ng serve --open
 dist-server:
-	python3 \
-		-m http.server \
-		--bind 127.0.0.1 \
-		--directory _site \
-		61476
+	ng serve \
+		--configuration=production \
+		--open
