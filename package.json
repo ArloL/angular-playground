@@ -16,7 +16,7 @@
     "@angular/compiler": "^18.2.10",
     "@angular/core": "^19.0.1",
     "@angular/forms": "^18.2.10",
-    "@angular/platform-browser": "^18.2.10",
+    "@angular/platform-browser": "^19.0.1",
     "@angular/platform-browser-dynamic": "^19.0.1",
     "@angular/router": "^18.2.10",
     "@angular/service-worker": "^18.2.10",
