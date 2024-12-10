@@ -1,4 +1,11 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+
+interface Split {
+  name: string,
+  part: number,
+  percentage: number,
+  included: boolean,
+}
 
 @Component({
   selector: 'apezzi-add-expense',
@@ -15,27 +22,28 @@ export class AddExpenseComponent {
   selectCategory(index: number) {
     this.selectedCategory = index;
   }
-  splits = [50, 100, 0, 70, 30];
-  selectedSplit = 0;
-  selectSplit(index: number) {
-    this.selectedSplit = index;
-    this.updateSplitted();
-  }
   amount = 0;
   currencies = ['€'];
   selectedCurrency = 0;
   selectCurrency(index: number) {
     this.selectedCurrency = index;
   }
-  splitted = [
+  splitted: Split[] = [
     {
       "name": "Christopher",
       "part": 0,
-      "percentage": 0
+      "percentage": 0,
+      "included": true
     }, {
       "name": "Nathaniel",
       "part": 0,
-      "percentage": 0
+      "percentage": 0,
+      "included": true
+    }, {
+      "name": "Samantha",
+      "part": 0,
+      "percentage": 0,
+      "included": true
     }
   ];
   customParseFloat(str: string) {
@@ -67,18 +75,26 @@ export class AddExpenseComponent {
     this.updateSplitted();
   }
   updateSplitted() {
-    var part = Math.round(this.amount / 100 * this.splits[this.selectedSplit] * 100) / 100;
-    this.splitted = [
-      {
-        "name": "Christopher",
-        "part": part,
-        "percentage": part / this.amount * 100
-      }, {
-        "name": "Nathaniel",
-        "part": this.amount - part,
-        "percentage": (this.amount - part) / this.amount * 100
+    const count = this.splitted.filter(s => s.included).length;
+    var part;
+    if (count === 1) {
+      part = this.amount;
+    } else {
+      part = Math.round(this.amount / count * 100) / 100;
+    }
+    for (let split of this.splitted) {
+      if (split.included) {
+        split.part = part;
+        split.percentage = part / this.amount * 100;
+      } else {
+        split.part = 0;
+        split.percentage = 0;
       }
-    ];
+    }
+  }
+  toggleIncluded(item: Split) {
+    item.included = !item.included;
+    this.updateSplitted();
   }
 
 }
