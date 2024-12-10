@@ -81,20 +81,24 @@ export class AddExpenseComponent {
   updateSplitted() {
     const count = this.splitted.filter(s => s.included).length;
     var part;
-    if (count === 1) {
+    var remainder;
+    if (count === 0) {
+      part = 0;
+      remainder = 0;
+    } else if (count === 1) {
       part = this.amount;
+      remainder = this.amount;
     } else {
       part = Math.round(this.amount / count);
+      remainder = Math.round(this.amount - part * (count - 1));
     }
-    var sum = 0;
     for (const [i, split] of this.splitted.entries()) {
       if (split.included) {
         if (i === this.splitted.length - 1) {
-          split.part = this.amount - sum;
+          split.part = remainder;
         } else {
           split.part = part;
         }
-        sum += split.part;
         split.percentage = Math.round(split.part / this.amount * 100);
       } else {
         split.part = 0;
