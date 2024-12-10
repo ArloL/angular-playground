@@ -31,26 +31,26 @@
       <input class="input" type="text" placeholder="…">
     </p>
   </div>
-  <div class="buttons has-addons is-scrollable-x">
-    @for (split of splits; track $index) {
-    <button class="button" [class.is-success]="selectedSplit === $index" [class.is-selected]="selectedSplit === $index"
-      (click)="selectSplit($index)">
-      {{ split }}/{{ 100 - split }}
-    </button>
+  <div class="block">
+    @for (split of splitted; track $index) {
+    <div class="field">
+      <label class="checkbox">
+        <input type="checkbox" [checked]="split.included" (change)="toggleIncluded(split)" />
+        {{ split.name }}
+      </label>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <input class="input" type="text" value="{{ formatNumber(split.part) }}" />
+      </p>
+      <p class="control">
+        <a class="button is-static">
+          {{ currencies[selectedCurrency] }}
+        </a>
+      </p>
+    </div>
     }
-    <button class="button">…</button>
   </div>
-  <table class="table is-fullwidth is-striped is-narrow">
-    <tbody>
-      @for (split of splitted; track $index) {
-      <tr class="is-flex">
-        <td>{{ split.name }}</td>
-        <td class="is-flex-grow-1 has-text-right">{{ formatNumber(split.part) }} {{ currencies[selectedCurrency] }}</td>
-        <td class="has-text-right" style="width: 4.5em;">{{ formatNumber(split.percentage, 0) }}%</td>
-      </tr>
-      }
-    </tbody>
-  </table>
   <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
     [class.is-success]="amount > 0">
     ➕
