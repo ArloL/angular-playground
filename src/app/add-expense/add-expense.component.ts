@@ -28,6 +28,7 @@ export class AddExpenseComponent {
   selectCurrency(index: number) {
     this.selectedCurrency = index;
   }
+
   splitted: Split[] = [
     {
       "name": "Christopher",
@@ -46,6 +47,7 @@ export class AddExpenseComponent {
       "included": true
     }
   ];
+
   customParseFloat(str: string) {
     const commas = (str.match(/,/g) || []).length;
     if (commas === 1) {
@@ -67,31 +69,40 @@ export class AddExpenseComponent {
     if (number < 0) {
       number = 0;
     }
-    return number.toFixed(digits).toLocaleString();
+    return (number / 100).toFixed(digits);
   }
+
   parseAmountValue(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    this.amount = this.customParseFloat(inputElement.value);
+    this.amount = Math.round(this.customParseFloat(inputElement.value) * 100);
     this.updateSplitted();
   }
+
   updateSplitted() {
     const count = this.splitted.filter(s => s.included).length;
     var part;
     if (count === 1) {
       part = this.amount;
     } else {
-      part = Math.round(this.amount / count * 100) / 100;
+      part = Math.round(this.amount / count);
     }
-    for (let split of this.splitted) {
+    var sum = 0;
+    for (const [i, split] of this.splitted.entries()) {
       if (split.included) {
-        split.part = part;
-        split.percentage = part / this.amount * 100;
+        if (i === this.splitted.length - 1) {
+          split.part = this.amount - sum;
+        } else {
+          split.part = part;
+        }
+        sum += split.part;
+        split.percentage = Math.round(split.part / this.amount * 100);
       } else {
         split.part = 0;
         split.percentage = 0;
       }
     }
   }
+
   toggleIncluded(item: Split) {
     item.included = !item.included;
     this.updateSplitted();
