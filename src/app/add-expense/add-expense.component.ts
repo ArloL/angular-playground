@@ -29,11 +29,11 @@ export class AddExpenseComponent {
   }
   splitted = [
     {
-      "name": "Arlo",
+      "name": "Christopher",
       "part": 0,
       "percentage": 0
     }, {
-      "name": "Roxy",
+      "name": "Nathaniel",
       "part": 0,
       "percentage": 0
     }
@@ -70,11 +70,11 @@ export class AddExpenseComponent {
     var part = Math.round(this.amount / 100 * this.splits[this.selectedSplit] * 100) / 100;
     this.splitted = [
       {
-        "name": "Arlo",
+        "name": "Christopher",
         "part": part,
         "percentage": part / this.amount * 100
       }, {
-        "name": "Roxy",
+        "name": "Nathaniel",
         "part": this.amount - part,
         "percentage": (this.amount - part) / this.amount * 100
       }
