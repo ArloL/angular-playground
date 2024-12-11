@@ -69,7 +69,10 @@ export class AddExpenseComponent {
     if (number < 0) {
       number = 0;
     }
-    return (number / 100).toFixed(digits);
+    return (number / 100).toLocaleString(navigator.language || 'en-US', {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits
+    });
   }
 
   parseAmountValue(event: Event) {
