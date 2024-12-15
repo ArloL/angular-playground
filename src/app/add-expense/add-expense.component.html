@@ -31,6 +31,12 @@
       <input class="input" type="text" placeholder="…">
     </p>
   </div>
+  <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
+    [class.is-success]="amount > 0">
+    ➕
+    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
+      currencies[selectedCurrency] }}</span>
+  </button>
   <div class="block">
     @for (split of splitted; track $index) {
     <div class="field">
@@ -51,10 +57,4 @@
     </div>
     }
   </div>
-  <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
-    [class.is-success]="amount > 0">
-    ➕
-    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
-      currencies[selectedCurrency] }}</span>
-  </button>
 </div>
