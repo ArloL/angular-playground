@@ -3,7 +3,7 @@
     <button class="delete is-medium" aria-label="close"></button>
   </div>
   <div class="field has-addons">
-    <p class="control">
+    <div class="control">
       <span class="select is-success">
         <select>
           @for (currency of currencies; track $index) {
@@ -11,11 +11,11 @@
           }
         </select>
       </span>
-    </p>
-    <p class="control is-expanded">
+    </div>
+    <div class="control is-expanded">
       <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal"
         (input)="parseAmountValue($event)" autofocus>
-    </p>
+    </div>
   </div>
   <div class="buttons has-addons is-scrollable-x">
     @for (category of categories; track $index) {
@@ -27,34 +27,38 @@
     <button class="button">…</button>
   </div>
   <div class="field">
-    <p class="control">
+    <div class="control">
       <input class="input" type="text" placeholder="…">
-    </p>
+    </div>
   </div>
-  <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
-    [class.is-success]="amount > 0">
-    ➕
-    <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
-      currencies[selectedCurrency] }}</span>
-  </button>
-  <div class="block">
-    @for (split of splitted; track $index) {
-    <div class="field">
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="amount == 0"
+        [class.is-success]="amount > 0">
+        ➕
+        <span class="is-flex-grow-1">{{ categories[selectedCategory] }} {{ formatNumber(amount) }} {{
+          currencies[selectedCurrency] }}</span>
+      </button>
+    </div>
+  </div>
+  @for (split of splitted; track $index) {
+  <div class="field">
+    <div class="control">
       <label class="checkbox">
         <input type="checkbox" [checked]="split.included" (change)="toggleIncluded(split)" />
         {{ split.name }}
       </label>
     </div>
-    <div class="field has-addons">
-      <p class="control is-expanded">
-        <input class="input" type="text" value="{{ formatNumber(split.part) }}" />
-      </p>
-      <p class="control">
-        <a class="button is-static">
-          {{ currencies[selectedCurrency] }}
-        </a>
-      </p>
-    </div>
-    }
   </div>
+  <div class="field has-addons">
+    <div class="control is-expanded">
+      <input class="input" type="text" value="{{ formatNumber(split.part) }}" [disabled]="!split.included" />
+    </div>
+    <div class="control">
+      <a class="button is-static">
+        {{ currencies[selectedCurrency] }}
+      </a>
+    </div>
+  </div>
+  }
 </div>
