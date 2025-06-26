@@ -13,6 +13,3 @@ updates:
       applies-to: version-updates
       patterns:
       - "@angular*"
-      update-types:
-      - "minor"
-      - "patch"
