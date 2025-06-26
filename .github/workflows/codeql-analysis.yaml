@@ -9,6 +9,7 @@ on:
     - main
   schedule:
   - cron: '39 8 11 * *'
+permissions: {}
 
 jobs:
   debug:
