@@ -24,7 +24,7 @@ export class AddExpenseComponent {
   amount = computed(() => Math.round(this.customParseFloat(this.amountRaw()) * 100));
 
   saveEnabled = computed(() => {
-    return this.amount() > 0 && this.splits().filter(s => s.included).length > 0;
+    return this.amount() > 0 && this.splits().map(s => s.part).reduce((a, b) => a + b, 0) == this.amount();
   });
 
   currencies = ['€'];
@@ -42,11 +42,10 @@ export class AddExpenseComponent {
   }));
 
   splits = computed(() => {
-    const includedEntries = this.splitsRaw().filter(s => s.included);
-    const count = includedEntries.length;
-    const sum = includedEntries.filter(s => !Number.isNaN(s.part)).map(s => s.part).reduce((a, b) => (a + b), 0);
-    console.log(sum);
-    const remainingAmount = this.amount() - sum;
+    const count = this.splitsRaw().filter(s => s.included).length;
+    const amountManuallyDistributed = this.splitsRaw().filter(s => !Number.isNaN(s.part)).map(s => s.part).reduce((a, b) => a + b, 0);
+    const amountToDistributeAutomatically = this.amount() - amountManuallyDistributed;
+    const numberOfComputedSplits = this.splitsRaw().filter(s => s.included).filter(s => Number.isNaN(s.part)).length;
     var part: number;
     var remainder: number;
     if (count === 0) {
@@ -56,8 +55,8 @@ export class AddExpenseComponent {
       part = this.amount();
       remainder = this.amount();
     } else {
-      part = Math.round(remainingAmount / count);
-      remainder = Math.round(remainingAmount - part * (count - 1));
+      part = Math.round(amountToDistributeAutomatically / numberOfComputedSplits);
+      remainder = Math.round(amountToDistributeAutomatically - part * (numberOfComputedSplits - 1));
     }
     return this.splitsRaw().map((split, i) => {
       const newSplit = { ...split }
@@ -113,7 +112,6 @@ export class AddExpenseComponent {
   }
 
   updatePart(index: number, part: string) {
-    console.log(index, part);
     this.splitsRaw.update(value => {
       value[index].part = Math.round(this.customParseFloat(part) * 100);
       return [...value];
