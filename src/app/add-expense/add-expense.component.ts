@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal, WritableSignal } from '@angular/core';
 
 interface Split {
   name: string,
@@ -18,35 +18,65 @@ export class AddExpenseComponent {
 
   title = 'apezzi';
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
-  selectedCategory = 0;
-  selectCategory(index: number) {
-    this.selectedCategory = index;
-  }
-  amount = 0;
+  selectedCategory = signal(0);
+
+  amountRaw = signal('');
+  amount = computed(() => Math.round(this.customParseFloat(this.amountRaw()) * 100));
+
+  saveEnabled = computed(() => {
+    return this.amount() > 0 && this.splits().filter(s => s.included).length > 0;
+  });
+
   currencies = ['€'];
   selectedCurrency = 0;
-  selectCurrency(index: number) {
-    this.selectedCurrency = index;
-  }
 
-  splitted: Split[] = [
-    {
-      "name": "Christopher",
-      "part": 0,
-      "percentage": 0,
-      "included": true
-    }, {
-      "name": "Nathaniel",
-      "part": 0,
-      "percentage": 0,
-      "included": true
-    }, {
-      "name": "Samantha",
-      "part": 0,
-      "percentage": 0,
-      "included": true
+  groupMembers = ["Christopher", "Nathaniel", "Samantha"];
+
+  splitsRaw: WritableSignal<Split[]> = signal(this.groupMembers.map((groupMember) => {
+    return {
+      name: groupMember,
+      part: NaN,
+      percentage: NaN,
+      included: true
+    };
+  }));
+
+  splits = computed(() => {
+    const includedEntries = this.splitsRaw().filter(s => s.included);
+    const count = includedEntries.length;
+    const sum = includedEntries.filter(s => !Number.isNaN(s.part)).map(s => s.part).reduce((a, b) => (a + b), 0);
+    console.log(sum);
+    const remainingAmount = this.amount() - sum;
+    var part: number;
+    var remainder: number;
+    if (count === 0) {
+      part = 0;
+      remainder = 0;
+    } else if (count === 1) {
+      part = this.amount();
+      remainder = this.amount();
+    } else {
+      part = Math.round(remainingAmount / count);
+      remainder = Math.round(remainingAmount - part * (count - 1));
     }
-  ];
+    return this.splitsRaw().map((split, i) => {
+      const newSplit = { ...split }
+      if (newSplit.included) {
+        if (Number.isNaN(newSplit.part)) {
+          if (i === this.splitsRaw().length - 1) {
+            newSplit.part = remainder;
+          } else {
+            newSplit.part = part;
+          }
+        }
+        newSplit.percentage = Math.round(newSplit.part / this.amount() * 100);
+      } else {
+        newSplit.part = 0;
+        newSplit.percentage = 0;
+      }
+      return newSplit
+    });
+  });
 
   customParseFloat(str: string) {
     const commas = (str.match(/,/g) || []).length;
@@ -75,44 +105,19 @@ export class AddExpenseComponent {
     });
   }
 
-  parseAmountValue(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.amount = Math.round(this.customParseFloat(inputElement.value) * 100);
-    this.updateSplitted();
+  toggleIncluded(index: number) {
+    this.splitsRaw.update(value => {
+      value[index].included = !value[index].included;
+      return [...value];
+    });
   }
 
-  updateSplitted() {
-    const count = this.splitted.filter(s => s.included).length;
-    var part;
-    var remainder;
-    if (count === 0) {
-      part = 0;
-      remainder = 0;
-    } else if (count === 1) {
-      part = this.amount;
-      remainder = this.amount;
-    } else {
-      part = Math.round(this.amount / count);
-      remainder = Math.round(this.amount - part * (count - 1));
-    }
-    for (const [i, split] of this.splitted.entries()) {
-      if (split.included) {
-        if (i === this.splitted.length - 1) {
-          split.part = remainder;
-        } else {
-          split.part = part;
-        }
-        split.percentage = Math.round(split.part / this.amount * 100);
-      } else {
-        split.part = 0;
-        split.percentage = 0;
-      }
-    }
-  }
-
-  toggleIncluded(item: Split) {
-    item.included = !item.included;
-    this.updateSplitted();
+  updatePart(index: number, part: string) {
+    console.log(index, part);
+    this.splitsRaw.update(value => {
+      value[index].part = Math.round(this.customParseFloat(part) * 100);
+      return [...value];
+    });
   }
 
 }
