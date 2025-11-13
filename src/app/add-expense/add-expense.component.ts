@@ -46,6 +46,7 @@ export class AddExpenseComponent {
     const amountManuallyDistributed = this.splitsRaw().filter(s => !Number.isNaN(s.part)).map(s => s.part).reduce((a, b) => a + b, 0);
     const amountToDistributeAutomatically = this.amount() - amountManuallyDistributed;
     const numberOfComputedSplits = this.splitsRaw().filter(s => s.included).filter(s => Number.isNaN(s.part)).length;
+    var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedSplits);
     var part: number;
     var remainder: number;
     if (count === 0) {
@@ -62,11 +63,12 @@ export class AddExpenseComponent {
       const newSplit = { ...split }
       if (newSplit.included) {
         if (Number.isNaN(newSplit.part)) {
-          if (i === this.splitsRaw().length - 1) {
+          if (whichIndexGetsTheRemainder == 0) {
             newSplit.part = remainder;
           } else {
             newSplit.part = part;
           }
+          whichIndexGetsTheRemainder--;
         }
         newSplit.percentage = Math.round(newSplit.part / this.amount() * 100);
       } else {
@@ -76,6 +78,10 @@ export class AddExpenseComponent {
       return newSplit
     });
   });
+
+  randomNumberBetweenZeroAndMax(max: number) {
+    return Math.floor(Math.random() * max);
+  }
 
   customParseFloat(str: string) {
     const commas = (str.match(/,/g) || []).length;
