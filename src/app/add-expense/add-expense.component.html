@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="control is-expanded">
-      <input class="input is-success" type="text" placeholder="0,00" inputmode="decimal"
+      <input class="input is-success" type="text" [placeholder]="formatNumber(0)" inputmode="decimal"
         (input)="amountRaw.set($event.target.value)" autofocus>
     </div>
   </div>
