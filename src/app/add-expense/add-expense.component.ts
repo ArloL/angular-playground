@@ -59,7 +59,7 @@ export class AddExpenseComponent {
       .filter(s => s.included)
       .map(s => this.customParseFloat(s.part))
       .reduce((a, b) => a + b, 0);
-    const amountToDistributeAutomatically = this.amount() - amountManuallyDistributed;
+    const amountToDistributeAutomatically = Math.max(0, this.amount() - amountManuallyDistributed);
     const numberOfComputedSplits = this.splitsRaw()
       .filter(s => s.included)
       .filter(s => s.part === '')

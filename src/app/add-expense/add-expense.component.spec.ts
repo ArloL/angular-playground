@@ -20,4 +20,12 @@ describe('AddExpenseComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should not be allowed to save if parts are bigger than amount', () => {
+    component.amountRaw.set('60');
+    component.updatePart(1, '60');
+    expect(component.saveEnabled()).toBeTrue();
+    component.updatePart(2, '9');
+    expect(component.saveEnabled()).toBeFalse();
+  });
 });
