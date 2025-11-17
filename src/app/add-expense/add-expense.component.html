@@ -52,7 +52,7 @@
   </div>
   <div class="field has-addons">
     <div class="control is-expanded">
-      <input class="input" type="text" value="{{ formatNumber(split.part) }}" [disabled]="!split.included" (input)="updatePart($index, $event.target.value)" />
+      <input class="input" type="text" placeholder="{{ formatNumber(split.part) }}" [disabled]="!split.included" (input)="updatePart($index, $event.target.value)" />
     </div>
     <div class="control">
       <a class="button is-static">
