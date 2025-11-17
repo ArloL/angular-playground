@@ -32,7 +32,7 @@ export class AddExpenseComponent {
     const sumOfSplits = this.splits()
       .filter(s => s.included)
       .map(s => s.part)
-      .reduce((a, b) => (a || 0) + (b || 0), 0);
+      .reduce((a, b) => a + b, 0);
     return this.amount() > 0 && sumOfSplits === this.amount();
   });
 
@@ -52,26 +52,17 @@ export class AddExpenseComponent {
   );
 
   splits: Signal<Split[]> = computed(() => {
-    const splits = this.splitsRaw()
-      .map((splitRaw) => {
-        const split: Split = {
-          name: splitRaw.name,
-          included: splitRaw.included,
-          part: this.customParseFloat(splitRaw.part),
-        };
-        return split;
-      });
-    const numberOfIncludedSplits = splits
+    const numberOfIncludedSplits = this.splitsRaw()
       .filter(s => s.included)
       .length;
-    const amountManuallyDistributed = splits
+    const amountManuallyDistributed = this.splitsRaw()
       .filter(s => s.included)
-      .map(s => s.part)
-      .reduce((a, b) => (a || 0) + (b || 0), 0);
+      .map(s => this.customParseFloat(s.part))
+      .reduce((a, b) => a + b, 0);
     const amountToDistributeAutomatically = this.amount() - amountManuallyDistributed;
-    const numberOfComputedSplits = splits
+    const numberOfComputedSplits = this.splitsRaw()
       .filter(s => s.included)
-      .filter(s => Number.isNaN(s.part))
+      .filter(s => s.part === '')
       .length;
     var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedSplits);
     var automaticallyDistributedAmount: number;
@@ -86,16 +77,19 @@ export class AddExpenseComponent {
       automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedSplits);
       remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedSplits - 1));
     }
-    return splits.map((split) => {
-      if (split.included) {
-        if (Number.isNaN(split.part)) {
-          if (whichIndexGetsTheRemainder === 0) {
-            split.part = remainderForExactDistribution;
-          } else {
-            split.part = automaticallyDistributedAmount;
-          }
-          whichIndexGetsTheRemainder--;
+    return this.splitsRaw().map((splitRaw) => {
+      const split: Split = {
+        name: splitRaw.name,
+        included: splitRaw.included,
+        part: this.customParseFloat(splitRaw.part),
+      };
+      if (splitRaw.included && splitRaw.part === '') {
+        if (whichIndexGetsTheRemainder === 0) {
+          split.part = remainderForExactDistribution;
+        } else {
+          split.part = automaticallyDistributedAmount;
         }
+        whichIndexGetsTheRemainder--;
       }
       return split;
     });
@@ -106,6 +100,9 @@ export class AddExpenseComponent {
   }
 
   customParseFloat(str: string) {
+    if (str === '') {
+      return 0;
+    }
     const commas = (str.match(/,/g) || []).length;
     if (commas === 1) {
       str = str.replace(',', '.');
