@@ -3,6 +3,7 @@
 
 module.exports = function (config) {
   config.set({
+    port: 61776,
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
@@ -33,7 +34,6 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml'],
     browsers: ['Chromium'],
-    browsers: ['ChromiumHeadlessNoSandbox'],
     customLaunchers: {
       ChromiumHeadlessNoSandbox: {
         base: 'ChromiumHeadless',
