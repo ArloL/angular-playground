@@ -24,7 +24,10 @@ export class AddExpenseComponent {
   amount = computed(() => Math.round(this.customParseFloat(this.amountRaw()) * 100));
 
   saveEnabled = computed(() => {
-    return this.amount() > 0 && this.splits().map(s => s.part).reduce((a, b) => a + b, 0) == this.amount();
+    const sumOfSplits = this.splits()
+      .map(s => s.part)
+      .reduce((a, b) => a + b, 0);
+    return this.amount() > 0 && sumOfSplits == this.amount();
   });
 
   currencies = ['€'];
