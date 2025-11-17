@@ -1,9 +1,14 @@
-import { Component, computed, signal, WritableSignal } from '@angular/core';
+import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
+
+interface SplitRaw {
+  name: string,
+  part: string,
+  included: boolean,
+}
 
 interface Split {
   name: string,
   part: number,
-  percentage: number,
   included: boolean,
 }
 
@@ -21,13 +26,14 @@ export class AddExpenseComponent {
   selectedCategory = signal(0);
 
   amountRaw = signal('');
-  amount = computed(() => Math.round(this.customParseFloat(this.amountRaw()) * 100));
+  amount = computed(() => this.customParseFloat(this.amountRaw()));
 
   saveEnabled = computed(() => {
     const sumOfSplits = this.splits()
+      .filter(s => s.included)
       .map(s => s.part)
-      .reduce((a, b) => a + b, 0);
-    return this.amount() > 0 && sumOfSplits == this.amount();
+      .reduce((a, b) => (a || 0) + (b || 0), 0);
+    return this.amount() > 0 && sumOfSplits === this.amount();
   });
 
   currencies = ['€'];
@@ -35,50 +41,63 @@ export class AddExpenseComponent {
 
   groupMembers = ["Christopher", "Nathaniel", "Samantha"];
 
-  splitsRaw: WritableSignal<Split[]> = signal(this.groupMembers.map((groupMember) => {
-    return {
-      name: groupMember,
-      part: NaN,
-      percentage: NaN,
-      included: true
-    };
-  }));
+  splitsRaw: WritableSignal<SplitRaw[]> = signal(this.groupMembers
+    .map((groupMember) => {
+      return {
+        name: groupMember,
+        part: '',
+        included: true
+      };
+    })
+  );
 
-  splits = computed(() => {
-    const count = this.splitsRaw().filter(s => s.included).length;
-    const amountManuallyDistributed = this.splitsRaw().filter(s => !Number.isNaN(s.part)).map(s => s.part).reduce((a, b) => a + b, 0);
+  splits: Signal<Split[]> = computed(() => {
+    const splits = this.splitsRaw()
+      .map((splitRaw) => {
+        const split: Split = {
+          name: splitRaw.name,
+          included: splitRaw.included,
+          part: this.customParseFloat(splitRaw.part),
+        };
+        return split;
+      });
+    const numberOfIncludedSplits = splits
+      .filter(s => s.included)
+      .length;
+    const amountManuallyDistributed = splits
+      .filter(s => s.included)
+      .map(s => s.part)
+      .reduce((a, b) => (a || 0) + (b || 0), 0);
     const amountToDistributeAutomatically = this.amount() - amountManuallyDistributed;
-    const numberOfComputedSplits = this.splitsRaw().filter(s => s.included).filter(s => Number.isNaN(s.part)).length;
+    const numberOfComputedSplits = splits
+      .filter(s => s.included)
+      .filter(s => Number.isNaN(s.part))
+      .length;
     var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedSplits);
-    var part: number;
-    var remainder: number;
-    if (count === 0) {
-      part = 0;
-      remainder = 0;
-    } else if (count === 1) {
-      part = this.amount();
-      remainder = this.amount();
+    var automaticallyDistributedAmount: number;
+    var remainderForExactDistribution: number;
+    if (numberOfIncludedSplits === 0) {
+      automaticallyDistributedAmount = 0;
+      remainderForExactDistribution = 0;
+    } else if (numberOfIncludedSplits === 1) {
+      automaticallyDistributedAmount = this.amount();
+      remainderForExactDistribution = this.amount();
     } else {
-      part = Math.round(amountToDistributeAutomatically / numberOfComputedSplits);
-      remainder = Math.round(amountToDistributeAutomatically - part * (numberOfComputedSplits - 1));
+      automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedSplits);
+      remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedSplits - 1));
     }
-    return this.splitsRaw().map((split, i) => {
-      const newSplit = { ...split }
-      if (newSplit.included) {
-        if (Number.isNaN(newSplit.part)) {
-          if (whichIndexGetsTheRemainder == 0) {
-            newSplit.part = remainder;
+    return splits.map((split) => {
+      if (split.included) {
+        if (Number.isNaN(split.part)) {
+          if (whichIndexGetsTheRemainder === 0) {
+            split.part = remainderForExactDistribution;
           } else {
-            newSplit.part = part;
+            split.part = automaticallyDistributedAmount;
           }
           whichIndexGetsTheRemainder--;
         }
-        newSplit.percentage = Math.round(newSplit.part / this.amount() * 100);
-      } else {
-        newSplit.part = 0;
-        newSplit.percentage = 0;
       }
-      return newSplit
+      return split;
     });
   });
 
@@ -97,7 +116,7 @@ export class AddExpenseComponent {
     if (dots > 1) {
       str = str.replace('.', '');
     }
-    return Number.parseFloat(str);
+    return Math.round(Number.parseFloat(str) * 100);
   }
 
   formatNumber(number: number, digits = 2) {
@@ -122,7 +141,7 @@ export class AddExpenseComponent {
 
   updatePart(index: number, part: string) {
     this.splitsRaw.update(value => {
-      value[index].part = Math.round(this.customParseFloat(part) * 100);
+      value[index].part = part;
       return [...value];
     });
   }
