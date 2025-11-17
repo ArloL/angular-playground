@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { BUILD_TIMESTAMP } from '../environments/build-timestamp';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,5 @@ import { BUILD_TIMESTAMP } from '../environments/build-timestamp';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  buildTimestamp = BUILD_TIMESTAMP;
+  buildTimestamp = environment.buildTimestamp;
 }

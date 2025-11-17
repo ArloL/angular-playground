@@ -2,6 +2,6 @@
 import { writeFileSync } from 'fs';
 const timestamp = new Date().toISOString();
 writeFileSync(
-  'src/environments/build-timestamp.ts',
-  `export const BUILD_TIMESTAMP = '${timestamp}';\n`
+  'src/environments/environment.production.ts',
+  `export const environment = { buildTimestamp : '${timestamp}' };\n`
 );
