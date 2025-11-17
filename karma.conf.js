@@ -33,6 +33,13 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml'],
     browsers: ['Chromium'],
+    browsers: ['ChromiumHeadlessNoSandbox'],
+    customLaunchers: {
+      ChromiumHeadlessNoSandbox: {
+        base: 'ChromiumHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     restartOnFileChange: true
   });
 };
