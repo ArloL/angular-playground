@@ -13,8 +13,8 @@
       </span>
     </div>
     <div class="control is-expanded">
-      <input class="input is-success" type="text" [placeholder]="formatNumber(0)" inputmode="decimal"
-        (input)="amountRaw.set($event.target.value)" autofocus>
+      <input autofocus class="input is-success" type="text" inputmode="decimal" [placeholder]="formatNumber(0)"
+        (input)="amountRaw.set($event.target.value)">
     </div>
   </div>
   <div class="buttons has-addons is-scrollable-x">
@@ -52,7 +52,8 @@
   </div>
   <div class="field has-addons">
     <div class="control is-expanded">
-      <input class="input" type="text" placeholder="{{ formatNumber(split.part) }}" [disabled]="!split.included" (input)="updatePart($index, $event.target.value)" />
+      <input class="input" type="text" inputmode="decimal" placeholder="{{ formatNumber(split.part) }}"
+        [disabled]="!split.included" (input)="updatePart($index, $event.target.value)">
     </div>
     <div class="control">
       <a class="button is-static">
