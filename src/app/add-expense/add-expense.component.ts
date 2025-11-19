@@ -1,4 +1,5 @@
 import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
+import { RouterLink } from "@angular/router";
 
 interface Expense {
   cost: number,
@@ -24,7 +25,7 @@ interface ShareRaw {
 @Component({
   selector: 'apezzi-add-expense',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './add-expense.component.html',
   styleUrl: './add-expense.component.scss'
 })
