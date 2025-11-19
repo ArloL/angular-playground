@@ -14,7 +14,7 @@ describe('AddExpenseComponent', () => {
         provideZonelessChangeDetection(),
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AddExpenseComponent);
     component = fixture.componentInstance;
@@ -26,10 +26,10 @@ describe('AddExpenseComponent', () => {
   });
 
   it('should not be allowed to save if parts are bigger than amount', () => {
-    component.amountRaw.set('60');
-    component.updatePart(1, '60');
+    component.costRaw.set('60');
+    component.updateShareOwed(1, '60');
     expect(component.saveEnabled()).toBeTrue();
-    component.updatePart(2, '9');
+    component.updateShareOwed(2, '9');
     expect(component.saveEnabled()).toBeFalse();
   });
 });

@@ -1,14 +1,23 @@
 import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
 
-interface SplitRaw {
+interface Expense {
+  cost: number,
+  description: string,
+  currency: string,
+  category: string,
+  date: Date,
+  shares: Share[],
+}
+
+interface Share {
   name: string,
-  part: string,
+  owed: number,
   included: boolean,
 }
 
-interface Split {
+interface ShareRaw {
   name: string,
-  part: number,
+  owed: string,
   included: boolean,
 }
 
@@ -25,15 +34,25 @@ export class AddExpenseComponent {
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
   selectedCategory = signal(0);
 
-  amountRaw = signal('');
-  amount = computed(() => this.customParseFloat(this.amountRaw()));
+  costRaw = signal('');
+  descriptionRaw = signal('');
+  expense: Signal<Expense> = computed(() => {
+    return {
+      cost: this.customParseFloat(this.costRaw()),
+      description: '',
+      currency: '€',
+      category: this.categories[this.selectedCategory()],
+      date: new Date(),
+      shares: [],
+    };
+  });
 
   saveEnabled = computed(() => {
-    const sumOfSplits = this.splits()
+    const sumOfShares = this.shares()
       .filter(s => s.included)
-      .map(s => s.part)
+      .map(s => s.owed)
       .reduce((a, b) => a + b, 0);
-    return this.amount() > 0 && sumOfSplits === this.amount();
+    return this.expense().cost > 0 && sumOfShares === this.expense().cost;
   });
 
   currencies = ['€'];
@@ -41,59 +60,69 @@ export class AddExpenseComponent {
 
   groupMembers = ["Christopher", "Nathaniel", "Samantha"];
 
-  splitsRaw: WritableSignal<SplitRaw[]> = signal(this.groupMembers
-    .map((groupMember) => {
-      return {
-        name: groupMember,
-        part: '',
-        included: true
-      };
-    })
-  );
+  sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
 
-  splits: Signal<Split[]> = computed(() => {
-    const numberOfIncludedSplits = this.splitsRaw()
+  shares: Signal<Share[]> = computed(() => {
+    const numberOfIncludedShares = this.sharesRaw()
       .filter(s => s.included)
       .length;
-    const amountManuallyDistributed = this.splitsRaw()
+    const amountManuallyDistributed = this.sharesRaw()
       .filter(s => s.included)
-      .map(s => this.customParseFloat(s.part))
+      .map(s => this.customParseFloat(s.owed))
       .reduce((a, b) => a + b, 0);
-    const amountToDistributeAutomatically = Math.max(0, this.amount() - amountManuallyDistributed);
-    const numberOfComputedSplits = this.splitsRaw()
+    const amountToDistributeAutomatically = Math.max(0, this.expense().cost - amountManuallyDistributed);
+    const numberOfComputedShares = this.sharesRaw()
       .filter(s => s.included)
-      .filter(s => s.part === '')
+      .filter(s => s.owed === '')
       .length;
-    var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedSplits);
+    var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedShares);
     var automaticallyDistributedAmount: number;
     var remainderForExactDistribution: number;
-    if (numberOfIncludedSplits === 0) {
+    if (numberOfIncludedShares === 0) {
       automaticallyDistributedAmount = 0;
       remainderForExactDistribution = 0;
-    } else if (numberOfIncludedSplits === 1) {
-      automaticallyDistributedAmount = this.amount();
-      remainderForExactDistribution = this.amount();
+    } else if (numberOfIncludedShares === 1) {
+      automaticallyDistributedAmount = this.expense().cost;
+      remainderForExactDistribution = this.expense().cost;
     } else {
-      automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedSplits);
-      remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedSplits - 1));
+      automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedShares);
+      remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedShares - 1));
     }
-    return this.splitsRaw().map((splitRaw) => {
-      const split: Split = {
-        name: splitRaw.name,
-        included: splitRaw.included,
-        part: this.customParseFloat(splitRaw.part),
+    return this.sharesRaw().map((shareRaw) => {
+      const share: Share = {
+        name: shareRaw.name,
+        included: shareRaw.included,
+        owed: this.customParseFloat(shareRaw.owed),
       };
-      if (splitRaw.included && splitRaw.part === '') {
+      if (shareRaw.included && shareRaw.owed === '') {
         if (whichIndexGetsTheRemainder === 0) {
-          split.part = remainderForExactDistribution;
+          share.owed = remainderForExactDistribution;
         } else {
-          split.part = automaticallyDistributedAmount;
+          share.owed = automaticallyDistributedAmount;
         }
         whichIndexGetsTheRemainder--;
       }
-      return split;
+      return share;
     });
   });
+
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.costRaw.set('');
+    this.descriptionRaw.set('');
+    this.selectedCategory.set(0);
+    this.sharesRaw.set(this.groupMembers
+      .map((groupMember) => {
+        return {
+          name: groupMember,
+          owed: '',
+          included: true
+        };
+      }));
+  }
 
   randomNumberBetweenZeroAndMax(max: number) {
     return Math.floor(Math.random() * max);
@@ -130,15 +159,15 @@ export class AddExpenseComponent {
   }
 
   toggleIncluded(index: number) {
-    this.splitsRaw.update(value => {
+    this.sharesRaw.update(value => {
       value[index].included = !value[index].included;
       return [...value];
     });
   }
 
-  updatePart(index: number, part: string) {
-    this.splitsRaw.update(value => {
-      value[index].part = part;
+  updateShareOwed(index: number, owed: string) {
+    this.sharesRaw.update(value => {
+      value[index].owed = owed;
       return [...value];
     });
   }

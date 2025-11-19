@@ -14,7 +14,7 @@
     </div>
     <div class="control is-expanded">
       <input autofocus class="input is-success" type="text" inputmode="decimal" [placeholder]="formatNumber(0)"
-        (input)="amountRaw.set($event.target.value)">
+        [value]="costRaw()" (input)="costRaw.set($event.target.value)">
     </div>
   </div>
   <div class="buttons has-addons is-scrollable-x">
@@ -28,32 +28,34 @@
   </div>
   <div class="field">
     <div class="control">
-      <input class="input" type="text" placeholder="…">
+      <input class="input" type="text" placeholder="…" [value]="descriptionRaw()"
+        (input)="descriptionRaw.set($event.target.value)">
     </div>
   </div>
   <div class="field is-grouped">
     <div class="control is-expanded">
       <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="!saveEnabled()"
-        [class.is-success]="saveEnabled()">
+        (click)="reset()" [class.is-success]="saveEnabled()">
         ➕
-        <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ this.formatNumber(amount()) }} {{
+        <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ this.formatNumber(this.expense().cost) }}
+          {{
           currencies[selectedCurrency] }}</span>
       </button>
     </div>
   </div>
-  @for (split of splits(); track $index) {
+  @for (share of shares(); track $index) {
   <div class="field">
     <div class="control">
       <label class="checkbox">
-        <input type="checkbox" [checked]="split.included" (change)="toggleIncluded($index)" />
-        {{ split.name }}
+        <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
+        {{ share.name }}
       </label>
     </div>
   </div>
   <div class="field has-addons">
     <div class="control is-expanded">
-      <input class="input" type="text" inputmode="decimal" placeholder="{{ formatNumber(split.part) }}"
-        [disabled]="!split.included" (input)="updatePart($index, $event.target.value)">
+      <input class="input" type="text" inputmode="decimal" placeholder="{{ formatNumber(share.owed) }}"
+        [disabled]="!share.included" (input)="updateShareOwed($index, $event.target.value)">
     </div>
     <div class="control">
       <a class="button is-static">
