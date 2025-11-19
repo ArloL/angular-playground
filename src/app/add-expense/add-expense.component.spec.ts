@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddExpenseComponent } from './add-expense.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { GroupStore } from '../services/group-store';
 
 describe('AddExpenseComponent', () => {
   let component: AddExpenseComponent;
@@ -19,8 +20,9 @@ describe('AddExpenseComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(AddExpenseComponent);
+    fixture.componentRef.setInput('groupId', TestBed.inject(GroupStore).first().id);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

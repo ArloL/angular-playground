@@ -3,6 +3,6 @@ import { AddExpenseComponent } from './add-expense/add-expense.component';
 import { GroupOverviewComponent } from './group-overview/group-overview.component';
 
 export const routes: Routes = [
-  { path: 'add-expense-component', component: AddExpenseComponent },
-  { path: 'group-overview-component', component: GroupOverviewComponent },
+  { path: 'group/:groupId/add-expense', component: AddExpenseComponent },
+  { path: 'group/:groupId', component: GroupOverviewComponent },
 ];

@@ -1,10 +1,18 @@
 <nav>
   <ul>
-    <li><a routerLink="/add-expense-component" routerLinkActive="active" ariaCurrentWhenActive="page">Add Expense</a>
+    <li><a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
     </li>
-    <li><a routerLink="/group-overview-component" routerLinkActive="active" ariaCurrentWhenActive="page">Group
-        Overview</a>
-    </li>
+    @for (group of groupStore.all(); track $index) {
+    <p>Group {{ group.name }}</p>
+    <ul>
+      <li>
+        <a [routerLink]="['/group', group.id]">Overview</a>
+      </li>
+      <li>
+        <a [routerLink]="['/group', group.id, 'add-expense']">Expenses</a>
+      </li>
+    </ul>
+    }
   </ul>
 </nav>
 

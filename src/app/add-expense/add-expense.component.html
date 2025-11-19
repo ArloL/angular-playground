@@ -37,7 +37,7 @@
       <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="!saveEnabled()"
         (click)="save()" [class.is-success]="saveEnabled()">
         ➕
-        <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ this.formatNumber(this.expense().cost) }}
+        <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ formatNumber(this.expense().cost) }}
           {{
           currencies[selectedCurrency] }}</span>
       </button>
@@ -48,7 +48,7 @@
     <div class="control">
       <label class="checkbox">
         <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
-        {{ share.name }}
+        {{ userStore.findById(share.userId).name }}
       </label>
     </div>
   </div>

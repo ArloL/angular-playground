@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
+import { GroupStore } from './services/group-store';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +11,9 @@ import { environment } from '../environments/environment';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+
   buildTimestamp = environment.buildTimestamp;
+
+  groupStore = inject(GroupStore);
+
 }

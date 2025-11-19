@@ -1,5 +1,7 @@
+import { UserId } from "./user";
+
 export interface Share {
-  name: string,
+  userId: UserId,
   owed: number,
   included: boolean,
 }

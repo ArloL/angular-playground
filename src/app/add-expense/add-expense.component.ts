@@ -1,11 +1,16 @@
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, effect, inject, input, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { Share } from '../models/share';
+import { formatNumber } from '../helper/format-number';
 import { Expense } from '../models/expense';
+import { GroupId } from '../models/group';
+import { Share } from '../models/share';
+import { UserId } from '../models/user';
 import { ExpenseStore } from '../services/expense-store';
+import { GroupStore } from '../services/group-store';
+import { UserStore } from '../services/user-store';
 
 interface ShareRaw {
-  name: string,
+  userId: UserId,
   owed: string,
   included: boolean,
 }
@@ -20,6 +25,12 @@ interface ShareRaw {
 export class AddExpenseComponent {
 
   expenseStore = inject(ExpenseStore);
+  groupStore = inject(GroupStore);
+  userStore = inject(UserStore);
+
+  formatNumber = formatNumber;
+
+  groupId = input.required<GroupId>();
 
   title = 'apezzi';
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
@@ -35,6 +46,8 @@ export class AddExpenseComponent {
       category: this.categories[this.selectedCategory()],
       date: new Date(),
       shares: [],
+      createdBy: this.userStore.first().id,
+      groupId: this.groupId()
     };
   });
 
@@ -49,9 +62,18 @@ export class AddExpenseComponent {
   currencies = ['€'];
   selectedCurrency = 0;
 
-  groupMembers = ["Christopher", "Nathaniel", "Samantha"];
-
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
+  sharesRawInitialize = effect(() => {
+    const group = this.groupStore.findById(this.groupId());
+    this.sharesRaw.set(group.users
+      .map((userId) => {
+        return {
+          userId: userId,
+          owed: '',
+          included: true
+        };
+      }));
+  });
 
   shares: Signal<Share[]> = computed(() => {
     const numberOfIncludedShares = this.sharesRaw()
@@ -81,7 +103,7 @@ export class AddExpenseComponent {
     }
     return this.sharesRaw().map((shareRaw) => {
       const share: Share = {
-        name: shareRaw.name,
+        userId: shareRaw.userId,
         included: shareRaw.included,
         owed: this.customParseFloat(shareRaw.owed),
       };
@@ -97,12 +119,8 @@ export class AddExpenseComponent {
     });
   });
 
-  constructor() {
-    this.reset();
-  }
-
   save() {
-    this.expenseStore.addData(this.expense());
+    this.expenseStore.add(this.expense());
     this.reset();
   }
 
@@ -110,14 +128,6 @@ export class AddExpenseComponent {
     this.costRaw.set('');
     this.descriptionRaw.set('');
     this.selectedCategory.set(0);
-    this.sharesRaw.set(this.groupMembers
-      .map((groupMember) => {
-        return {
-          name: groupMember,
-          owed: '',
-          included: true
-        };
-      }));
   }
 
   randomNumberBetweenZeroAndMax(max: number) {
@@ -139,19 +149,6 @@ export class AddExpenseComponent {
       str = str.replace('.', '');
     }
     return Math.round(Number.parseFloat(str) * 100);
-  }
-
-  formatNumber(number: number, digits = 2) {
-    if (isNaN(number)) {
-      number = 0;
-    }
-    if (number < 0) {
-      number = 0;
-    }
-    return (number / 100).toLocaleString(navigator.language || 'en-US', {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits
-    });
   }
 
   toggleIncluded(index: number) {

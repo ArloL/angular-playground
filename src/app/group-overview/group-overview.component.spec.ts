@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupOverviewComponent } from './group-overview.component';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { GroupStore } from '../services/group-store';
 
 describe('GroupOverviewComponent', () => {
   let component: GroupOverviewComponent;
@@ -13,12 +14,12 @@ describe('GroupOverviewComponent', () => {
       providers: [
         provideZonelessChangeDetection(),
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GroupOverviewComponent);
+    fixture.componentRef.setInput('groupId', TestBed.inject(GroupStore).first().id);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
