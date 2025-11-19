@@ -35,7 +35,7 @@
   <div class="field is-grouped">
     <div class="control is-expanded">
       <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="!saveEnabled()"
-        (click)="reset()" [class.is-success]="saveEnabled()">
+        (click)="save()" [class.is-success]="saveEnabled()">
         ➕
         <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ this.formatNumber(this.expense().cost) }}
           {{

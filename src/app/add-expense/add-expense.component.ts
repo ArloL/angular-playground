@@ -1,7 +1,8 @@
-import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { Share } from '../models/share';
 import { Expense } from '../models/expense';
+import { ExpenseStore } from '../services/expense-store';
 
 interface ShareRaw {
   name: string,
@@ -17,6 +18,8 @@ interface ShareRaw {
   styleUrl: './add-expense.component.scss'
 })
 export class AddExpenseComponent {
+
+  expenseStore = inject(ExpenseStore);
 
   title = 'apezzi';
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
@@ -95,6 +98,11 @@ export class AddExpenseComponent {
   });
 
   constructor() {
+    this.reset();
+  }
+
+  save() {
+    this.expenseStore.addData(this.expense());
     this.reset();
   }
 
