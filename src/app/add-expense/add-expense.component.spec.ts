@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddExpenseComponent } from './add-expense.component';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AddExpenseComponent', () => {
   let component: AddExpenseComponent;
@@ -8,7 +9,10 @@ describe('AddExpenseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddExpenseComponent]
+      imports: [AddExpenseComponent],
+      providers: [
+        provideZonelessChangeDetection(),
+      ]
     })
     .compileComponents();
 
