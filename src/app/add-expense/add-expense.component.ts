@@ -1,21 +1,6 @@
 import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from "@angular/router";
 
-interface Expense {
-  cost: number,
-  description: string,
-  currency: string,
-  category: string,
-  date: Date,
-  shares: Share[],
-}
-
-interface Share {
-  name: string,
-  owed: number,
-  included: boolean,
-}
-
 interface ShareRaw {
   name: string,
   owed: string,
