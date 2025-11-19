@@ -1,5 +1,7 @@
 import { Component, computed, Signal, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from "@angular/router";
+import { Share } from './share';
+import { Expense } from './expense';
 
 interface ShareRaw {
   name: string,
