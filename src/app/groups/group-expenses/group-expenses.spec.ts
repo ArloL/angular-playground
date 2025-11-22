@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupOverviewComponent } from './group-overview.component';
-import { GroupStore } from '../services/group-store';
+import { GroupExpenses } from './group-expenses';
+import { GroupStore } from '../../services/group-store';
 
 describe('GroupOverviewComponent', () => {
-  let component: GroupOverviewComponent;
-  let fixture: ComponentFixture<GroupOverviewComponent>;
+  let component: GroupExpenses;
+  let fixture: ComponentFixture<GroupExpenses>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupOverviewComponent],
+      imports: [GroupExpenses],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GroupOverviewComponent);
+    fixture = TestBed.createComponent(GroupExpenses);
     fixture.componentRef.setInput('groupId', TestBed.inject(GroupStore).first().id);
     component = fixture.componentInstance;
     await fixture.whenStable();

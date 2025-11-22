@@ -30,7 +30,7 @@ export class AddExpenseComponent {
 
   formatNumber = formatNumber;
 
-  groupId = input.required<GroupId>();
+  readonly groupId = input.required<GroupId>();
 
   title = 'apezzi';
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];

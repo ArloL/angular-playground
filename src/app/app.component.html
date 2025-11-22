@@ -2,14 +2,19 @@
   <ul>
     <li><a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
     </li>
+    <li><a routerLink="/group/create" routerLinkActive="active" ariaCurrentWhenActive="page">Create group</a>
+    </li>
     @for (group of groupStore.all(); track $index) {
     <p>Group {{ group.name }}</p>
     <ul>
       <li>
-        <a [routerLink]="['/group', group.id]">Overview</a>
+        <a [routerLink]="['/group', group.id, 'edit']">Edit group</a>
       </li>
       <li>
-        <a [routerLink]="['/group', group.id, 'add-expense']">Expenses</a>
+        <a [routerLink]="['/group', group.id, 'expenses']">View Expenses</a>
+      </li>
+      <li>
+        <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
       </li>
     </ul>
     }
