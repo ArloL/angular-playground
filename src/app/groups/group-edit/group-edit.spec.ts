@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupEdit } from './group-edit';
+import { GroupStore } from '../../services/group-store';
 
 describe('GroupEdit', () => {
   let component: GroupEdit;
@@ -13,6 +14,7 @@ describe('GroupEdit', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(GroupEdit);
+    fixture.componentRef.setInput('groupId', TestBed.inject(GroupStore).first().id);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
