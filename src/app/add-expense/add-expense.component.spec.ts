@@ -32,8 +32,8 @@ describe('AddExpenseComponent', () => {
   it('should not be allowed to save if parts are bigger than amount', () => {
     component.costRaw.set('60');
     component.updateShareOwed(1, '60');
-    expect(component.saveEnabled()).toBeTrue();
+    expect(component.saveEnabled()).toBe(true);
     component.updateShareOwed(2, '9');
-    expect(component.saveEnabled()).toBeFalse();
+    expect(component.saveEnabled()).toBe(false);
   });
 });
