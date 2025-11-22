@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupEdit } from './group-view';
+import { GroupView } from './group-view';
 import { GroupStore } from '../../services/group-store';
 
 describe('GroupEdit', () => {
-  let component: GroupEdit;
-  let fixture: ComponentFixture<GroupEdit>;
+  let component: GroupView;
+  let fixture: ComponentFixture<GroupView>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupEdit]
+      imports: [GroupView]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GroupEdit);
+    fixture = TestBed.createComponent(GroupView);
     fixture.componentRef.setInput('groupId', TestBed.inject(GroupStore).first().id);
     component = fixture.componentInstance;
     await fixture.whenStable();
