@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupOverviewComponent } from './group-overview.component';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { GroupStore } from '../services/group-store';
 
 describe('GroupOverviewComponent', () => {
@@ -11,9 +10,6 @@ describe('GroupOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GroupOverviewComponent],
-      providers: [
-        provideZonelessChangeDetection(),
-      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(GroupOverviewComponent);

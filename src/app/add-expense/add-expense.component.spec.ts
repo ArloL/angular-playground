@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddExpenseComponent } from './add-expense.component';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { GroupStore } from '../services/group-store';
 
@@ -14,7 +13,6 @@ describe('AddExpenseComponent', () => {
       imports: [AddExpenseComponent],
       providers: [
         provideRouter([]),
-        provideZonelessChangeDetection(),
       ]
     })
       .compileComponents();

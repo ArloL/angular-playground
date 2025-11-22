@@ -1,17 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { GroupStore } from './group-store';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('GroupStore', () => {
   let service: GroupStore;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideZonelessChangeDetection(),
-      ]
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(GroupStore);
   });
 

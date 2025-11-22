@@ -1,17 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UserStore } from './user-store';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('UserStore', () => {
   let service: UserStore;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideZonelessChangeDetection(),
-      ]
-    });
+    TestBed.configureTestingModule({});
     service = TestBed.inject(UserStore);
   });
 
