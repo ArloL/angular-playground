@@ -8,6 +8,9 @@
     <p>Group {{ group.name }}</p>
     <ul>
       <li>
+        <a [routerLink]="['/group', group.id]">View group</a>
+      </li>
+      <li>
         <a [routerLink]="['/group', group.id, 'edit']">Edit group</a>
       </li>
       <li>
