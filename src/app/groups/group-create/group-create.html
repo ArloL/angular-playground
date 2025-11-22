@@ -1,1 +1,21 @@
-<p>group-create works!</p>
+<div class="container">
+  <div class="field">
+    <label class="label">Name</label>
+    <div class="control is-expanded">
+      <input autofocus class="input" type="text" placeholder="e.g. Paris 2025" [field]="groupForm.name"
+      [class.is-success]="groupForm.name().touched() && groupForm.name().valid()"
+      [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
+    </div>
+  </div>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <button class="button is-fullwidth is-flex is-justify-content-space-between"
+      [class.is-success]="groupForm().valid()"
+      [disabled]="groupForm().invalid()"
+      (click)="save()">
+        ➕
+        <span class="is-flex-grow-1">Create group "{{ groupData().name }}"</span>
+      </button>
+    </div>
+  </div>
+</div>
