@@ -1,6 +1,11 @@
 <div class="container">
+  @if (users.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (users.status() === 'error') {
+  <p>Error loading user</p>
+  } @else {
+  @if (users.hasValue() && users.value()) {
   <h1 class="title">Users</h1>
-  @if (users.hasValue()) {
   @for (user of users.value(); track $index) {
   <p>User {{ user.name }}</p>
   <ul>
@@ -11,6 +16,7 @@
       <a [routerLink]="['/user', user.id, 'edit']">Edit user</a>
     </li>
   </ul>
+  }
   }
   }
 </div>

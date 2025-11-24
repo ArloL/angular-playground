@@ -1,6 +1,11 @@
 <div class="container">
+  @if (groups.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (groups.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (groups.hasValue() && groups.value()) {
   <h1 class="title">Groups</h1>
-  @if (groups.hasValue()) {
   @for (group of groups.value(); track $index) {
   <p>Group {{ group.name }}</p>
   <ul>
@@ -17,6 +22,7 @@
       <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
     </li>
   </ul>
+  }
   }
   }
 </div>
