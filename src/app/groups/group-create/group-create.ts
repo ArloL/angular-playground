@@ -1,10 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, Field, debounce, required } from '@angular/forms/signals';
+import { Field, debounce, form, required } from '@angular/forms/signals';
+import { Router } from '@angular/router';
+import { NewGroup } from '../../models/group';
 import { GroupStore } from '../../services/group-store';
-import { generateId } from '../../helper/generate-id';
-import { UserStore } from '../../services/user-store';
-
-interface GroupData { name: string }
 
 @Component({
   selector: 'apezzi-group-create',
@@ -14,31 +12,23 @@ interface GroupData { name: string }
 })
 export class GroupCreate {
 
-  groupStore = inject(GroupStore);
-  userStore = inject(UserStore);
+  private groupStore = inject(GroupStore);
+  private router = inject(Router);
 
-  groupData = signal<GroupData>({ name: '', });
+  protected groupData = signal<NewGroup>({ name: '', users: [], createdBy: '' });
 
-  groupForm = form(this.groupData, (schemaPath) => {
+  protected groupForm = form(this.groupData, (schemaPath) => {
     debounce(schemaPath.name, 150);
     required(schemaPath.name)
   });
 
-  save() {
-    this.groupStore.add({
-      id: generateId(),
+  protected save() {
+    this.groupStore.save({
       name: this.groupData().name,
       users: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: this.userStore.first().id,
+      createdBy: '',
     });
-    this.reset();
-  }
-
-  reset() {
-    this.groupForm().reset();
-    this.groupData.set({ name: '', });
+    this.router.navigate(['/groups']);
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject, input } from '@angular/core';
 import { ExpenseStore } from '../../services/expense-store';
 import { formatNumber } from '../../helper/format-number';
-import { GroupId } from '../../models/group';
+import { EntityId } from '../../models/entity';
 
 @Component({
   selector: 'apezzi-group-expenses',
@@ -16,6 +16,6 @@ export class GroupExpenses {
 
   expenseStore = inject(ExpenseStore);
 
-  readonly groupId = input.required<GroupId>();
+  readonly groupId = input.required<EntityId>();
 
 }

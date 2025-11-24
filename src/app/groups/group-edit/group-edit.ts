@@ -1,10 +1,9 @@
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
-import { GroupId } from '../../models/group';
-import { GroupStore } from '../../services/group-store';
+import { Component, effect, inject, input, linkedSignal, resource, signal, Signal } from '@angular/core';
 import { debounce, Field, form, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
-
-interface GroupData { name: string }
+import { GroupStore } from '../../services/group-store';
+import { EntityId } from '../../models/entity';
+import { Group } from '../../models/group';
 
 @Component({
   selector: 'apezzi-group-edit',
@@ -14,33 +13,35 @@ interface GroupData { name: string }
 })
 export class GroupEdit {
 
-  readonly groupId = input.required<GroupId>();
+  readonly groupId = input.required<EntityId>();
 
   private groupStore = inject(GroupStore);
   private router = inject(Router);
 
-  groupData = linkedSignal<GroupData>(() => {
-    var group = this.groupStore.findById(this.groupId());
-    if (group) {
-      return { name: group.name };
-    } else {
-      this.router.navigate(['/']);
-      return { name: '' };
-    }
+  group = resource({
+    params: () => ({ id: this.groupId() }),
+    loader: ({ params }) => this.groupStore.findById(params.id),
   });
+
+  groupLoadEffect = effect(() => {
+      const g = this.group.value();
+      if (g) {
+        this.groupData.set({ ...g });
+      }
+    });
+
+  groupData = signal<Group>({ id: '', name: '', users: [], createdBy: '', createdAt: new Date(), updatedAt: new Date() });
 
   groupForm = form(this.groupData, (schemaPath) => {
     debounce(schemaPath.name, 150);
-    required(schemaPath.name)
+    required(schemaPath.name);
   });
 
   save() {
-    this.groupStore.findById(this.groupId()).name = this.groupData().name;
-    this.reset();
-  }
-
-  reset() {
-    this.groupForm().reset();
+    if (this.group.hasValue()) {
+      this.groupStore.save(this.groupData())
+        .finally(() => this.router.navigate(['/groups']));
+    }
   }
 
 }

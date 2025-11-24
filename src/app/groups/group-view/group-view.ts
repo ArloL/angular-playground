@@ -1,7 +1,7 @@
-import { Component, computed, effect, inject, input, linkedSignal, signal } from '@angular/core';
-import { Group, GroupId } from '../../models/group';
+import { Component, inject, input, resource } from '@angular/core';
+import { Entity, EntityId } from '../../models/entity';
 import { GroupStore } from '../../services/group-store';
-import { Router } from '@angular/router';
+import { Group } from '../../models/group';
 
 @Component({
   selector: 'apezzi-group-view',
@@ -11,19 +11,13 @@ import { Router } from '@angular/router';
 })
 export class GroupView {
 
-  readonly groupId = input.required<GroupId>();
+  readonly groupId = input.required<EntityId>();
 
   private groupStore = inject(GroupStore);
-  private router = inject(Router);
 
-  group = linkedSignal<Group | null>(() => {
-    var group = this.groupStore.findById(this.groupId());
-    if (group) {
-      return group;
-    } else {
-      this.router.navigate(['/']);
-      return null;
-    }
+  group = resource({
+    params: () => ({ id: this.groupId() }),
+    loader: ({ params }) => this.groupStore.findById(params.id),
   });
 
 }

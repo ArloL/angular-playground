@@ -1,12 +1,10 @@
-import { UserId } from "./user";
+import { Entity, EntityId } from "./entity";
 
-export type GroupId = string;
-
-export interface Group {
-  id: GroupId,
+export interface Group extends Entity {
   name: string,
-  users: UserId[],
-  createdAt: Date,
-  updatedAt: Date,
-  createdBy: UserId,
+  users: EntityId[],
+  createdBy: EntityId,
+}
+
+export interface NewGroup extends Omit<Group, keyof Entity> {
 }

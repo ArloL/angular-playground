@@ -1,8 +1,8 @@
-export type UserId = string;
+import { Entity } from "./entity";
 
-export interface User {
-  id: UserId,
+export interface User extends Entity {
   name: string,
-  createdAt: Date,
-  updatedAt: Date,
+}
+
+export interface NewUser extends Omit<User, keyof Entity> {
 }

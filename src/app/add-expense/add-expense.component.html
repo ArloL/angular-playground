@@ -1,7 +1,11 @@
 <div class="container">
-  <div class="field">
-    <button class="delete is-medium" aria-label="close" routerLink="/"></button>
-  </div>
+  @if (group.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (group.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (group.hasValue() && group.value()) {
+  <h1 class="title">Add new expense to {{ group.value().name }}</h1>
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">
@@ -48,7 +52,7 @@
     <div class="control">
       <label class="checkbox">
         <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
-        {{ userStore.findById(share.userId).name }}
+        {{ (userStore.findById(share.userId) | async)?.name }}
       </label>
     </div>
   </div>
@@ -63,5 +67,7 @@
       </a>
     </div>
   </div>
+  }
+  }
   }
 </div>

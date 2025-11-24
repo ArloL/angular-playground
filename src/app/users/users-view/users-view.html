@@ -1,0 +1,22 @@
+<div class="container">
+  <h1 class="title">Users</h1>
+  @if (users.hasValue()) {
+  @for (user of users.value(); track $index) {
+  <p>User {{ user.name }}</p>
+  <ul>
+    <li>
+      <a [routerLink]="['/user', user.id]">View user</a>
+    </li>
+    <li>
+      <a [routerLink]="['/user', user.id, 'edit']">Edit user</a>
+    </li>
+    <li>
+      <a [routerLink]="['/user', user.id, 'expenses']">View Expenses</a>
+    </li>
+    <li>
+      <a [routerLink]="['/user', user.id, 'expenses', 'add']">Add Expense</a>
+    </li>
+  </ul>
+  }
+  }
+</div>

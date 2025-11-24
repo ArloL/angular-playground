@@ -1,0 +1,22 @@
+<div class="container">
+  <h1 class="title">Groups</h1>
+  @if (groups.hasValue()) {
+  @for (group of groups.value(); track $index) {
+  <p>Group {{ group.name }}</p>
+  <ul>
+    <li>
+      <a [routerLink]="['/group', group.id]">View group</a>
+    </li>
+    <li>
+      <a [routerLink]="['/group', group.id, 'edit']">Edit group</a>
+    </li>
+    <li>
+      <a [routerLink]="['/group', group.id, 'expenses']">View Expenses</a>
+    </li>
+    <li>
+      <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
+    </li>
+  </ul>
+  }
+  }
+</div>

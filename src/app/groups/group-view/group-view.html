@@ -1,8 +1,17 @@
 <div class="container">
+  @if (group.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (group.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (group.hasValue() && group.value()) {
+  <h1 class="title">Group {{ group.value().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
-      <input class="input" type="text" [value]="group()?.name" readonly />
+      <input class="input" type="text" [value]="group.value().name" readonly />
     </div>
   </div>
+  }
+  }
 </div>

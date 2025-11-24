@@ -1,6 +1,5 @@
-import { GroupId } from "./group";
+import { EntityId } from "./entity";
 import { Share } from "./share";
-import { UserId } from "./user";
 
 export interface Expense {
   cost: number,
@@ -9,6 +8,6 @@ export interface Expense {
   category: string,
   date: Date,
   shares: Share[],
-  createdBy: UserId,
-  groupId: GroupId,
+  createdBy: EntityId,
+  groupId: EntityId,
 }

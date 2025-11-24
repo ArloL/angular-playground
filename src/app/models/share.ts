@@ -1,7 +1,7 @@
-import { UserId } from "./user";
+import { EntityId } from "./entity";
 
 export interface Share {
-  userId: UserId,
+  userId: EntityId,
   owed: number,
   included: boolean,
 }

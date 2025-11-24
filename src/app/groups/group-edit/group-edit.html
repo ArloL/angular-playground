@@ -1,21 +1,28 @@
 <div class="container">
+  @if (group.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (group.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (group.hasValue() && group.value()) {
+  <h1 class="title">Edit group {{ group.value().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
       <input autofocus class="input" type="text" placeholder="e.g. Paris 2025" [field]="groupForm.name"
-      [class.is-success]="groupForm.name().touched() && groupForm.name().valid()"
-      [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
+        [class.is-success]="groupForm.name().touched() && groupForm.name().valid()"
+        [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
     </div>
   </div>
   <div class="field is-grouped">
     <div class="control is-expanded">
       <button class="button is-fullwidth is-flex is-justify-content-space-between"
-      [class.is-success]="groupForm().valid()"
-      [disabled]="groupForm().invalid()"
-      (click)="save()">
+        [class.is-success]="groupForm().valid()" [disabled]="groupForm().invalid()" (click)="save()">
         ➕
-        <span class="is-flex-grow-1">Save changes to "{{ groupData().name }}"</span>
+        <span class="is-flex-grow-1">Save changes to {{ groupData().name }}</span>
       </button>
     </div>
   </div>
+  }
+  }
 </div>

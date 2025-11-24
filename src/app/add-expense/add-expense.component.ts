@@ -1,16 +1,16 @@
-import { Component, computed, effect, inject, input, Signal, signal, WritableSignal } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { AsyncPipe } from '@angular/common';
+import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
+import { Router } from "@angular/router";
 import { formatNumber } from '../helper/format-number';
+import { EntityId } from '../models/entity';
 import { Expense } from '../models/expense';
-import { GroupId } from '../models/group';
 import { Share } from '../models/share';
-import { UserId } from '../models/user';
 import { ExpenseStore } from '../services/expense-store';
 import { GroupStore } from '../services/group-store';
 import { UserStore } from '../services/user-store';
 
 interface ShareRaw {
-  userId: UserId,
+  userId: EntityId,
   owed: string,
   included: boolean,
 }
@@ -18,7 +18,7 @@ interface ShareRaw {
 @Component({
   selector: 'apezzi-add-expense',
   standalone: true,
-  imports: [RouterLink],
+  imports: [AsyncPipe],
   templateUrl: './add-expense.component.html',
   styleUrl: './add-expense.component.scss'
 })
@@ -27,10 +27,16 @@ export class AddExpenseComponent {
   expenseStore = inject(ExpenseStore);
   groupStore = inject(GroupStore);
   userStore = inject(UserStore);
+  router = inject(Router);
 
   formatNumber = formatNumber;
 
-  readonly groupId = input.required<GroupId>();
+  readonly groupId = input.required<EntityId>();
+
+  group = resource({
+    params: () => ({ id: this.groupId() }),
+    loader: ({ params }) => this.groupStore.findById(params.id),
+  });
 
   title = 'apezzi';
   categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
@@ -46,7 +52,7 @@ export class AddExpenseComponent {
       category: this.categories[this.selectedCategory()],
       date: new Date(),
       shares: [],
-      createdBy: this.userStore.first().id,
+      createdBy: '',
       groupId: this.groupId()
     };
   });
@@ -64,16 +70,19 @@ export class AddExpenseComponent {
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
   sharesRawInitialize = effect(() => {
-    const group = this.groupStore.findById(this.groupId());
-    this.sharesRaw.set(group.users
-      .map((userId) => {
-        return {
-          userId: userId,
-          owed: '',
-          included: true
-        };
-      }));
+    const g = this.group.value();
+    if (g) {
+      this.sharesRaw.set(g.users
+        .map((userId) => {
+          return {
+            userId: userId,
+            owed: '',
+            included: true
+          };
+        }));
+    }
   });
+
 
   shares: Signal<Share[]> = computed(() => {
     const numberOfIncludedShares = this.sharesRaw()

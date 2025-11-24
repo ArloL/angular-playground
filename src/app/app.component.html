@@ -1,33 +1,59 @@
-<nav>
-  <ul>
-    <li><a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a>
-    </li>
-    <li><a routerLink="/group/create" routerLinkActive="active" ariaCurrentWhenActive="page">Create group</a>
-    </li>
-    @for (group of groupStore.all(); track $index) {
-    <p>Group {{ group.name }}</p>
-    <ul>
-      <li>
-        <a [routerLink]="['/group', group.id]">View group</a>
-      </li>
-      <li>
-        <a [routerLink]="['/group', group.id, 'edit']">Edit group</a>
-      </li>
-      <li>
-        <a [routerLink]="['/group', group.id, 'expenses']">View Expenses</a>
-      </li>
-      <li>
-        <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
-      </li>
-    </ul>
-    }
-  </ul>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" routerLink="/" ariaCurrentWhenActive="page" routerLinkActive="active">
+        Home
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" routerLink="/groups" routerLinkActive="active" ariaCurrentWhenActive="page">Groups</a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item" routerLink="/group/create" routerLinkActive="active" ariaCurrentWhenActive="page">
+            Create group
+          </a>
+        </div>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item" routerLink="/user/create" routerLinkActive="active" ariaCurrentWhenActive="page">
+            Create user
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <router-outlet />
 
 <footer class="footer">
-  <div class="content">
+  <div class="content has-text-centered">
     <p>{{ buildTimestamp }}</p>
   </div>
 </footer>

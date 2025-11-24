@@ -13,4 +13,9 @@ describe('UserStore', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should save new user', async () => {
+    var newUser = await service.save({ name: 'Daniel' });
+    expect(newUser.id).toBeTruthy();
+  });
 });
