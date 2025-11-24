@@ -1,5 +1,5 @@
 <ul>
-  @for (expense of expenseStore.findByGroupId(this.groupId()); track $index) {
+  @for (expense of expenseStore.findByGroupId(this.groupId()) | async; track $index) {
   <li>{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</li>
   }
 </ul>

@@ -1,8 +1,8 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { generateId } from '../helper/generate-id';
+import { EntityId } from '../models/entity';
 import { NewUser, User } from '../models/user';
 import { Store } from './store';
-import { EntityId } from '../models/entity';
 
 @Injectable({
   providedIn: 'root',
