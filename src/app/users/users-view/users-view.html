@@ -6,17 +6,23 @@
   } @else {
   @if (users.hasValue() && users.value()) {
   <h1 class="title">Users</h1>
-  @for (user of users.value(); track $index) {
-  <p>User {{ user.name }}</p>
-  <ul>
-    <li>
-      <a [routerLink]="['/user', user.id]">View user</a>
-    </li>
-    <li>
-      <a [routerLink]="['/user', user.id, 'edit']">Edit user</a>
-    </li>
-  </ul>
-  }
+  <table class="table">
+    <tbody>
+      @for (user of users.value(); track $index) {
+      <tr>
+        <td>
+          <a [routerLink]="['/user', user.id]">{{ user.name }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['/user', user.id]">View</a>
+        </td>
+        <td>
+          <a [routerLink]="['/user', user.id, 'edit']">Edit</a>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
   }
   }
 </div>

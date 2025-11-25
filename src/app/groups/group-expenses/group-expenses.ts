@@ -1,13 +1,12 @@
-import { Component, computed, effect, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { ExpenseStore } from '../../services/expense-store';
 import { formatNumber } from '../../helper/format-number';
 import { EntityId } from '../../models/entity';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'apezzi-group-expenses',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './group-expenses.html',
   styleUrl: './group-expenses.scss'
 })
@@ -18,5 +17,10 @@ export class GroupExpenses {
   expenseStore = inject(ExpenseStore);
 
   readonly groupId = input.required<EntityId>();
+
+  expenses = resource({
+    params: () => ({ id: this.groupId() }),
+    loader: ({ params }) => this.expenseStore.findByGroupId(params.id),
+  });
 
 }

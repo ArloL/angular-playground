@@ -1,5 +1,17 @@
-<ul>
-  @for (expense of expenseStore.findByGroupId(this.groupId()) | async; track $index) {
+<div class="container">
+
+  @if (expenses.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (expenses.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (expenses.hasValue() && expenses.value()) {
+  @for (expense of expenses.value(); track $index) {
   <li>{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</li>
   }
+  }
+  }
+</div>
+<ul>
+
 </ul>
