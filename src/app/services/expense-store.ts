@@ -109,7 +109,7 @@ export class ExpenseStore implements Store<Expense> {
           .filter(expense => expense.groupId === groupId)
           .map((value) => {
             return { ...value };
-          });
+          }));
       }, this.timeout);
     });
   }

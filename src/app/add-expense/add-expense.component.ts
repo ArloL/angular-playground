@@ -3,7 +3,7 @@ import { Component, computed, effect, inject, input, resource, Signal, signal, W
 import { Router } from "@angular/router";
 import { formatNumber } from '../helper/format-number';
 import { EntityId } from '../models/entity';
-import { Expense } from '../models/expense';
+import { NewExpense } from '../models/expense';
 import { Share } from '../models/share';
 import { ExpenseStore } from '../services/expense-store';
 import { GroupStore } from '../services/group-store';
@@ -44,7 +44,7 @@ export class AddExpenseComponent {
 
   costRaw = signal('');
   descriptionRaw = signal('');
-  expense: Signal<Expense> = computed(() => {
+  expense: Signal<NewExpense> = computed(() => {
     return {
       cost: this.customParseFloat(this.costRaw()),
       description: '',
@@ -129,8 +129,8 @@ export class AddExpenseComponent {
   });
 
   save() {
-    this.expenseStore.add(this.expense());
-    this.reset();
+    this.expenseStore.save(this.expense())
+      .then(() => this.reset());
   }
 
   reset() {
