@@ -48,7 +48,7 @@ jobs:
       with:
         cache: npm
     - run: npm ci
-    - run: npm run test -- --watch=false --browsers=ChromeHeadless
+    - run: npm run test:ci
     - run: npm run build
     - name: Make sure build did not change anything
       run: git diff --exit-code
