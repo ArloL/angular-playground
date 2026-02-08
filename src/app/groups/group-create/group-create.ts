@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { Field, debounce, form, required } from '@angular/forms/signals';
+import { debounce, form, FormField, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { NewGroup } from '../../models/group';
 import { GroupStore } from '../../services/group-store';
 
 @Component({
   selector: 'apezzi-group-create',
-  imports: [Field],
+  imports: [FormField],
   templateUrl: './group-create.html',
   styleUrl: './group-create.scss',
 })

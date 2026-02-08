@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, linkedSignal, resource, signal, Signal } from '@angular/core';
-import { debounce, Field, form, required } from '@angular/forms/signals';
+import { debounce, FormField, form, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
 import { EntityId } from '../../models/entity';
@@ -7,7 +7,7 @@ import { Group } from '../../models/group';
 
 @Component({
   selector: 'apezzi-group-edit',
-  imports: [Field],
+  imports: [FormField],
   templateUrl: './group-edit.html',
   styleUrl: './group-edit.scss',
 })
