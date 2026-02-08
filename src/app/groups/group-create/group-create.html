@@ -3,7 +3,7 @@
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
-      <input autofocus class="input" type="text" placeholder="e.g. Paris 2025" [field]="groupForm.name"
+      <input autofocus class="input" type="text" placeholder="e.g. Paris 2025" [formField]="groupForm.name"
         [class.is-success]="groupForm.name().touched() && groupForm.name().valid()"
         [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
     </div>
