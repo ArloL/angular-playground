@@ -6,7 +6,6 @@ import { categories, currencies, Expense } from '../../models/expense';
 import { formatNumber } from '../../helper/format-number';
 import { Share } from '../../models/share';
 import { UserStore } from '../../services/user-store';
-import { AsyncPipe } from '@angular/common';
 
 interface ShareRaw {
   userId: EntityId,
@@ -16,7 +15,7 @@ interface ShareRaw {
 
 @Component({
   selector: 'apezzi-expense-edit',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './expense-edit.html',
   styleUrl: './expense-edit.scss',
 })
@@ -68,6 +67,20 @@ export class ExpenseEdit {
       description: this.descriptionRaw(),
       category: this.categories[this.selectedCategory()],
     };
+  });
+
+  userNames = resource({
+    params: () => {
+      const e = this.expense.value();
+      if (!e) return undefined;
+      return { userIds: e.shares.map(s => s.userId) };
+    },
+    loader: async ({ params }) => {
+      const map = new Map<EntityId, string>();
+      const users = await Promise.all(params.userIds.map(id => this.userStore.findById(id)));
+      users.forEach(u => map.set(u.id, u.name));
+      return map;
+    },
   });
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
