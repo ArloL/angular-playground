@@ -30,13 +30,13 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    var user1 = await this.userStore.save({ name: 'Christopher', friends: [] });
-    var user2 = await this.userStore.save({ name: 'Nathaniel', friends: [] });
-    var user3 = await this.userStore.save({ name: 'Samantha', friends: [] });
+    var user1 = await this.userStore.save({ name: 'Christopher', email: 'christopher@example.com', friends: [] });
+    var user2 = await this.userStore.save({ name: 'Nathaniel', email: 'nathaniel@example.com', friends: [] });
+    var user3 = await this.userStore.save({ name: 'Samantha', email: 'samantha@example.com', friends: [] });
 
-    user1 = await this.userStore.save({ ...user1, friends: [user2.id, user3.id] });
-    user2 = await this.userStore.save({ ...user2, friends: [user1.id, user3.id] });
-    user3 = await this.userStore.save({ ...user3, friends: [user1.id, user2.id] });
+    user1 = await this.userStore.save({ ...user1, friends: [user2.id] });
+    user2 = await this.userStore.save({ ...user2, friends: [user3.id] });
+    user3 = await this.userStore.save({ ...user3, friends: [user1.id] });
 
     var group1 = await this.groupStore.save({
       name: 'Bloemendaal',

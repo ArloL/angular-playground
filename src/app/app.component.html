@@ -38,7 +38,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         @if (currentUserService.user(); as user) {
-          <strong>{{ user.name }}</strong>
+          <a [routerLink]="['/user', user.id]">{{ user.name }}</a>
           <a class="button is-primary" (click)="this.currentUserService.logout()">
             <strong>Log out</strong>
           </a>
