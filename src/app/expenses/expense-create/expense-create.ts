@@ -127,7 +127,7 @@ export class ExpenseCreate {
 
   save() {
     this.expenseStore.save(this.expense())
-      .then(() => this.reset());
+      .then(() => this.router.navigate(['/group', this.groupId(), 'expenses']));
   }
 
   reset() {
