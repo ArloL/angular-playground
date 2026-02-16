@@ -47,38 +47,38 @@ export class ExpenseEdit {
   expenseLoadEffect = effect(() => {
       const g = this.expense.value();
       if (g) {
-        this.expenseData.set({ ...g });
         this.costRaw.set(formatNumber(g.cost));
         this.descriptionRaw.set(g.description);
         this.selectedCategory.set(this.categories.indexOf(g.category));
       }
     });
 
-  expenseData = signal<Expense>({
-    id: '',
-    cost: 0,
-    description: '',
-    currency: '',
-    category: '',
-    date: new Date(),
-    shares: [],
-    createdBy: '',
-    groupId: '',
-    createdAt: new Date(),
-    updatedAt: new Date()
+  expenseData: Signal<Expense> = computed(() => {
+    const loaded = this.expense.value();
+    if (!loaded) {
+      return {
+        id: '', cost: 0, description: '', currency: '', category: '',
+        date: new Date(), shares: [], createdBy: '', groupId: '',
+        createdAt: new Date(), updatedAt: new Date(),
+      };
+    }
+    return {
+      ...loaded,
+      cost: this.customParseFloat(this.costRaw()),
+      description: this.descriptionRaw(),
+      category: this.categories[this.selectedCategory()],
+    };
   });
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
-  sharesRawInitialize = effect(async () => {
+  sharesRawInitialize = effect(() => {
     const e = this.expense.value();
     if (e) {
-      // e.shares.map(share => share.userId);
-      // this.userStore.findById
       this.sharesRaw.set(e.shares
         .map((share => {
           return {
             userId: share.userId,
-            owed: formatNumber(share.owed),
+            owed: '',
             included: share.included,
           };
         })));

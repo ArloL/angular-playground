@@ -38,7 +38,7 @@ describe('ExpenseEdit', () => {
       cost: 6000,
       description: 'Dinner',
       currency: '€',
-      category: 'Food',
+      category: '🍽️',
       date: new Date(),
       shares: [
         { userId: user1.id, owed: 3000, included: true },
@@ -57,5 +57,26 @@ describe('ExpenseEdit', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should load expense data', () => {
+    expect(component.expenseData().cost).toBe(6000);
+    expect(component.expenseData().description).toBe('Dinner');
+    expect(component.expenseData().category).toBe('🍽️');
+  });
+
+  it('should reflect cost edits in expenseData', () => {
+    component.costRaw.set('80.00');
+    expect(component.expenseData().cost).toBe(8000);
+  });
+
+  it('should reflect description edits in expenseData', () => {
+    component.descriptionRaw.set('Lunch');
+    expect(component.expenseData().description).toBe('Lunch');
+  });
+
+  it('should reflect category edits in expenseData', () => {
+    component.selectedCategory.set(2);
+    expect(component.expenseData().category).toBe(component.categories[2]);
   });
 });
