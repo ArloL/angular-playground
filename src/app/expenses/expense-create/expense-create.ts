@@ -1,18 +1,14 @@
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from "@angular/router";
 import { formatNumber } from '../../helper/format-number';
+import { customParseFloat } from '../../helper/custom-parse-float';
+import { randomNumberBetweenZeroAndMax } from '../../helper/random-numbers';
 import { EntityId } from '../../models/entity';
 import { categories, currencies, NewExpense } from '../../models/expense';
-import { Share } from '../../models/share';
+import { Share, ShareRaw } from '../../models/share';
 import { ExpenseStore } from '../../services/expense-store';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
-
-interface ShareRaw {
-  userId: EntityId,
-  owed: string,
-  included: boolean,
-}
 
 @Component({
   selector: 'apezzi-expense-create',
@@ -45,7 +41,7 @@ export class ExpenseCreate {
   descriptionRaw = signal('');
   expense: Signal<NewExpense> = computed(() => {
     return {
-      cost: this.customParseFloat(this.costRaw()),
+      cost: customParseFloat(this.costRaw()),
       description: '',
       currency: '€',
       category: this.categories[this.selectedCategory()],
@@ -99,14 +95,14 @@ export class ExpenseCreate {
       .length;
     const amountManuallyDistributed = this.sharesRaw()
       .filter(s => s.included)
-      .map(s => this.customParseFloat(s.owed))
+      .map(s => customParseFloat(s.owed))
       .reduce((a, b) => a + b, 0);
     const amountToDistributeAutomatically = Math.max(0, this.expense().cost - amountManuallyDistributed);
     const numberOfComputedShares = this.sharesRaw()
       .filter(s => s.included)
       .filter(s => s.owed === '')
       .length;
-    var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedShares);
+    var whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(numberOfComputedShares);
     var automaticallyDistributedAmount: number;
     var remainderForExactDistribution: number;
     if (numberOfIncludedShares === 0) {
@@ -123,7 +119,7 @@ export class ExpenseCreate {
       const share: Share = {
         userId: shareRaw.userId,
         included: shareRaw.included,
-        owed: this.customParseFloat(shareRaw.owed),
+        owed: customParseFloat(shareRaw.owed),
       };
       if (shareRaw.included && shareRaw.owed === '') {
         if (whichIndexGetsTheRemainder === 0) {
@@ -146,27 +142,6 @@ export class ExpenseCreate {
     this.costRaw.set('');
     this.descriptionRaw.set('');
     this.selectedCategory.set(0);
-  }
-
-  randomNumberBetweenZeroAndMax(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  customParseFloat(str: string) {
-    if (str === '') {
-      return 0;
-    }
-    const commas = (str.match(/,/g) || []).length;
-    if (commas === 1) {
-      str = str.replace(',', '.');
-    } else if (commas > 1) {
-      str = str.replaceAll(',', '');
-    }
-    const dots = (str.match(/\./g) || []).length;
-    if (dots > 1) {
-      str = str.replace('.', '');
-    }
-    return Math.round(Number.parseFloat(str) * 100);
   }
 
   toggleIncluded(index: number) {

@@ -1,17 +1,13 @@
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
+import { customParseFloat } from '../../helper/custom-parse-float';
+import { randomNumberBetweenZeroAndMax } from '../../helper/random-numbers';
 import { ExpenseStore } from '../../services/expense-store';
 import { EntityId } from '../../models/entity';
 import { Router } from '@angular/router';
 import { categories, currencies, Expense } from '../../models/expense';
 import { formatNumber } from '../../helper/format-number';
-import { Share } from '../../models/share';
+import { Share, ShareRaw } from '../../models/share';
 import { UserStore } from '../../services/user-store';
-
-interface ShareRaw {
-  userId: EntityId,
-  owed: string,
-  included: boolean,
-}
 
 @Component({
   selector: 'apezzi-expense-edit',
@@ -63,7 +59,7 @@ export class ExpenseEdit {
     }
     return {
       ...loaded,
-      cost: this.customParseFloat(this.costRaw()),
+      cost: customParseFloat(this.costRaw()),
       description: this.descriptionRaw(),
       category: this.categories[this.selectedCategory()],
     };
@@ -104,14 +100,14 @@ export class ExpenseEdit {
       .length;
     const amountManuallyDistributed = this.sharesRaw()
       .filter(s => s.included)
-      .map(s => this.customParseFloat(s.owed))
+      .map(s => customParseFloat(s.owed))
       .reduce((a, b) => a + b, 0);
     const amountToDistributeAutomatically = Math.max(0, this.expenseData().cost - amountManuallyDistributed);
     const numberOfComputedShares = this.sharesRaw()
       .filter(s => s.included)
       .filter(s => s.owed === '')
       .length;
-    var whichIndexGetsTheRemainder = this.randomNumberBetweenZeroAndMax(numberOfComputedShares);
+    var whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(numberOfComputedShares);
     var automaticallyDistributedAmount: number;
     var remainderForExactDistribution: number;
     if (numberOfIncludedShares === 0) {
@@ -128,7 +124,7 @@ export class ExpenseEdit {
       const share: Share = {
         userId: shareRaw.userId,
         included: shareRaw.included,
-        owed: this.customParseFloat(shareRaw.owed),
+        owed: customParseFloat(shareRaw.owed),
       };
       if (shareRaw.included && shareRaw.owed === '') {
         if (whichIndexGetsTheRemainder === 0) {
