@@ -1,0 +1,73 @@
+<div class="container">
+  @if (expense.status() === 'loading') {
+  <p>Loading…</p>
+  } @else if (expense.status() === 'error') {
+  <p>Error loading group</p>
+  } @else {
+  @if (expense.hasValue() && expense.value()) {
+  <h1 class="title">Edit expense to {{ expense.value().description }}</h1>
+  <div class="field has-addons">
+    <div class="control">
+      <span class="select is-success">
+        <select>
+          @for (currency of currencies; track $index) {
+          <option [value]="$index">{{ currency }}</option>
+          }
+        </select>
+      </span>
+    </div>
+    <div class="control is-expanded">
+      <input autofocus class="input is-success" type="text" inputmode="decimal" [placeholder]="formatNumber(0)"
+        [value]="costRaw()" (input)="costRaw.set($event.target.value)">
+    </div>
+  </div>
+  <div class="buttons has-addons is-scrollable-x">
+    @for (category of categories; track $index) {
+    <button class="button" [class.is-success]="selectedCategory() === $index"
+      [class.is-selected]="selectedCategory() === $index" (click)="selectedCategory.set($index)">
+      {{ category }}
+    </button>
+    }
+    <button class="button">…</button>
+  </div>
+  <div class="field">
+    <div class="control">
+      <input class="input" type="text" placeholder="…" [value]="descriptionRaw()"
+        (input)="descriptionRaw.set($event.target.value)">
+    </div>
+  </div>
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <button class="button is-fullwidth is-flex is-justify-content-space-between" [disabled]="!saveEnabled()"
+        (click)="save()" [class.is-success]="saveEnabled()">
+        ➕
+        <span class="is-flex-grow-1">{{ categories[selectedCategory()] }} {{ formatNumber(this.expenseData().cost) }}
+          {{
+          currencies[selectedCurrency] }}</span>
+      </button>
+    </div>
+  </div>
+  @for (share of shares(); track $index) {
+  <div class="field">
+    <div class="control">
+      <label class="checkbox">
+        <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
+        {{ (userStore.findById(share.userId) | async)?.name }}
+      </label>
+    </div>
+  </div>
+  <div class="field has-addons">
+    <div class="control is-expanded">
+      <input class="input" type="text" inputmode="decimal" placeholder="{{ formatNumber(share.owed) }}"
+        [disabled]="!share.included" (input)="updateShareOwed($index, $event.target.value)">
+    </div>
+    <div class="control">
+      <a class="button is-static">
+        {{ currencies[selectedCurrency] }}
+      </a>
+    </div>
+  </div>
+  }
+  }
+  }
+</div>
