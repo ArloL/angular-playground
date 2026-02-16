@@ -1,16 +1,16 @@
 <div class="container">
-  @if (group.isLoading()) {
+  @if (resourceData.isLoading()) {
     <progress class="progress is-small is-primary" max="100"></progress>
-  } @else if (group.status() === 'error') {
-    @if (group.error()?.name === 'EntityNotFoundError') {
+  } @else if (resourceData.status() === 'error') {
+    @if (resourceData.error()?.name === 'EntityNotFoundError') {
       <div class="notification is-warning">
         <p>Group not found.</p>
       </div>
     } @else {
-      <p>Error: {{ group.error() }}</p>
-      <button class="button" (click)="group.reload()">Retry</button>
+      <p>Error: {{ resourceData.error() }}</p>
+      <button class="button" (click)="resourceData.reload()">Retry</button>
     }
-  } @else if (group.hasValue()) {
+  } @else if (resourceData.hasValue()) {
   <h1 class="title">Edit group {{ groupData().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
@@ -20,6 +20,17 @@
         [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
     </div>
   </div>
+  <label class="label">Members</label>
+  @for (user of selectableUsers(); track $index) {
+  <div class="field">
+    <div class="control">
+      <label class="checkbox">
+        <input type="checkbox" [checked]="user.selected" (change)="toggleUser($index)" />
+        {{ user.name }}
+      </label>
+    </div>
+  </div>
+  }
   @if (errorMessage()) {
   <div class="notification is-danger">
     <p>{{ errorMessage() }}</p>
