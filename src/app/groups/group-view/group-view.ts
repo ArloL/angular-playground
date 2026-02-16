@@ -1,11 +1,12 @@
 import { Component, inject, input, resource } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Entity, EntityId } from '../../models/entity';
 import { GroupStore } from '../../services/group-store';
 import { Group } from '../../models/group';
 
 @Component({
   selector: 'apezzi-group-view',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './group-view.html',
   styleUrl: './group-view.scss',
 })

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { provideRouter } from '@angular/router';
 import { GroupExpenses } from './group-expenses';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
@@ -11,6 +12,7 @@ describe('GroupOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GroupExpenses],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     var userStore = TestBed.inject(UserStore);

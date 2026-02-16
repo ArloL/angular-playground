@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { provideRouter } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
 import { GroupView } from './group-view';
 import { UserStore } from '../../services/user-store';
@@ -10,7 +11,8 @@ describe('GroupEdit', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupView]
+      imports: [GroupView],
+      providers: [provideRouter([])],
     })
       .compileComponents();
 
