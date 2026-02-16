@@ -133,9 +133,20 @@ export class ExpenseCreate {
     });
   });
 
-  save() {
-    this.expenseStore.save(this.expense())
-      .then(() => this.router.navigate(['/group', this.groupId(), 'expenses']));
+  errorMessage = signal('');
+  saving = signal(false);
+
+  async save() {
+    this.saving.set(true);
+    this.errorMessage.set('');
+    try {
+      await this.expenseStore.save(this.expense());
+      this.router.navigate(['/group', this.groupId(), 'expenses']);
+    } catch (e) {
+      this.errorMessage.set(String(e));
+    } finally {
+      this.saving.set(false);
+    }
   }
 
   reset() {

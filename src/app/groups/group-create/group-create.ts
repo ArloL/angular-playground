@@ -22,13 +22,24 @@ export class GroupCreate {
     required(schemaPath.name)
   });
 
-  protected save() {
-    this.groupStore.save({
-      name: this.groupData().name,
-      users: [],
-      createdBy: '',
-    });
-    this.router.navigate(['/groups']);
+  protected errorMessage = signal('');
+  protected saving = signal(false);
+
+  protected async save() {
+    this.saving.set(true);
+    this.errorMessage.set('');
+    try {
+      await this.groupStore.save({
+        name: this.groupData().name,
+        users: [],
+        createdBy: '',
+      });
+      this.router.navigate(['/groups']);
+    } catch (e) {
+      this.errorMessage.set(String(e));
+    } finally {
+      this.saving.set(false);
+    }
   }
 
 }

@@ -15,10 +15,16 @@
         [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()" />
     </div>
   </div>
+  @if (errorMessage()) {
+  <div class="notification is-danger">
+    <p>{{ errorMessage() }}</p>
+  </div>
+  }
   <div class="field is-grouped">
     <div class="control is-expanded">
       <button class="button is-fullwidth is-flex is-justify-content-space-between"
-        [class.is-success]="groupForm().valid()" [disabled]="groupForm().invalid()" (click)="save()">
+        [class.is-success]="groupForm().valid()" [class.is-loading]="saving()"
+        [disabled]="groupForm().invalid() || saving()" (click)="save()">
         ➕
         <span class="is-flex-grow-1">Save changes to {{ groupData().name }}</span>
       </button>
