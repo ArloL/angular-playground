@@ -24,6 +24,10 @@ export class AppComponent implements OnInit {
   networkSimulation = inject(NetworkSimulation);
 
   async ngOnInit() {
+    if (this.buildTimestamp !== "DEVELOPMENT") {
+      return;
+    }
+
     var user1 = await this.userStore.save({ name: 'Christopher' });
     var user2 = await this.userStore.save({ name: 'Nathaniel' });
     var user3 = await this.userStore.save({ name: 'Samantha' });
