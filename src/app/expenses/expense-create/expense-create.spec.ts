@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
 import { NetworkSimulation } from '../../services/network-simulation';
+import { CurrentUserService } from '../../services/current-user';
 
 describe('ExpenseCreate', () => {
   let component: ExpenseCreate;
@@ -26,6 +27,9 @@ describe('ExpenseCreate', () => {
     var user1 = await userStore.save({ name: 'Christopher' });
     var user2 = await userStore.save({ name: 'Nathaniel' });
     var user3 = await userStore.save({ name: 'Samantha' });
+
+    var currentUserService = TestBed.inject(CurrentUserService);
+    await currentUserService.login();
 
     var groupStore = TestBed.inject(GroupStore);
     var group = await groupStore.save({

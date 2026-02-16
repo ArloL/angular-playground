@@ -6,6 +6,7 @@ import { UserStore } from '../../services/user-store';
 import { GroupStore } from '../../services/group-store';
 import { ExpenseStore } from '../../services/expense-store';
 import { NetworkSimulation } from '../../services/network-simulation';
+import { CurrentUserService } from '../../services/current-user';
 
 describe('ExpenseEdit', () => {
   let component: ExpenseEdit;
@@ -26,6 +27,9 @@ describe('ExpenseEdit', () => {
     var userStore = TestBed.inject(UserStore);
     var user1 = await userStore.save({ name: 'Christopher' });
     var user2 = await userStore.save({ name: 'Nathaniel' });
+
+    var currentUserService = TestBed.inject(CurrentUserService);
+    await currentUserService.login();
 
     var groupStore = TestBed.inject(GroupStore);
     var group = await groupStore.save({
