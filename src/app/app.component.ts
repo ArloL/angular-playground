@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
+import { CurrentUserService } from './services/current-user';
 import { GroupStore } from './services/group-store';
 import { UserStore } from './services/user-store';
 import { ExpenseStore } from './services/expense-store';
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
   buildTimestamp = environment.buildTimestamp;
   menuOpen = signal(false);
 
+  currentUserService = inject(CurrentUserService);
   groupStore = inject(GroupStore);
   userStore = inject(UserStore);
   expenseStore = inject(ExpenseStore);
@@ -34,13 +36,18 @@ export class AppComponent implements OnInit {
 
     var group1 = await this.groupStore.save({
       name: 'Bloemendaal',
-      users: [user1.id, user2.id, user3.id],
+      users: [user1.id, user2.id],
       createdBy: user1.id,
     });
     var group2 = await this.groupStore.save({
       name: 'Paris',
-      users: [user1.id, user2.id],
+      users: [user2.id, user3.id],
       createdBy: user2.id,
+    });
+    var group3 = await this.groupStore.save({
+      name: 'Spain',
+      users: [user3.id, user1.id],
+      createdBy: user3.id,
     });
 
     await this.expenseStore.save({
@@ -75,12 +82,34 @@ export class AppComponent implements OnInit {
       date: new Date(),
       shares: [
         {
-          userId: user1.id,
+          userId: user2.id,
           owed: 300,
           included: true
         },
         {
-          userId: user2.id,
+          userId: user3.id,
+          owed: 300,
+          included: true
+        }
+      ]
+    });
+
+    await this.expenseStore.save({
+      cost: 900,
+      createdBy: user3.id,
+      groupId: group3.id,
+      description: 'Tapas',
+      currency: '€',
+      category: '🥐',
+      date: new Date(),
+      shares: [
+        {
+          userId: user3.id,
+          owed: 600,
+          included: true
+        },
+        {
+          userId: user1.id,
           owed: 300,
           included: true
         }

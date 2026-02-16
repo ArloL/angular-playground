@@ -1,11 +1,10 @@
 <div class="container">
-  @if (groups.status() === 'loading') {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  @if (groups.isLoading()) {
+    <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (groups.status() === 'error') {
-  <p>Error: {{ groups.error() }}</p>
-  <button class="button" (click)="groups.reload()">Retry</button>
-  } @else {
-  @if (groups.hasValue() && groups.value()) {
+    <p>Error: {{ groups.error() }}</p>
+    <button class="button" (click)="groups.reload()">Retry</button>
+  } @else if (groups.hasValue()) {
   <h1 class="title">Groups</h1>
   @for (group of groups.value(); track $index) {
   <p>Group {{ group.name }}</p>
@@ -23,7 +22,6 @@
       <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
     </li>
   </ul>
-  }
   }
   }
 </div>

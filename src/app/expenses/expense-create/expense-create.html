@@ -1,6 +1,6 @@
 <div class="container">
-  @if (resourceData.status() === 'loading') {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  @if (resourceData.isLoading()) {
+    <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (resourceData.status() === 'error') {
     @if (resourceData.error()?.name === 'EntityNotFoundError') {
       <div class="notification is-warning">
@@ -10,8 +10,7 @@
       <p>Error: {{ resourceData.error() }}</p>
       <button class="button" (click)="resourceData.reload()">Retry</button>
     }
-  } @else {
-  @if (resourceData.hasValue()) {
+  } @else if (resourceData.hasValue()) {
   <h1 class="title">Add new expense to {{ resourceData.value().group.name }}</h1>
   <div class="field has-addons">
     <div class="control">
@@ -80,7 +79,6 @@
       </a>
     </div>
   </div>
-  }
   }
   }
 </div>

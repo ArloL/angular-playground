@@ -37,14 +37,18 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary">
-            <strong>Sign up</strong>
+        @if (currentUserService.user(); as user) {
+          <strong>{{ user.name }}</strong>
+          <a class="button is-primary" (click)="this.currentUserService.logout()">
+            <strong>Log out</strong>
           </a>
-          <a class="button is-light">
-            Log in
-          </a>
-        </div>
+        } @else {
+          <div class="buttons">
+            <a class="button is-light" (click)="this.currentUserService.login()">
+              Log in
+            </a>
+          </div>
+        }
       </div>
     </div>
   </div>

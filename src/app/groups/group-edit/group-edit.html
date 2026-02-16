@@ -1,6 +1,6 @@
 <div class="container">
-  @if (group.status() === 'loading') {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  @if (group.isLoading()) {
+    <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (group.status() === 'error') {
     @if (group.error()?.name === 'EntityNotFoundError') {
       <div class="notification is-warning">
@@ -10,8 +10,7 @@
       <p>Error: {{ group.error() }}</p>
       <button class="button" (click)="group.reload()">Retry</button>
     }
-  } @else {
-  @if (group.hasValue() && group.value()) {
+  } @else if (group.hasValue()) {
   <h1 class="title">Edit group {{ groupData().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
@@ -36,6 +35,5 @@
       </button>
     </div>
   </div>
-  }
   }
 </div>

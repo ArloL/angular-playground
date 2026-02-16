@@ -1,5 +1,6 @@
 import { Component, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CurrentUserService } from '../../services/current-user';
 import { GroupStore } from '../../services/group-store';
 
 @Component({
@@ -10,10 +11,17 @@ import { GroupStore } from '../../services/group-store';
 })
 export class GroupsView {
 
+  currentUserService = inject(CurrentUserService);
   groupStore = inject(GroupStore);
 
   groups = resource({
-    loader: () => this.groupStore.findAll(),
+    loader: () => {
+      const currentUser = this.currentUserService.user();
+      if (!currentUser) {
+        return Promise.resolve([]);
+      }
+      return this.groupStore.findAllWhereUserIsPartOf(currentUser.id);
+    },
   });
 
 }
