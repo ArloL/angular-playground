@@ -25,8 +25,8 @@ describe('ExpenseEdit', () => {
     networkSimulation.use("none");
 
     var userStore = TestBed.inject(UserStore);
-    var user1 = await userStore.save({ name: 'Christopher' });
-    var user2 = await userStore.save({ name: 'Nathaniel' });
+    var user1 = await userStore.save({ name: 'Christopher', friends: [] });
+    var user2 = await userStore.save({ name: 'Nathaniel', friends: [] });
 
     var currentUserService = TestBed.inject(CurrentUserService);
     await currentUserService.login();
