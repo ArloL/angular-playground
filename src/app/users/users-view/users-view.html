@@ -2,7 +2,8 @@
   @if (users.status() === 'loading') {
   <p>Loading…</p>
   } @else if (users.status() === 'error') {
-  <p>Error loading user</p>
+  <p>Error: {{ users.error() }}</p>
+  <button class="button" (click)="users.reload()">Retry</button>
   } @else {
   @if (users.hasValue() && users.value()) {
   <h1 class="title">Users</h1>

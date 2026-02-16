@@ -3,7 +3,8 @@
   @if (expenses.status() === 'loading') {
   <p>Loading…</p>
   } @else if (expenses.status() === 'error') {
-  <p>Error loading group</p>
+  <p>Error: {{ expenses.error() }}</p>
+  <button class="button" (click)="expenses.reload()">Retry</button>
   } @else {
   @if (expenses.hasValue() && expenses.value()) {
   @for (expense of expenses.value(); track $index) {
