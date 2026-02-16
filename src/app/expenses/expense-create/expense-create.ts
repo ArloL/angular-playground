@@ -131,7 +131,7 @@ export class ExpenseCreate {
     this.saving.set(true);
     this.errorMessage.set('');
     try {
-      await this.expenseStore.save(this.expense());
+      await this.expenseStore.save({ ...this.expense(), shares: this.shares() });
       this.router.navigate(['/group', this.groupId(), 'expenses']);
     } catch (e) {
       this.errorMessage.set(String(e));
