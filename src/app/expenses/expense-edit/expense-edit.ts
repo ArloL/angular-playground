@@ -1,13 +1,13 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
-import { Router } from "@angular/router";
-import { formatNumber } from '../helper/format-number';
-import { EntityId } from '../models/entity';
-import { categories, currencies, NewExpense } from '../models/expense';
-import { Share } from '../models/share';
-import { ExpenseStore } from '../services/expense-store';
-import { GroupStore } from '../services/group-store';
-import { UserStore } from '../services/user-store';
+import { debounce, form, required } from '@angular/forms/signals';
+import { ExpenseStore } from '../../services/expense-store';
+import { EntityId } from '../../models/entity';
+import { Router } from '@angular/router';
+import { categories, currencies, Expense } from '../../models/expense';
+import { formatNumber } from '../../helper/format-number';
+import { Share } from '../../models/share';
+import { UserStore } from '../../services/user-store';
+import { AsyncPipe } from '@angular/common';
 
 interface ShareRaw {
   userId: EntityId,
@@ -16,68 +16,75 @@ interface ShareRaw {
 }
 
 @Component({
-  selector: 'apezzi-add-expense',
-  standalone: true,
+  selector: 'apezzi-expense-edit',
   imports: [AsyncPipe],
-  templateUrl: './add-expense.component.html',
-  styleUrl: './add-expense.component.scss'
+  templateUrl: './expense-edit.html',
+  styleUrl: './expense-edit.scss',
 })
-export class AddExpenseComponent {
+export class ExpenseEdit {
 
-  expenseStore = inject(ExpenseStore);
-  groupStore = inject(GroupStore);
+  readonly groupId = input.required<EntityId>();
+  readonly expenseId = input.required<EntityId>();
+
   userStore = inject(UserStore);
-  router = inject(Router);
+  private expenseStore = inject(ExpenseStore);
+  private router = inject(Router);
 
   formatNumber = formatNumber;
   currencies = currencies;
   categories = categories;
-
-  readonly groupId = input.required<EntityId>();
-
-  group = resource({
-    params: () => ({ id: this.groupId() }),
-    loader: ({ params }) => this.groupStore.findById(params.id),
-  });
 
   selectedCurrency = 0;
   selectedCategory = signal(0);
 
   costRaw = signal('');
   descriptionRaw = signal('');
-  expense: Signal<NewExpense> = computed(() => {
-    return {
-      cost: this.customParseFloat(this.costRaw()),
-      description: '',
-      currency: '€',
-      category: this.categories[this.selectedCategory()],
-      date: new Date(),
-      shares: [],
-      createdBy: '',
-      groupId: this.groupId()
-    };
+
+  expense = resource({
+    params: () => ({ id: this.expenseId() }),
+    loader: ({ params }) => this.expenseStore.findById(params.id),
   });
 
-  saveEnabled = computed(() => {
-    const sumOfShares = this.shares()
-      .filter(s => s.included)
-      .map(s => s.owed)
-      .reduce((a, b) => a + b, 0);
-    return this.expense().cost > 0 && sumOfShares === this.expense().cost;
+  expenseLoadEffect = effect(() => {
+      const g = this.expense.value();
+      if (g) {
+        this.expenseData.set({ ...g });
+      }
+    });
+
+  expenseData = signal<Expense>({
+    id: '',
+    cost: 0,
+    description: '',
+    currency: '',
+    category: '',
+    date: new Date(),
+    shares: [],
+    createdBy: '',
+    groupId: '',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  });
+
+  expenseForm = form(this.expenseData, (schemaPath) => {
+    debounce(schemaPath.description, 150);
+    required(schemaPath.description);
   });
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
-  sharesRawInitialize = effect(() => {
-    const g = this.group.value();
-    if (g) {
-      this.sharesRaw.set(g.users
-        .map((userId) => {
+  sharesRawInitialize = effect(async () => {
+    const e = this.expense.value();
+    if (e) {
+      // e.shares.map(share => share.userId);
+      // this.userStore.findById
+      this.sharesRaw.set(e.shares
+        .map((share => {
           return {
-            userId: userId,
-            owed: '',
-            included: true
+            userId: share.userId,
+            owed: formatNumber(share.owed),
+            included: share.included,
           };
-        }));
+        })));
     }
   });
 
@@ -125,36 +132,19 @@ export class AddExpenseComponent {
     });
   });
 
+  saveEnabled = computed(() => {
+    const sumOfShares = this.shares()
+      .filter(s => s.included)
+      .map(s => s.owed)
+      .reduce((a, b) => a + b, 0);
+    return this.expenseData().cost > 0 && sumOfShares === this.expenseData().cost;
+  });
+
   save() {
-    this.expenseStore.save(this.expense())
-      .then(() => this.reset());
-  }
-
-  reset() {
-    this.costRaw.set('');
-    this.descriptionRaw.set('');
-    this.selectedCategory.set(0);
-  }
-
-  randomNumberBetweenZeroAndMax(max: number) {
-    return Math.floor(Math.random() * max);
-  }
-
-  customParseFloat(str: string) {
-    if (str === '') {
-      return 0;
+    if (this.expense.hasValue()) {
+      this.expenseStore.save(this.expenseData())
+        .finally(() => this.router.navigate(['/group', this.groupId(), '/expenses']));
     }
-    const commas = (str.match(/,/g) || []).length;
-    if (commas === 1) {
-      str = str.replace(',', '.');
-    } else if (commas > 1) {
-      str = str.replaceAll(',', '');
-    }
-    const dots = (str.match(/\./g) || []).length;
-    if (dots > 1) {
-      str = str.replace('.', '');
-    }
-    return Math.round(Number.parseFloat(str) * 100);
   }
 
   toggleIncluded(index: number) {

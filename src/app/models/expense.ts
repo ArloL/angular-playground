@@ -14,3 +14,7 @@ export interface Expense extends Entity {
 
 export interface NewExpense extends Omit<Expense, keyof Entity> {
 }
+
+export const currencies = ['€'];
+
+export const categories = ['🍽️', '🥐', '🛒', '🚂', '🎟️', '🏨', '🧽', '🚗', '🧴', '🪑'];
