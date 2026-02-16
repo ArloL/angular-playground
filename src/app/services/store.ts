@@ -13,6 +13,7 @@ export class EntityNotFoundError extends Error {
 export interface Store<T extends Entity> {
   save(entity: Omit<T, keyof Entity> | T): Promise<T>;
   findById(primaryKey: EntityId): Promise<T>;
+  findByIds(primaryKeys: EntityId[]): Promise<T[]>;
   findAll(): Promise<T[]>;
   count(): Promise<number>;
   delete(entity: T): Promise<void>;
@@ -66,6 +67,17 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
       }
       throw new EntityNotFoundError(primaryKey);
     });
+  }
+
+  findByIds(primaryKeys: EntityId[]): Promise<T[]> {
+    return this.networkSimulation.wrap(() =>
+      primaryKeys.map(key => {
+        if (this.index.has(key)) {
+          return this.data[this.index.get(key)!];
+        }
+        throw new EntityNotFoundError(key);
+      })
+    );
   }
 
   findAll(): Promise<T[]> {
