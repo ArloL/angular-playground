@@ -1,6 +1,6 @@
 <div class="container">
   @if (group.status() === 'loading') {
-  <p>Loading…</p>
+  <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (group.status() === 'error') {
   <p>Error: {{ group.error() }}</p>
   <button class="button" (click)="group.reload()">Retry</button>
