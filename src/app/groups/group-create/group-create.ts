@@ -41,9 +41,10 @@ export class GroupCreate {
   private selectableUsersInit = effect(() => {
     const currentUser = this.currentUserService.user();
     if (this.usersResource.hasValue() && currentUser) {
+      const friendIds = new Set(currentUser.friends);
       this.selectableUsers.set(
         this.usersResource.value()!
-          .filter(u => u.id !== currentUser.id)
+          .filter(u => friendIds.has(u.id))
           .map(u => ({ userId: u.id, name: u.name, selected: false }))
       );
     }

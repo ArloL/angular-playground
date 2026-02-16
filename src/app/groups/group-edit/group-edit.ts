@@ -51,9 +51,10 @@ export class GroupEdit {
     if (this.resourceData.hasValue() && currentUser) {
       const { group, users } = this.resourceData.value()!;
       const groupUserIds = new Set(group.users);
+      const friendIds = new Set(currentUser.friends);
       this.selectableUsers.set(
         users
-          .filter(u => u.id !== currentUser.id)
+          .filter(u => friendIds.has(u.id))
           .map(u => ({ userId: u.id, name: u.name, selected: groupUserIds.has(u.id) }))
       );
     }
