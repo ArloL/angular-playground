@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, linkedSignal, resource, signal, Signal } from '@angular/core';
+import { Component, effect, inject, input, resource, signal, Signal } from '@angular/core';
 import { debounce, FormField, form, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
