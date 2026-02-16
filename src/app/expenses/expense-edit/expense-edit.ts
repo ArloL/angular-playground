@@ -34,23 +34,27 @@ export class ExpenseEdit {
   costRaw = signal('');
   descriptionRaw = signal('');
 
-  expense = resource({
+  resourceData = resource({
     params: () => ({ id: this.expenseId() }),
-    loader: ({ params }) => this.expenseStore.findById(params.id),
+    loader: async ({ params }) => {
+      const expense = await this.expenseStore.findById(params.id);
+      const users = await this.userStore.findByIds(expense.shares.map(s => s.userId));
+      const userNames = new Map<EntityId, string>();
+      users.forEach(u => userNames.set(u.id, u.name));
+      return { expense, userNames };
+    },
   });
 
   expenseLoadEffect = effect(() => {
-      const g = this.expense.value();
-      if (g) {
-        this.costRaw.set(formatNumber(g.cost));
-        this.descriptionRaw.set(g.description);
-        this.selectedCategory.set(this.categories.indexOf(g.category));
+      if (this.resourceData.hasValue()) {
+        this.costRaw.set(formatNumber(this.resourceData.value().expense.cost));
+        this.descriptionRaw.set(this.resourceData.value().expense.description);
+        this.selectedCategory.set(this.categories.indexOf(this.resourceData.value().expense.category));
       }
     });
 
   expenseData: Signal<Expense> = computed(() => {
-    const loaded = this.expense.value();
-    if (!loaded) {
+    if (!this.resourceData.hasValue()) {
       return {
         id: '', cost: 0, description: '', currency: '', category: '',
         date: new Date(), shares: [], createdBy: '', groupId: '',
@@ -58,32 +62,17 @@ export class ExpenseEdit {
       };
     }
     return {
-      ...loaded,
+      ...this.resourceData.value()?.expense,
       cost: customParseFloat(this.costRaw()),
       description: this.descriptionRaw(),
       category: this.categories[this.selectedCategory()],
     };
   });
 
-  userNames = resource({
-    params: () => {
-      const e = this.expense.value();
-      if (!e) return undefined;
-      return { userIds: e.shares.map(s => s.userId) };
-    },
-    loader: async ({ params }) => {
-      const users = await this.userStore.findByIds(params.userIds);
-      const map = new Map<EntityId, string>();
-      users.forEach(u => map.set(u.id, u.name));
-      return map;
-    },
-  });
-
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
   sharesRawInitialize = effect(() => {
-    const e = this.expense.value();
-    if (e) {
-      this.sharesRaw.set(e.shares
+    if (this.resourceData.hasValue()) {
+      this.sharesRaw.set(this.resourceData.value()?.expense.shares
         .map((share => {
           return {
             userId: share.userId,
@@ -150,7 +139,7 @@ export class ExpenseEdit {
   saving = signal(false);
 
   async save() {
-    if (this.expense.hasValue()) {
+    if (this.resourceData.hasValue()) {
       this.saving.set(true);
       this.errorMessage.set('');
       try {

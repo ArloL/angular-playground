@@ -24,9 +24,8 @@ export class GroupEdit {
   });
 
   groupLoadEffect = effect(() => {
-      const g = this.group.value();
-      if (g) {
-        this.groupData.set({ ...g });
+      if (this.group.hasValue()) {
+        this.groupData.set({ ...this.group.value() });
       }
     });
 

@@ -1,18 +1,18 @@
 <div class="container">
-  @if (expense.status() === 'loading') {
+  @if (resourceData.status() === 'loading') {
   <progress class="progress is-small is-primary" max="100"></progress>
-  } @else if (expense.status() === 'error') {
-    @if (expense.error()?.name === 'EntityNotFoundError') {
+  } @else if (resourceData.status() === 'error') {
+    @if (resourceData.error()?.name === 'EntityNotFoundError') {
       <div class="notification is-warning">
-        <p>Expense not found.</p>
+        <p>Entity not found.</p>
       </div>
     } @else {
-      <p>Error: {{ expense.error() }}</p>
-      <button class="button" (click)="expense.reload()">Retry</button>
+      <p>Error: {{ resourceData.error() }}</p>
+      <button class="button" (click)="resourceData.reload()">Retry</button>
     }
   } @else {
-  @if (expense.hasValue() && expense.value()) {
-  <h1 class="title">Edit expense {{ expense.value().description }}</h1>
+  @if (resourceData.hasValue()) {
+  <h1 class="title">Edit expense {{ resourceData.value().expense.description }}</h1>
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">
@@ -65,7 +65,7 @@
     <div class="control">
       <label class="checkbox">
         <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
-        {{ userNames.value()?.get(share.userId) }}
+        {{ resourceData.value().userNames.get(share.userId) }}
       </label>
     </div>
   </div>
