@@ -7,7 +7,7 @@
   } @else {
   @if (expenses.hasValue() && expenses.value()) {
   @for (expense of expenses.value(); track $index) {
-  <li>{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</li>
+  <li><a [routerLink]="['/group', groupId(), 'expenses', expense.id, 'edit']">{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</a></li>
   }
   }
   }

@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from "@angular/router";
-import { formatNumber } from '../helper/format-number';
-import { EntityId } from '../models/entity';
-import { categories, currencies, NewExpense } from '../models/expense';
-import { Share } from '../models/share';
-import { ExpenseStore } from '../services/expense-store';
-import { GroupStore } from '../services/group-store';
-import { UserStore } from '../services/user-store';
+import { formatNumber } from '../../helper/format-number';
+import { EntityId } from '../../models/entity';
+import { categories, currencies, NewExpense } from '../../models/expense';
+import { Share } from '../../models/share';
+import { ExpenseStore } from '../../services/expense-store';
+import { GroupStore } from '../../services/group-store';
+import { UserStore } from '../../services/user-store';
 
 interface ShareRaw {
   userId: EntityId,
@@ -16,13 +16,13 @@ interface ShareRaw {
 }
 
 @Component({
-  selector: 'apezzi-add-expense',
+  selector: 'apezzi-expense-create',
   standalone: true,
   imports: [AsyncPipe],
-  templateUrl: './add-expense.component.html',
-  styleUrl: './add-expense.component.scss'
+  templateUrl: './expense-create.html',
+  styleUrl: './expense-create.scss'
 })
-export class AddExpenseComponent {
+export class ExpenseCreate {
 
   expenseStore = inject(ExpenseStore);
   groupStore = inject(GroupStore);

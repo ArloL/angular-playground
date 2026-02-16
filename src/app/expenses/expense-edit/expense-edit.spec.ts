@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpenseEdit } from './expense-edit';
+import { provideRouter } from '@angular/router';
+import { UserStore } from '../../services/user-store';
+import { GroupStore } from '../../services/group-store';
+import { ExpenseStore } from '../../services/expense-store';
 
 describe('ExpenseEdit', () => {
   let component: ExpenseEdit;
@@ -8,11 +12,45 @@ describe('ExpenseEdit', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpenseEdit]
+      imports: [ExpenseEdit],
+      providers: [
+        provideRouter([]),
+      ]
     })
     .compileComponents();
 
+    var userStore = TestBed.inject(UserStore);
+    userStore.timeout = 0;
+    var user1 = await userStore.save({ name: 'Christopher' });
+    var user2 = await userStore.save({ name: 'Nathaniel' });
+
+    var groupStore = TestBed.inject(GroupStore);
+    groupStore.timeout = 0;
+    var group = await groupStore.save({
+      name: 'Bloemendaal',
+      users: [user1.id, user2.id],
+      createdBy: user1.id,
+    });
+
+    var expenseStore = TestBed.inject(ExpenseStore);
+    expenseStore.timeout = 0;
+    var expense = await expenseStore.save({
+      cost: 6000,
+      description: 'Dinner',
+      currency: '€',
+      category: 'Food',
+      date: new Date(),
+      shares: [
+        { userId: user1.id, owed: 3000, included: true },
+        { userId: user2.id, owed: 3000, included: true },
+      ],
+      createdBy: user1.id,
+      groupId: group.id,
+    });
+
     fixture = TestBed.createComponent(ExpenseEdit);
+    fixture.componentRef.setInput('groupId', group.id);
+    fixture.componentRef.setInput('expenseId', expense.id);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,5 +1,4 @@
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
-import { debounce, form, required } from '@angular/forms/signals';
 import { ExpenseStore } from '../../services/expense-store';
 import { EntityId } from '../../models/entity';
 import { Router } from '@angular/router';
@@ -49,6 +48,9 @@ export class ExpenseEdit {
       const g = this.expense.value();
       if (g) {
         this.expenseData.set({ ...g });
+        this.costRaw.set(formatNumber(g.cost));
+        this.descriptionRaw.set(g.description);
+        this.selectedCategory.set(this.categories.indexOf(g.category));
       }
     });
 
@@ -64,11 +66,6 @@ export class ExpenseEdit {
     groupId: '',
     createdAt: new Date(),
     updatedAt: new Date()
-  });
-
-  expenseForm = form(this.expenseData, (schemaPath) => {
-    debounce(schemaPath.description, 150);
-    required(schemaPath.description);
   });
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
@@ -96,7 +93,7 @@ export class ExpenseEdit {
       .filter(s => s.included)
       .map(s => this.customParseFloat(s.owed))
       .reduce((a, b) => a + b, 0);
-    const amountToDistributeAutomatically = Math.max(0, this.expense().cost - amountManuallyDistributed);
+    const amountToDistributeAutomatically = Math.max(0, this.expenseData().cost - amountManuallyDistributed);
     const numberOfComputedShares = this.sharesRaw()
       .filter(s => s.included)
       .filter(s => s.owed === '')
@@ -108,8 +105,8 @@ export class ExpenseEdit {
       automaticallyDistributedAmount = 0;
       remainderForExactDistribution = 0;
     } else if (numberOfIncludedShares === 1) {
-      automaticallyDistributedAmount = this.expense().cost;
-      remainderForExactDistribution = this.expense().cost;
+      automaticallyDistributedAmount = this.expenseData().cost;
+      remainderForExactDistribution = this.expenseData().cost;
     } else {
       automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedShares);
       remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedShares - 1));
@@ -142,9 +139,31 @@ export class ExpenseEdit {
 
   save() {
     if (this.expense.hasValue()) {
-      this.expenseStore.save(this.expenseData())
-        .finally(() => this.router.navigate(['/group', this.groupId(), '/expenses']));
+      const data = { ...this.expenseData(), shares: this.shares() };
+      this.expenseStore.save(data)
+        .finally(() => this.router.navigate(['/group', this.groupId(), 'expenses']));
     }
+  }
+
+  randomNumberBetweenZeroAndMax(max: number) {
+    return Math.floor(Math.random() * max);
+  }
+
+  customParseFloat(str: string) {
+    if (str === '') {
+      return 0;
+    }
+    const commas = (str.match(/,/g) || []).length;
+    if (commas === 1) {
+      str = str.replace(',', '.');
+    } else if (commas > 1) {
+      str = str.replaceAll(',', '');
+    }
+    const dots = (str.match(/\./g) || []).length;
+    if (dots > 1) {
+      str = str.replace('.', '');
+    }
+    return Math.round(Number.parseFloat(str) * 100);
   }
 
   toggleIncluded(index: number) {
