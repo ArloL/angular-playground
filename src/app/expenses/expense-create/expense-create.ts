@@ -6,6 +6,7 @@ import { randomNumberBetweenZeroAndMax } from '../../helper/random-numbers';
 import { EntityId } from '../../models/entity';
 import { categories, currencies, NewExpense } from '../../models/expense';
 import { Share, ShareRaw } from '../../models/share';
+import { CurrentUserService } from '../../services/current-user';
 import { ExpenseStore } from '../../services/expense-store';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
@@ -18,6 +19,7 @@ import { UserStore } from '../../services/user-store';
 })
 export class ExpenseCreate {
 
+  currentUserService = inject(CurrentUserService);
   expenseStore = inject(ExpenseStore);
   groupStore = inject(GroupStore);
   userStore = inject(UserStore);
@@ -53,7 +55,7 @@ export class ExpenseCreate {
       category: this.categories[this.selectedCategory()],
       date: new Date(),
       shares: [],
-      createdBy: '',
+      createdBy: this.currentUserService.user()!.id,
       groupId: this.groupId()
     };
   });

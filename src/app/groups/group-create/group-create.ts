@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { debounce, form, FormField, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { NewGroup } from '../../models/group';
+import { CurrentUserService } from '../../services/current-user';
 import { GroupStore } from '../../services/group-store';
 
 @Component({
@@ -12,6 +13,7 @@ import { GroupStore } from '../../services/group-store';
 })
 export class GroupCreate {
 
+  private currentUserService = inject(CurrentUserService);
   private groupStore = inject(GroupStore);
   private router = inject(Router);
 
@@ -29,10 +31,11 @@ export class GroupCreate {
     this.saving.set(true);
     this.errorMessage.set('');
     try {
+      const currentUserId = this.currentUserService.user()!.id;
       await this.groupStore.save({
         name: this.groupData().name,
-        users: [],
-        createdBy: '',
+        users: [currentUserId],
+        createdBy: currentUserId,
       });
       this.router.navigate(['/groups']);
     } catch (e) {

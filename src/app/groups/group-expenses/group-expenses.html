@@ -1,19 +1,13 @@
 <div class="container">
-
-  @if (expenses.status() === 'loading') {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  @if (expenses.isLoading()) {
+    <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (expenses.status() === 'error') {
-  <p>Error: {{ expenses.error() }}</p>
-  <button class="button" (click)="expenses.reload()">Retry</button>
-  } @else {
-  @if (expenses.hasValue() && expenses.value()) {
+    <p>Error: {{ expenses.error() }}</p>
+    <button class="button" (click)="expenses.reload()">Retry</button>
+  } @else if (expenses.hasValue()) {
   @for (expense of expenses.value(); track $index) {
   <li><a [routerLink]="['/group', groupId(), 'expenses', expense.id, 'edit']">{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</a></li>
-  }
   }
   <a class="button is-primary" [routerLink]="['/group', groupId(), 'expenses', 'add']">Add expense</a>
   }
 </div>
-<ul>
-
-</ul>
