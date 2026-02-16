@@ -5,7 +5,7 @@
   <p>Error loading group</p>
   } @else {
   @if (expense.hasValue() && expense.value()) {
-  <h1 class="title">Edit expense to {{ expense.value().description }}</h1>
+  <h1 class="title">Edit expense {{ expense.value().description }}</h1>
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">
