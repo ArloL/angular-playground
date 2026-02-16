@@ -2,8 +2,14 @@
   @if (expense.status() === 'loading') {
   <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (expense.status() === 'error') {
-  <p>Error: {{ expense.error() }}</p>
-  <button class="button" (click)="expense.reload()">Retry</button>
+    @if (expense.error()?.name === 'EntityNotFoundError') {
+      <div class="notification is-warning">
+        <p>Expense not found.</p>
+      </div>
+    } @else {
+      <p>Error: {{ expense.error() }}</p>
+      <button class="button" (click)="expense.reload()">Retry</button>
+    }
   } @else {
   @if (expense.hasValue() && expense.value()) {
   <h1 class="title">Edit expense {{ expense.value().description }}</h1>

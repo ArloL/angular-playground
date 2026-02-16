@@ -2,8 +2,14 @@
   @if (group.status() === 'loading') {
   <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (group.status() === 'error') {
-  <p>Error: {{ group.error() }}</p>
-  <button class="button" (click)="group.reload()">Retry</button>
+    @if (group.error()?.name === 'EntityNotFoundError') {
+      <div class="notification is-warning">
+        <p>Group not found.</p>
+      </div>
+    } @else {
+      <p>Error: {{ group.error() }}</p>
+      <button class="button" (click)="group.reload()">Retry</button>
+    }
   } @else {
   @if (group.hasValue() && group.value()) {
   <h1 class="title">Edit group {{ groupData().name }}</h1>

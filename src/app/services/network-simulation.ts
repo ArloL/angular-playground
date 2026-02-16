@@ -117,7 +117,11 @@ export class NetworkSimulation {
   wrap<R>(syncFn: () => R): Promise<R> {
     const cfg = this.profile;
     if (!cfg.enabled) {
-      return Promise.resolve(syncFn());
+      try {
+        return Promise.resolve(syncFn());
+      } catch (e) {
+        return Promise.reject(e);
+      }
     }
 
     const failure = this.randomFailure();
@@ -135,8 +139,14 @@ export class NetworkSimulation {
       });
     }
 
-    return new Promise<R>((resolve) => {
-      setTimeout(() => resolve(syncFn()), latency);
+    return new Promise<R>((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          resolve(syncFn());
+        } catch (e) {
+          reject(e);
+        }
+      }, latency);
     });
   }
 }

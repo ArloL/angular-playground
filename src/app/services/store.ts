@@ -3,6 +3,13 @@ import { generateId } from "../helper/generate-id";
 import { Entity, EntityId } from "../models/entity";
 import { NetworkSimulation } from "./network-simulation";
 
+export class EntityNotFoundError extends Error {
+  constructor(public readonly id: EntityId) {
+    super(`Entity not found: ${id}`);
+    this.name = 'EntityNotFoundError';
+  }
+}
+
 export interface Store<T extends Entity> {
   save(entity: Omit<T, keyof Entity> | T): Promise<T>;
   findById(primaryKey: EntityId): Promise<T>;
@@ -57,7 +64,7 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
       if (this.index.has(primaryKey)) {
         return this.data[this.index.get(primaryKey)!];
       }
-      throw new Error(`Entity not found: ${primaryKey}`);
+      throw new EntityNotFoundError(primaryKey);
     });
   }
 
@@ -76,7 +83,7 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
         this.reindex();
         return;
       }
-      throw new Error(`Entity not found: ${entity.id}`);
+      throw new EntityNotFoundError(entity.id);
     });
   }
 
