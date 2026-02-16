@@ -2,7 +2,8 @@
   @if (expense.status() === 'loading') {
   <p>Loading…</p>
   } @else if (expense.status() === 'error') {
-  <p>Error loading group</p>
+  <p>Error: {{ expense.error() }}</p>
+  <button class="button" (click)="expense.reload()">Retry</button>
   } @else {
   @if (expense.hasValue() && expense.value()) {
   <h1 class="title">Edit expense {{ expense.value().description }}</h1>

@@ -2,7 +2,8 @@
   @if (group.status() === 'loading') {
   <p>Loading…</p>
   } @else if (group.status() === 'error') {
-  <p>Error loading group</p>
+  <p>Error: {{ group.error() }}</p>
+  <button class="button" (click)="group.reload()">Retry</button>
   } @else {
   @if (group.hasValue() && group.value()) {
   <h1 class="title">Edit group {{ group.value().name }}</h1>
