@@ -4,6 +4,7 @@ import { ExpenseCreate } from './expense-create';
 import { provideRouter } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
+import { NetworkSimulation } from '../../services/network-simulation';
 
 describe('ExpenseCreate', () => {
   let component: ExpenseCreate;
@@ -18,14 +19,15 @@ describe('ExpenseCreate', () => {
     })
       .compileComponents();
 
+    var networkSimulation = TestBed.inject(NetworkSimulation);
+    networkSimulation.use("none");
+
     var userStore = TestBed.inject(UserStore);
-    userStore.timeout = 0;
     var user1 = await userStore.save({ name: 'Christopher' });
     var user2 = await userStore.save({ name: 'Nathaniel' });
     var user3 = await userStore.save({ name: 'Samantha' });
 
     var groupStore = TestBed.inject(GroupStore);
-    groupStore.timeout = 0;
     var group = await groupStore.save({
       name: 'Bloemendaal',
       users: [user1.id, user2.id, user3.id],

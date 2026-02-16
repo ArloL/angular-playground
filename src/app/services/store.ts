@@ -1,5 +1,7 @@
+import { inject } from "@angular/core";
 import { generateId } from "../helper/generate-id";
 import { Entity, EntityId } from "../models/entity";
+import { NetworkSimulation } from "./network-simulation";
 
 export interface Store<T extends Entity> {
   save(entity: Omit<T, keyof Entity> | T): Promise<T>;
@@ -16,7 +18,7 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
   protected data: T[] = [];
   protected index: Map<EntityId, number> = new Map();
 
-  timeout: number = 0;
+  readonly networkSimulation = inject(NetworkSimulation);
 
   private reindex(): void {
     this.index = new Map();
@@ -47,75 +49,45 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
   }
 
   save(entity: T | Omit<T, keyof Entity>): Promise<T> {
-    return new Promise<T>((resolve) => {
-      setTimeout(() => {
-        resolve(this.saveSync(entity));
-      }, this.timeout);
-    });
+    return this.networkSimulation.wrap(() => this.saveSync(entity));
   }
 
   findById(primaryKey: EntityId): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-      setTimeout(() => {
-        if (this.index.has(primaryKey)) {
-          resolve(this.data[this.index.get(primaryKey)!]);
-        } else {
-          reject();
-        }
-      }, this.timeout);
+    return this.networkSimulation.wrap(() => {
+      if (this.index.has(primaryKey)) {
+        return this.data[this.index.get(primaryKey)!];
+      }
+      throw new Error(`Entity not found: ${primaryKey}`);
     });
   }
 
   findAll(): Promise<T[]> {
-    return new Promise<T[]>((resolve) => {
-      setTimeout(() => {
-        resolve(this.data.map((value) => {
-          return { ...value };
-        }));
-      }, this.timeout);
-    });
+    return this.networkSimulation.wrap(() => this.data.map((value) => ({ ...value })));
   }
 
   count(): Promise<number> {
-    return new Promise<number>((resolve) => {
-      setTimeout(() => {
-        resolve(this.data.length);
-      }, this.timeout);
-    });
+    return this.networkSimulation.wrap(() => this.data.length);
   }
 
   delete(entity: T): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (this.index.has(entity.id)) {
-          this.data.splice(this.index.get(entity.id)!, 1);
-          this.reindex();
-          resolve();
-        } else {
-          reject();
-        }
-      }, this.timeout);
+    return this.networkSimulation.wrap(() => {
+      if (this.index.has(entity.id)) {
+        this.data.splice(this.index.get(entity.id)!, 1);
+        this.reindex();
+        return;
+      }
+      throw new Error(`Entity not found: ${entity.id}`);
     });
   }
 
   existsById(primaryKey: string): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      setTimeout(() => {
-        resolve(this.index.has(primaryKey));
-      }, this.timeout);
-    });
+    return this.networkSimulation.wrap(() => this.index.has(primaryKey));
   }
 
   findWithFilter(predicate: (value: T, index: number, array: T[]) => unknown): Promise<T[]> {
-    return new Promise<T[]>((resolve) => {
-      setTimeout(() => {
-        resolve(this.data
-          .filter(predicate)
-          .map((value: T) => {
-            return { ...value };
-          }));
-      }, this.timeout);
-    });
+    return this.networkSimulation.wrap(() =>
+      this.data.filter(predicate).map((value: T) => ({ ...value }))
+    );
   }
 
 }

@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { UserStore } from '../../services/user-store';
 import { GroupStore } from '../../services/group-store';
 import { ExpenseStore } from '../../services/expense-store';
+import { NetworkSimulation } from '../../services/network-simulation';
 
 describe('ExpenseEdit', () => {
   let component: ExpenseEdit;
@@ -17,15 +18,16 @@ describe('ExpenseEdit', () => {
         provideRouter([]),
       ]
     })
-    .compileComponents();
+      .compileComponents();
+
+    var networkSimulation = TestBed.inject(NetworkSimulation);
+    networkSimulation.use("none");
 
     var userStore = TestBed.inject(UserStore);
-    userStore.timeout = 0;
     var user1 = await userStore.save({ name: 'Christopher' });
     var user2 = await userStore.save({ name: 'Nathaniel' });
 
     var groupStore = TestBed.inject(GroupStore);
-    groupStore.timeout = 0;
     var group = await groupStore.save({
       name: 'Bloemendaal',
       users: [user1.id, user2.id],
@@ -33,7 +35,6 @@ describe('ExpenseEdit', () => {
     });
 
     var expenseStore = TestBed.inject(ExpenseStore);
-    expenseStore.timeout = 0;
     var expense = await expenseStore.save({
       cost: 6000,
       description: 'Dinner',

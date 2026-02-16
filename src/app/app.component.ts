@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { GroupStore } from './services/group-store';
 import { UserStore } from './services/user-store';
 import { ExpenseStore } from './services/expense-store';
+import { NetworkSimulation } from './services/network-simulation';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   groupStore = inject(GroupStore);
   userStore = inject(UserStore);
   expenseStore = inject(ExpenseStore);
+  networkSimulation = inject(NetworkSimulation);
 
   async ngOnInit() {
     var user1 = await this.userStore.save({ name: 'Christopher' });
@@ -80,6 +82,8 @@ export class AppComponent implements OnInit {
         }
       ]
     });
+
+    this.networkSimulation.use("3g");
   }
 
 }

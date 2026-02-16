@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
 import { Router } from "@angular/router";
 import { formatNumber } from '../../helper/format-number';
@@ -18,7 +17,6 @@ interface ShareRaw {
 @Component({
   selector: 'apezzi-expense-create',
   standalone: true,
-  imports: [AsyncPipe],
   templateUrl: './expense-create.html',
   styleUrl: './expense-create.scss'
 })
@@ -64,6 +62,20 @@ export class ExpenseCreate {
       .map(s => s.owed)
       .reduce((a, b) => a + b, 0);
     return this.expense().cost > 0 && sumOfShares === this.expense().cost;
+  });
+
+  userNames = resource({
+    params: () => {
+      const g = this.group.value();
+      if (!g) return undefined;
+      return { userIds: g.users };
+    },
+    loader: async ({ params }) => {
+      const map = new Map<EntityId, string>();
+      const users = await Promise.all(params.userIds.map(id => this.userStore.findById(id)));
+      users.forEach(u => map.set(u.id, u.name));
+      return map;
+    },
   });
 
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);

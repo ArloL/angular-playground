@@ -52,7 +52,7 @@
     <div class="control">
       <label class="checkbox">
         <input type="checkbox" [checked]="share.included" (change)="toggleIncluded($index)" />
-        {{ (userStore.findById(share.userId) | async)?.name }}
+        {{ userNames.value()?.get(share.userId) }}
       </label>
     </div>
   </div>
