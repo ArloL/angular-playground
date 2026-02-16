@@ -72,8 +72,8 @@ export class ExpenseEdit {
       return { userIds: e.shares.map(s => s.userId) };
     },
     loader: async ({ params }) => {
+      const users = await this.userStore.findByIds(params.userIds);
       const map = new Map<EntityId, string>();
-      const users = await Promise.all(params.userIds.map(id => this.userStore.findById(id)));
       users.forEach(u => map.set(u.id, u.name));
       return map;
     },
