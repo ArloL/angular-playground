@@ -12,6 +12,7 @@
       <input class="input" type="text" [value]="group.value().name" readonly />
     </div>
   </div>
+  <a class="button is-primary" [routerLink]="['/group', groupId(), 'expenses', 'add']">Add expense</a>
   }
   }
 </div>

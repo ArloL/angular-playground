@@ -10,6 +10,7 @@
   <li><a [routerLink]="['/group', groupId(), 'expenses', expense.id, 'edit']">{{ expense.category }} {{ formatNumber(expense.cost) }} {{ expense.currency }}</a></li>
   }
   }
+  <a class="button is-primary" [routerLink]="['/group', groupId(), 'expenses', 'add']">Add expense</a>
   }
 </div>
 <ul>
