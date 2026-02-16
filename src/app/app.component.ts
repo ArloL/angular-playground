@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
 import { GroupStore } from './services/group-store';
@@ -15,6 +15,7 @@ import { ExpenseStore } from './services/expense-store';
 export class AppComponent implements OnInit {
 
   buildTimestamp = environment.buildTimestamp;
+  menuOpen = signal(false);
 
   groupStore = inject(GroupStore);
   userStore = inject(UserStore);
