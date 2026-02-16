@@ -29,9 +29,15 @@ export class ExpenseCreate {
 
   readonly groupId = input.required<EntityId>();
 
-  group = resource({
+  resourceData = resource({
     params: () => ({ id: this.groupId() }),
-    loader: ({ params }) => this.groupStore.findById(params.id),
+    loader: async ({ params }) => {
+      const group = await this.groupStore.findById(params.id);
+      const users = await this.userStore.findByIds(group.users);
+      const userNames = new Map<EntityId, string>();
+      users.forEach(u => userNames.set(u.id, u.name));
+      return { group, userNames };
+    },
   });
 
   selectedCurrency = 0;
@@ -60,25 +66,10 @@ export class ExpenseCreate {
     return this.expense().cost > 0 && sumOfShares === this.expense().cost;
   });
 
-  userNames = resource({
-    params: () => {
-      const g = this.group.value();
-      if (!g) return undefined;
-      return { userIds: g.users };
-    },
-    loader: async ({ params }) => {
-      const users = await this.userStore.findByIds(params.userIds);
-      const map = new Map<EntityId, string>();
-      users.forEach(u => map.set(u.id, u.name));
-      return map;
-    },
-  });
-
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
   sharesRawInitialize = effect(() => {
-    const g = this.group.value();
-    if (g) {
-      this.sharesRaw.set(g.users
+    if (this.resourceData.hasValue()) {
+      this.sharesRaw.set(this.resourceData.value()?.group.users
         .map((userId) => {
           return {
             userId: userId,
