@@ -6,7 +6,7 @@
   <button class="button" (click)="group.reload()">Retry</button>
   } @else {
   @if (group.hasValue() && group.value()) {
-  <h1 class="title">Edit group {{ group.value().name }}</h1>
+  <h1 class="title">Edit group {{ groupData().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
