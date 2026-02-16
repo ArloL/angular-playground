@@ -1,4 +1,5 @@
-import { Component, computed, effect, inject, input, resource } from '@angular/core';
+import { Component, inject, input, resource } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ExpenseStore } from '../../services/expense-store';
 import { formatNumber } from '../../helper/format-number';
 import { EntityId } from '../../models/entity';
@@ -6,7 +7,7 @@ import { EntityId } from '../../models/entity';
 @Component({
   selector: 'apezzi-group-expenses',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './group-expenses.html',
   styleUrl: './group-expenses.scss'
 })

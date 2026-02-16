@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddExpenseComponent } from './add-expense.component';
+import { ExpenseCreate } from './expense-create';
 import { provideRouter } from '@angular/router';
-import { GroupStore } from '../services/group-store';
-import { UserStore } from '../services/user-store';
+import { GroupStore } from '../../services/group-store';
+import { UserStore } from '../../services/user-store';
 
-describe('AddExpenseComponent', () => {
-  let component: AddExpenseComponent;
-  let fixture: ComponentFixture<AddExpenseComponent>;
+describe('ExpenseCreate', () => {
+  let component: ExpenseCreate;
+  let fixture: ComponentFixture<ExpenseCreate>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddExpenseComponent],
+      imports: [ExpenseCreate],
       providers: [
         provideRouter([]),
       ]
@@ -32,7 +32,7 @@ describe('AddExpenseComponent', () => {
       createdBy: user1.id,
     });
 
-    fixture = TestBed.createComponent(AddExpenseComponent);
+    fixture = TestBed.createComponent(ExpenseCreate);
     fixture.componentRef.setInput('groupId', group.id);
     component = fixture.componentInstance;
     await fixture.whenStable();

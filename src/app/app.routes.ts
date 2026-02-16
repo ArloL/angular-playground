@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { AddExpenseComponent } from './add-expense/add-expense.component';
+import { ExpenseCreate } from './expenses/expense-create/expense-create';
+import { ExpenseEdit } from './expenses/expense-edit/expense-edit';
 import { GroupExpenses } from './groups/group-expenses/group-expenses';
 import { GroupCreate } from './groups/group-create/group-create';
 import { GroupEdit } from './groups/group-edit/group-edit';
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'group/:groupId', component: GroupView },
   { path: 'group/:groupId/edit', component: GroupEdit },
   { path: 'group/:groupId/expenses', component: GroupExpenses },
-  { path: 'group/:groupId/expenses/add', component: AddExpenseComponent },
+  { path: 'group/:groupId/expenses/add', component: ExpenseCreate },
+  { path: 'group/:groupId/expenses/:expenseId/edit', component: ExpenseEdit },
 ];
