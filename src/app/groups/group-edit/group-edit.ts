@@ -37,10 +37,21 @@ export class GroupEdit {
     required(schemaPath.name);
   });
 
-  save() {
+  errorMessage = signal('');
+  saving = signal(false);
+
+  async save() {
     if (this.group.hasValue()) {
-      this.groupStore.save(this.groupData())
-        .finally(() => this.router.navigate(['/groups']));
+      this.saving.set(true);
+      this.errorMessage.set('');
+      try {
+        await this.groupStore.save(this.groupData());
+        this.router.navigate(['/groups']);
+      } catch (e) {
+        this.errorMessage.set(String(e));
+      } finally {
+        this.saving.set(false);
+      }
     }
   }
 

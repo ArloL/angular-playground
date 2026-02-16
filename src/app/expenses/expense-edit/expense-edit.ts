@@ -146,11 +146,22 @@ export class ExpenseEdit {
     return this.expenseData().cost > 0 && sumOfShares === this.expenseData().cost;
   });
 
-  save() {
+  errorMessage = signal('');
+  saving = signal(false);
+
+  async save() {
     if (this.expense.hasValue()) {
-      const data = { ...this.expenseData(), shares: this.shares() };
-      this.expenseStore.save(data)
-        .finally(() => this.router.navigate(['/group', this.groupId(), 'expenses']));
+      this.saving.set(true);
+      this.errorMessage.set('');
+      try {
+        const data = { ...this.expenseData(), shares: this.shares() };
+        await this.expenseStore.save(data);
+        this.router.navigate(['/group', this.groupId(), 'expenses']);
+      } catch (e) {
+        this.errorMessage.set(String(e));
+      } finally {
+        this.saving.set(false);
+      }
     }
   }
 
