@@ -29,7 +29,7 @@ body {
 }
 
 .buttons.is-scrollable-x {
-  -webkit-overflow-scrolling: touch;
+  // -webkit-overflow-scrolling: touch;
   max-width: 100%;
   overflow: auto;
   padding-bottom: calc(var(--bulma-field-block-spacing) / 2);
