@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CurrentUserService } from './services/current-user';
@@ -25,11 +25,17 @@ export class AppComponent implements OnInit {
   userStore = inject(UserStore);
   expenseStore = inject(ExpenseStore);
   networkSimulation = inject(NetworkSimulation);
+  router = inject(Router);
   swUpdate = inject(SwUpdate);
   updateAvailable = signal(false);
   checkingForUpdate = signal(false);
   loggingIn = signal(false);
   loginError = signal('');
+
+  logout() {
+    this.currentUserService.logout();
+    this.router.navigate(['/']);
+  }
 
   async login() {
     this.loggingIn.set(true);
