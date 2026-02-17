@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CurrentUserService } from './services/current-user';
 import { GroupStore } from './services/group-store';
@@ -24,6 +25,25 @@ export class AppComponent implements OnInit {
   userStore = inject(UserStore);
   expenseStore = inject(ExpenseStore);
   networkSimulation = inject(NetworkSimulation);
+  swUpdate = inject(SwUpdate);
+  updateAvailable = signal(false);
+  checkingForUpdate = signal(false);
+
+  async checkForUpdate() {
+    if (!this.swUpdate.isEnabled) return;
+    this.checkingForUpdate.set(true);
+    try {
+      const updateFound = await this.swUpdate.checkForUpdate();
+      this.updateAvailable.set(updateFound);
+    } finally {
+      this.checkingForUpdate.set(false);
+    }
+  }
+
+  async applyUpdate() {
+    await this.swUpdate.activateUpdate();
+    document.location.reload();
+  }
 
   async ngOnInit() {
     var user1 = await this.userStore.save({ name: 'Christopher', email: 'christopher@example.com', friends: [] });
