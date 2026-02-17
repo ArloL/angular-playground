@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { GroupsView } from './groups-view';
 
@@ -8,7 +9,8 @@ describe('GroupsView', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupsView]
+      imports: [GroupsView],
+      providers: [provideRouter([])],
     })
     .compileComponents();
 
