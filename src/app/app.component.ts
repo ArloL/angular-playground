@@ -28,6 +28,16 @@ export class AppComponent implements OnInit {
   swUpdate = inject(SwUpdate);
   updateAvailable = signal(false);
   checkingForUpdate = signal(false);
+  loggingIn = signal(false);
+
+  async login() {
+    this.loggingIn.set(true);
+    try {
+      await this.currentUserService.login();
+    } finally {
+      this.loggingIn.set(false);
+    }
+  }
 
   async checkForUpdate() {
     if (!this.swUpdate.isEnabled) return;
