@@ -26,7 +26,7 @@
           </a>
         } @else {
           <div class="buttons">
-            <a class="button is-light" (click)="this.currentUserService.login()">
+            <a class="button is-light" [class.is-loading]="loggingIn()" (click)="login()">
               Log in
             </a>
           </div>
