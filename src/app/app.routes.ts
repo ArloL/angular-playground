@@ -14,7 +14,12 @@ const requireAuth = () => {
   return inject(CurrentUserService).user() ? true : inject(Router).createUrlTree(['/']);
 };
 
+const redirectToGroupsIfLoggedIn = () => {
+  return inject(CurrentUserService).user() ? inject(Router).createUrlTree(['/groups']) : true;
+};
+
 export const routes: Routes = [
+  { path: '', pathMatch: 'full', canActivate: [redirectToGroupsIfLoggedIn], children: [] },
   { path: 'account', component: UserView, canActivate: [requireAuth] },
   { path: 'groups', component: GroupsView, canActivate: [requireAuth] },
   { path: 'group/create', component: GroupCreate, canActivate: [requireAuth] },
