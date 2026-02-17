@@ -32,7 +32,6 @@ body {
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
   overflow: auto;
-  overflow-y: hidden;
   padding-bottom: calc(var(--bulma-field-block-spacing) / 2);
   margin-bottom: calc(var(--bulma-field-block-spacing) / 2);
   mask-image: linear-gradient(to right, black calc(100% - 6rem), transparent);
