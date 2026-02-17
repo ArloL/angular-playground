@@ -29,11 +29,15 @@ export class AppComponent implements OnInit {
   updateAvailable = signal(false);
   checkingForUpdate = signal(false);
   loggingIn = signal(false);
+  loginError = signal('');
 
   async login() {
     this.loggingIn.set(true);
+    this.loginError.set('');
     try {
       await this.currentUserService.login();
+    } catch {
+      this.loginError.set('Login failed. Please try again.');
     } finally {
       this.loggingIn.set(false);
     }
