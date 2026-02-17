@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
     this.loginError.set('');
     try {
       await this.currentUserService.login();
+      this.router.navigate(['/groups']);
     } catch {
       this.loginError.set('Login failed. Please try again.');
     } finally {
