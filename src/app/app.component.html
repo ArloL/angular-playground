@@ -14,31 +14,13 @@
         Home
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" routerLink="/groups" routerLinkActive="active" ariaCurrentWhenActive="page">Groups</a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item" routerLink="/group/create" routerLinkActive="active" ariaCurrentWhenActive="page">
-            Create group
-          </a>
-        </div>
-      </div>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" routerLink="/users" routerLinkActive="active" ariaCurrentWhenActive="page">Users</a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item" routerLink="/user/create" routerLinkActive="active" ariaCurrentWhenActive="page">
-            Create user
-          </a>
-        </div>
-      </div>
+      <a class="navbar-item" routerLink="/groups" routerLinkActive="active" ariaCurrentWhenActive="page">Groups</a>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         @if (currentUserService.user(); as user) {
-          <a [routerLink]="['/user', user.id]">{{ user.name }}</a>
+          <a routerLink="/account">{{ user.name }}</a>
           <a class="button is-primary" (click)="this.currentUserService.logout()">
             <strong>Log out</strong>
           </a>

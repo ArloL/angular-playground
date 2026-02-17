@@ -7,11 +7,9 @@ import { GroupEdit } from './groups/group-edit/group-edit';
 import { GroupView } from './groups/group-view/group-view';
 import { GroupsView } from './groups/groups-view/groups-view';
 import { UserView } from './users/user-view/user-view';
-import { UsersView } from './users/users-view/users-view';
 
 export const routes: Routes = [
-  { path: 'users', component: UsersView },
-  { path: 'user/:userId', component: UserView },
+  { path: 'account', component: UserView },
   { path: 'groups', component: GroupsView },
   { path: 'group/create', component: GroupCreate },
   { path: 'group/:groupId', component: GroupView },

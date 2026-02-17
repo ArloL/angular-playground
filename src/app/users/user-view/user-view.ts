@@ -1,8 +1,8 @@
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { EntityId } from '../../models/entity';
 import { UserStore } from '../../services/user-store';
+import { CurrentUserService } from '../../services/current-user';
 
 @Component({
   selector: 'apezzi-user-view',
@@ -12,16 +12,15 @@ import { UserStore } from '../../services/user-store';
 })
 export class UserView {
 
-  readonly userId = input.required<EntityId>();
-
   private userStore = inject(UserStore);
+  private currentUserServer = inject(CurrentUserService);
 
   friendEmail = signal('');
   addFriendError = signal('');
   addFriendSuccess = signal('');
 
   resourceData = resource({
-    params: () => ({ id: this.userId() }),
+    params: () => ({ id: this.currentUserServer.user()!.id }),
     loader: async ({ params }) => {
       var user = await this.userStore.findById(params.id);
       var friends = await this.userStore.findByIds(user.friends);
