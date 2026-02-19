@@ -8,9 +8,9 @@ import { UserStore } from './user-store';
 export class CurrentUserService {
   private userStore = inject(UserStore);
 
-  user = signal<User | undefined>(undefined);
+  public user = signal<User | undefined>(undefined);
 
-  async login() {
+  public async login() {
     const users = await this.userStore.findAll();
     if (users.length > 0) {
       const randomIndex = Math.floor(Math.random() * users.length);
@@ -18,7 +18,7 @@ export class CurrentUserService {
     }
   }
 
-  logout() {
+  public logout() {
     this.user.set(undefined);
   }
 }

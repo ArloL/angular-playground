@@ -11,13 +11,13 @@ import { EntityId } from '../../models/entity';
   styleUrl: './group-expenses.scss',
 })
 export class GroupExpenses {
-  formatNumber = formatNumber;
+  protected formatNumber = formatNumber;
 
-  expenseStore = inject(ExpenseStore);
+  private expenseStore = inject(ExpenseStore);
 
-  readonly groupId = input.required<EntityId>();
+  public readonly groupId = input.required<EntityId>();
 
-  expenses = resource({
+  protected expenses = resource({
     params: () => ({ id: this.groupId() }),
     loader: ({ params }) => this.expenseStore.findByGroupId(params.id),
   });

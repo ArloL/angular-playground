@@ -14,11 +14,11 @@ export class UserView {
   private userStore = inject(UserStore);
   private currentUserService = inject(CurrentUserService);
 
-  friendEmail = signal('');
-  addFriendError = signal('');
-  addFriendSuccess = signal('');
+  protected friendEmail = signal('');
+  protected addFriendError = signal('');
+  protected addFriendSuccess = signal('');
 
-  resourceData = resource({
+  protected resourceData = resource({
     params: () => ({ id: this.currentUserService.user()!.id }),
     loader: async ({ params }) => {
       const user = await this.userStore.findById(params.id);
@@ -27,7 +27,7 @@ export class UserView {
     },
   });
 
-  async addFriend() {
+  protected async addFriend() {
     this.addFriendError.set('');
     this.addFriendSuccess.set('');
 

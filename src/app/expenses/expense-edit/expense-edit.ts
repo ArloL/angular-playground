@@ -26,24 +26,24 @@ import { UserStore } from '../../services/user-store';
   styleUrl: './expense-edit.scss',
 })
 export class ExpenseEdit {
-  readonly groupId = input.required<EntityId>();
-  readonly expenseId = input.required<EntityId>();
+  public readonly groupId = input.required<EntityId>();
+  public readonly expenseId = input.required<EntityId>();
 
-  userStore = inject(UserStore);
+  private userStore = inject(UserStore);
   private expenseStore = inject(ExpenseStore);
   private router = inject(Router);
 
-  formatNumber = formatNumber;
-  currencies = currencies;
-  categories = categories;
+  protected formatNumber = formatNumber;
+  protected currencies = currencies;
+  public categories = categories;
 
-  selectedCurrency = 0;
-  selectedCategory = signal(0);
+  protected selectedCurrency = 0;
+  public selectedCategory = signal(0);
 
-  costRaw = signal('');
-  descriptionRaw = signal('');
+  public costRaw = signal('');
+  public descriptionRaw = signal('');
 
-  resourceData = resource({
+  protected resourceData = resource({
     params: () => ({ id: this.expenseId() }),
     loader: async ({ params }) => {
       const expense = await this.expenseStore.findById(params.id);
@@ -56,7 +56,7 @@ export class ExpenseEdit {
     },
   });
 
-  expenseLoadEffect = effect(() => {
+  private expenseLoadEffect = effect(() => {
     if (this.resourceData.hasValue()) {
       this.costRaw.set(formatNumber(this.resourceData.value().expense.cost));
       this.descriptionRaw.set(this.resourceData.value().expense.description);
@@ -66,7 +66,7 @@ export class ExpenseEdit {
     }
   });
 
-  expenseData: Signal<Expense> = computed(() => {
+  public expenseData: Signal<Expense> = computed(() => {
     if (!this.resourceData.hasValue()) {
       return {
         id: '',
@@ -90,8 +90,8 @@ export class ExpenseEdit {
     };
   });
 
-  sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
-  sharesRawInitialize = effect(() => {
+  protected sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
+  private sharesRawInitialize = effect(() => {
     if (this.resourceData.hasValue()) {
       this.sharesRaw.set(
         this.resourceData.value()?.expense.shares.map((share) => {
@@ -105,7 +105,7 @@ export class ExpenseEdit {
     }
   });
 
-  shares: Signal<Share[]> = computed(() => {
+  protected shares: Signal<Share[]> = computed(() => {
     const numberOfIncludedShares = this.sharesRaw().filter(
       (s) => s.included,
     ).length;
@@ -158,7 +158,7 @@ export class ExpenseEdit {
     });
   });
 
-  saveEnabled = computed(() => {
+  protected saveEnabled = computed(() => {
     const sumOfShares = this.shares()
       .filter((s) => s.included)
       .map((s) => s.owed)
@@ -168,10 +168,10 @@ export class ExpenseEdit {
     );
   });
 
-  errorMessage = signal('');
-  saving = signal(false);
+  protected errorMessage = signal('');
+  protected saving = signal(false);
 
-  async save() {
+  protected async save() {
     if (this.resourceData.hasValue()) {
       this.saving.set(true);
       this.errorMessage.set('');
@@ -187,14 +187,14 @@ export class ExpenseEdit {
     }
   }
 
-  toggleIncluded(index: number) {
+  protected toggleIncluded(index: number) {
     this.sharesRaw.update((value) => {
       value[index].included = !value[index].included;
       return [...value];
     });
   }
 
-  updateShareOwed(index: number, owed: string) {
+  protected updateShareOwed(index: number, owed: string) {
     this.sharesRaw.update((value) => {
       value[index].owed = owed;
       return [...value];

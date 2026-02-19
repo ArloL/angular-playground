@@ -7,7 +7,7 @@ import { EntityId } from '../models/entity';
   providedIn: 'root',
 })
 export class GroupStore extends AbstractStore<Group> {
-  findAllWhereUserIsPartOf(userId: EntityId): Promise<Group[]> {
+  public findAllWhereUserIsPartOf(userId: EntityId): Promise<Group[]> {
     return this.findWithFilter((group) => group.users.includes(userId));
   }
 }

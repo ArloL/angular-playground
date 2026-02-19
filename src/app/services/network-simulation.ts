@@ -92,13 +92,15 @@ export type NetworkSimulationType = keyof typeof NETWORK_SIMULATION_PROFILES;
   providedIn: 'root',
 })
 export class NetworkSimulation {
-  profile: NetworkSimulationProfile = { ...NETWORK_SIMULATION_PROFILES.none };
+  public profile: NetworkSimulationProfile = {
+    ...NETWORK_SIMULATION_PROFILES.none,
+  };
 
-  use(type: NetworkSimulationType): void {
+  public use(type: NetworkSimulationType): void {
     this.profile = { ...NETWORK_SIMULATION_PROFILES[type] };
   }
 
-  simulatedLatency(): number {
+  public simulatedLatency(): number {
     const cfg = this.profile;
     if (!cfg.enabled) return 0;
     const [min, max] =
@@ -108,7 +110,7 @@ export class NetworkSimulation {
     return min + Math.random() * (max - min);
   }
 
-  randomFailure(): NetworkError | null {
+  public randomFailure(): NetworkError | null {
     const cfg = this.profile;
     if (!cfg.enabled || Math.random() >= cfg.failureRate) return null;
 
@@ -121,7 +123,7 @@ export class NetworkSimulation {
     return new NetworkError(type, msg);
   }
 
-  wrap<R>(syncFn: () => R): Promise<R> {
+  public wrap<R>(syncFn: () => R): Promise<R> {
     const cfg = this.profile;
     if (!cfg.enabled) {
       try {
