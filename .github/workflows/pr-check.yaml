@@ -48,6 +48,7 @@ jobs:
       with:
         cache: npm
     - run: npm ci
+    - run: npm run format:check
     - run: npm run test:ci
     - run: npm run build
     - name: Make sure build did not change anything
