@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     document.location.reload();
   }
 
-  async ngOnInit() {
+  public async ngOnInit() {
     await this.testData.generate();
     this.networkSimulation.use('3g');
   }
