@@ -12,14 +12,14 @@ import { CurrentUserService } from '../../services/current-user';
 })
 export class UserView {
   private userStore = inject(UserStore);
-  private currentUserServer = inject(CurrentUserService);
+  private currentUserService = inject(CurrentUserService);
 
   friendEmail = signal('');
   addFriendError = signal('');
   addFriendSuccess = signal('');
 
   resourceData = resource({
-    params: () => ({ id: this.currentUserServer.user()!.id }),
+    params: () => ({ id: this.currentUserService.user()!.id }),
     loader: async ({ params }) => {
       const user = await this.userStore.findById(params.id);
       const friends = await this.userStore.findByIds(user.friends);
