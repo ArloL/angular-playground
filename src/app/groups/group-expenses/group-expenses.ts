@@ -6,7 +6,6 @@ import { EntityId } from '../../models/entity';
 
 @Component({
   selector: 'apezzi-group-expenses',
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './group-expenses.html',
   styleUrl: './group-expenses.scss',

@@ -23,7 +23,6 @@ import { UserStore } from '../../services/user-store';
 
 @Component({
   selector: 'apezzi-expense-create',
-  standalone: true,
   templateUrl: './expense-create.html',
   styleUrl: './expense-create.scss',
 })
