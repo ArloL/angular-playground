@@ -18,25 +18,25 @@ import { TestDataService } from './services/test-data';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  buildTimestamp = environment.buildTimestamp;
-  menuOpen = signal(false);
+  protected buildTimestamp = environment.buildTimestamp;
+  protected menuOpen = signal(false);
 
-  currentUserService = inject(CurrentUserService);
-  networkSimulation = inject(NetworkSimulation);
-  testData = inject(TestDataService);
-  router = inject(Router);
-  swUpdate = inject(SwUpdate);
-  updateAvailable = signal(false);
-  checkingForUpdate = signal(false);
-  loggingIn = signal(false);
-  loginError = signal('');
+  protected currentUserService = inject(CurrentUserService);
+  private networkSimulation = inject(NetworkSimulation);
+  private testData = inject(TestDataService);
+  private router = inject(Router);
+  protected swUpdate = inject(SwUpdate);
+  protected updateAvailable = signal(false);
+  protected checkingForUpdate = signal(false);
+  protected loggingIn = signal(false);
+  protected loginError = signal('');
 
-  logout() {
+  protected logout() {
     this.currentUserService.logout();
     this.router.navigate(['/']);
   }
 
-  async login() {
+  protected async login() {
     this.loggingIn.set(true);
     this.loginError.set('');
     try {
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async checkForUpdate() {
+  protected async checkForUpdate() {
     if (!this.swUpdate.isEnabled) return;
     this.checkingForUpdate.set(true);
     try {
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async applyUpdate() {
+  protected async applyUpdate() {
     await this.swUpdate.activateUpdate();
     document.location.reload();
   }

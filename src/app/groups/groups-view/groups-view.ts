@@ -10,10 +10,10 @@ import { GroupStore } from '../../services/group-store';
   styleUrl: './groups-view.scss',
 })
 export class GroupsView {
-  currentUserService = inject(CurrentUserService);
-  groupStore = inject(GroupStore);
+  private currentUserService = inject(CurrentUserService);
+  private groupStore = inject(GroupStore);
 
-  groups = resource({
+  protected groups = resource({
     loader: () => {
       const currentUser = this.currentUserService.user();
       if (!currentUser) {

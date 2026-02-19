@@ -23,14 +23,14 @@ import { SelectableUser } from '../../models/selectable-user';
   styleUrl: './group-edit.scss',
 })
 export class GroupEdit {
-  readonly groupId = input.required<EntityId>();
+  public readonly groupId = input.required<EntityId>();
 
   private currentUserService = inject(CurrentUserService);
   private groupStore = inject(GroupStore);
   private userStore = inject(UserStore);
   private router = inject(Router);
 
-  resourceData = resource({
+  protected resourceData = resource({
     params: () => ({ id: this.groupId() }),
     loader: async ({ params }) => {
       const [group, users] = await Promise.all([
@@ -41,13 +41,13 @@ export class GroupEdit {
     },
   });
 
-  groupLoadEffect = effect(() => {
+  private groupLoadEffect = effect(() => {
     if (this.resourceData.hasValue()) {
       this.groupData.set({ ...this.resourceData.value()!.group });
     }
   });
 
-  selectableUsers: WritableSignal<SelectableUser[]> = signal([]);
+  protected selectableUsers: WritableSignal<SelectableUser[]> = signal([]);
   private selectableUsersInit = effect(() => {
     const currentUser = this.currentUserService.user();
     if (this.resourceData.hasValue() && currentUser) {
@@ -66,7 +66,7 @@ export class GroupEdit {
     }
   });
 
-  groupData = signal<Group>({
+  protected groupData = signal<Group>({
     id: '',
     name: '',
     users: [],
@@ -75,22 +75,22 @@ export class GroupEdit {
     updatedAt: new Date(),
   });
 
-  groupForm = form(this.groupData, (schemaPath) => {
+  protected groupForm = form(this.groupData, (schemaPath) => {
     debounce(schemaPath.name, 150);
     required(schemaPath.name);
   });
 
-  errorMessage = signal('');
-  saving = signal(false);
+  protected errorMessage = signal('');
+  protected saving = signal(false);
 
-  toggleUser(index: number) {
+  protected toggleUser(index: number) {
     this.selectableUsers.update((value) => {
       value[index].selected = !value[index].selected;
       return [...value];
     });
   }
 
-  async save() {
+  protected async save() {
     if (this.resourceData.hasValue()) {
       this.saving.set(true);
       this.errorMessage.set('');

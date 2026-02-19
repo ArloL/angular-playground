@@ -27,7 +27,7 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
   protected data: T[] = [];
   protected index: Map<EntityId, number> = new Map();
 
-  readonly networkSimulation = inject(NetworkSimulation);
+  private readonly networkSimulation = inject(NetworkSimulation);
 
   private reindex(): void {
     this.index = new Map();
@@ -57,11 +57,11 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
     }
   }
 
-  save(entity: T | Omit<T, keyof Entity>): Promise<T> {
+  public save(entity: T | Omit<T, keyof Entity>): Promise<T> {
     return this.networkSimulation.wrap(() => this.saveSync(entity));
   }
 
-  findById(primaryKey: EntityId): Promise<T> {
+  public findById(primaryKey: EntityId): Promise<T> {
     return this.networkSimulation.wrap(() => {
       if (this.index.has(primaryKey)) {
         return this.data[this.index.get(primaryKey)!];
@@ -70,7 +70,7 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
     });
   }
 
-  findByIds(primaryKeys: EntityId[]): Promise<T[]> {
+  public findByIds(primaryKeys: EntityId[]): Promise<T[]> {
     return this.networkSimulation.wrap(() =>
       primaryKeys.map((key) => {
         if (this.index.has(key)) {
@@ -81,17 +81,17 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
     );
   }
 
-  findAll(): Promise<T[]> {
+  public findAll(): Promise<T[]> {
     return this.networkSimulation.wrap(() =>
       this.data.map((value) => ({ ...value })),
     );
   }
 
-  count(): Promise<number> {
+  public count(): Promise<number> {
     return this.networkSimulation.wrap(() => this.data.length);
   }
 
-  delete(entity: T): Promise<void> {
+  public delete(entity: T): Promise<void> {
     return this.networkSimulation.wrap(() => {
       if (this.index.has(entity.id)) {
         this.data.splice(this.index.get(entity.id)!, 1);
@@ -102,11 +102,11 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
     });
   }
 
-  existsById(primaryKey: string): Promise<boolean> {
+  public existsById(primaryKey: string): Promise<boolean> {
     return this.networkSimulation.wrap(() => this.index.has(primaryKey));
   }
 
-  findWithFilter(
+  public findWithFilter(
     predicate: (value: T, index: number, array: T[]) => unknown,
   ): Promise<T[]> {
     return this.networkSimulation.wrap(() =>

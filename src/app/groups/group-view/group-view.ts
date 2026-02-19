@@ -11,12 +11,12 @@ import { UserStore } from '../../services/user-store';
   styleUrl: './group-view.scss',
 })
 export class GroupView {
-  readonly groupId = input.required<EntityId>();
+  public readonly groupId = input.required<EntityId>();
 
   private groupStore = inject(GroupStore);
   private userStore = inject(UserStore);
 
-  resourceData = resource({
+  protected resourceData = resource({
     params: () => ({ id: this.groupId() }),
     loader: async ({ params }) => {
       const group = await this.groupStore.findById(params.id);
