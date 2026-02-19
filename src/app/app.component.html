@@ -10,7 +10,7 @@
 
   <div class="navbar-menu" [class.is-active]="menuOpen()">
     <div class="navbar-start">
-      <a class="navbar-item" routerLink="/" ariaCurrentWhenActive="page" routerLinkActive="active">
+      <a class="navbar-item" [routerLink]="['/']" [ariaCurrentWhenActive]="'page'" [routerLinkActive]="'active'">
         Home
       </a>
     </div>
@@ -18,7 +18,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         @if (currentUserService.user(); as user) {
-          <a routerLink="/account">{{ user.name }}</a>
+          <a [routerLink]="['/account']">{{ user.name }}</a>
           <a class="button is-primary" (click)="logout()">
             <strong>Log out</strong>
           </a>
