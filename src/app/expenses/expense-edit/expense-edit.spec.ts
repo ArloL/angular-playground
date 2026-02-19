@@ -18,33 +18,33 @@ describe('ExpenseEdit', () => {
       providers: [provideRouter([])],
     }).compileComponents();
 
-    var networkSimulation = TestBed.inject(NetworkSimulation);
+    const networkSimulation = TestBed.inject(NetworkSimulation);
     networkSimulation.use('none');
 
-    var userStore = TestBed.inject(UserStore);
-    var user1 = await userStore.save({
+    const userStore = TestBed.inject(UserStore);
+    const user1 = await userStore.save({
       name: 'Christopher',
       email: 'christopher@example.com',
       friends: [],
     });
-    var user2 = await userStore.save({
+    const user2 = await userStore.save({
       name: 'Nathaniel',
       email: 'nathaniel@example.com',
       friends: [],
     });
 
-    var currentUserService = TestBed.inject(CurrentUserService);
+    const currentUserService = TestBed.inject(CurrentUserService);
     await currentUserService.login();
 
-    var groupStore = TestBed.inject(GroupStore);
-    var group = await groupStore.save({
+    const groupStore = TestBed.inject(GroupStore);
+    const group = await groupStore.save({
       name: 'Bloemendaal',
       users: [user1.id, user2.id],
       createdBy: user1.id,
     });
 
-    var expenseStore = TestBed.inject(ExpenseStore);
-    var expense = await expenseStore.save({
+    const expenseStore = TestBed.inject(ExpenseStore);
+    const expense = await expenseStore.save({
       cost: 6000,
       description: 'Dinner',
       currency: '€',

@@ -15,7 +15,7 @@ describe('UserStore', () => {
   });
 
   it('should save new user', async () => {
-    var newUser = await service.save({
+    const newUser = await service.save({
       name: 'Daniel',
       email: 'daniel@example.com',
       friends: [],

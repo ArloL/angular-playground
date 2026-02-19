@@ -120,11 +120,11 @@ export class ExpenseEdit {
     const numberOfComputedShares = this.sharesRaw()
       .filter((s) => s.included)
       .filter((s) => s.owed === '').length;
-    var whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(
+    let whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(
       numberOfComputedShares,
     );
-    var automaticallyDistributedAmount: number;
-    var remainderForExactDistribution: number;
+    let automaticallyDistributedAmount: number;
+    let remainderForExactDistribution: number;
     if (numberOfIncludedShares === 0) {
       automaticallyDistributedAmount = 0;
       remainderForExactDistribution = 0;
