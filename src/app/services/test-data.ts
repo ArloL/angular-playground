@@ -197,7 +197,7 @@ export class TestDataService {
   private groupStore = inject(GroupStore);
   private expenseStore = inject(ExpenseStore);
 
-  async generate(): Promise<void> {
+  public async generate(): Promise<void> {
     let user1 = await this.userStore.save({
       name: 'Christopher',
       email: 'christopher@example.com',
