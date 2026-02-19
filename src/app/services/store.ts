@@ -38,20 +38,20 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
 
   private saveSync(entity: T | Omit<T, keyof Entity>): T {
     if ('id' in entity && this.index.has(entity.id)) {
-      var updatedUser = {
+      const updatedUser = {
         ...entity,
         updatedAt: new Date(),
       };
       this.data[this.index.get(entity.id)!] = updatedUser;
       return updatedUser;
     } else {
-      var newUser = {
+      const newUser = {
         ...entity,
         id: generateId(),
         createdAt: new Date(),
         updatedAt: new Date(),
       } as T;
-      var index = this.data.push(newUser);
+      const index = this.data.push(newUser);
       this.index.set(newUser.id, index - 1);
       return newUser;
     }

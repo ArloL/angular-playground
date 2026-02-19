@@ -21,8 +21,8 @@ export class UserView {
   resourceData = resource({
     params: () => ({ id: this.currentUserServer.user()!.id }),
     loader: async ({ params }) => {
-      var user = await this.userStore.findById(params.id);
-      var friends = await this.userStore.findByIds(user.friends);
+      const user = await this.userStore.findById(params.id);
+      const friends = await this.userStore.findByIds(user.friends);
       return { user, friends };
     },
   });
