@@ -17,12 +17,24 @@ describe('GroupOverviewComponent', () => {
     }).compileComponents();
 
     var networkSimulation = TestBed.inject(NetworkSimulation);
-    networkSimulation.use("none");
+    networkSimulation.use('none');
 
     var userStore = TestBed.inject(UserStore);
-    var user1 = await userStore.save({ name: 'Christopher', email: 'christopher@example.com', friends: [] });
-    var user2 = await userStore.save({ name: 'Nathaniel', email: 'nathaniel@example.com', friends: [] });
-    var user3 = await userStore.save({ name: 'Samantha', email: 'samantha@example.com', friends: [] });
+    var user1 = await userStore.save({
+      name: 'Christopher',
+      email: 'christopher@example.com',
+      friends: [],
+    });
+    var user2 = await userStore.save({
+      name: 'Nathaniel',
+      email: 'nathaniel@example.com',
+      friends: [],
+    });
+    var user3 = await userStore.save({
+      name: 'Samantha',
+      email: 'samantha@example.com',
+      friends: [],
+    });
 
     var groupStore = TestBed.inject(GroupStore);
     var group = await groupStore.save({

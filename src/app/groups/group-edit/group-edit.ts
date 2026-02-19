@@ -1,4 +1,12 @@
-import { Component, effect, inject, input, resource, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  resource,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { debounce, FormField, form, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { GroupStore } from '../../services/group-store';
@@ -20,7 +28,6 @@ interface SelectableUser {
   styleUrl: './group-edit.scss',
 })
 export class GroupEdit {
-
   readonly groupId = input.required<EntityId>();
 
   private currentUserService = inject(CurrentUserService);
@@ -54,13 +61,24 @@ export class GroupEdit {
       const friendIds = new Set(currentUser.friends);
       this.selectableUsers.set(
         users
-          .filter(u => friendIds.has(u.id))
-          .map(u => ({ userId: u.id, name: u.name, selected: groupUserIds.has(u.id) }))
+          .filter((u) => friendIds.has(u.id))
+          .map((u) => ({
+            userId: u.id,
+            name: u.name,
+            selected: groupUserIds.has(u.id),
+          })),
       );
     }
   });
 
-  groupData = signal<Group>({ id: '', name: '', users: [], createdBy: '', createdAt: new Date(), updatedAt: new Date() });
+  groupData = signal<Group>({
+    id: '',
+    name: '',
+    users: [],
+    createdBy: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
   groupForm = form(this.groupData, (schemaPath) => {
     debounce(schemaPath.name, 150);
@@ -71,7 +89,7 @@ export class GroupEdit {
   saving = signal(false);
 
   toggleUser(index: number) {
-    this.selectableUsers.update(value => {
+    this.selectableUsers.update((value) => {
       value[index].selected = !value[index].selected;
       return [...value];
     });
@@ -84,8 +102,8 @@ export class GroupEdit {
       try {
         const currentUserId = this.currentUserService.user()!.id;
         const selectedUserIds = this.selectableUsers()
-          .filter(u => u.selected)
-          .map(u => u.userId);
+          .filter((u) => u.selected)
+          .map((u) => u.userId);
         await this.groupStore.save({
           ...this.groupData(),
           users: [currentUserId, ...selectedUserIds],
@@ -98,5 +116,4 @@ export class GroupEdit {
       }
     }
   }
-
 }

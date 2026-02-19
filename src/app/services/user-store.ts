@@ -6,10 +6,8 @@ import { AbstractStore } from './store';
   providedIn: 'root',
 })
 export class UserStore extends AbstractStore<User> {
-
   async findByEmail(email: string): Promise<User | undefined> {
-    const results = await this.findWithFilter(user => user.email === email);
+    const results = await this.findWithFilter((user) => user.email === email);
     return results[0];
   }
-
 }

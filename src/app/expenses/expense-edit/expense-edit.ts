@@ -1,4 +1,14 @@
-import { Component, computed, effect, inject, input, resource, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  resource,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { customParseFloat } from '../../helper/custom-parse-float';
 import { randomNumberBetweenZeroAndMax } from '../../helper/random-numbers';
 import { ExpenseStore } from '../../services/expense-store';
@@ -16,7 +26,6 @@ import { UserStore } from '../../services/user-store';
   styleUrl: './expense-edit.scss',
 })
 export class ExpenseEdit {
-
   readonly groupId = input.required<EntityId>();
   readonly expenseId = input.required<EntityId>();
 
@@ -38,27 +47,39 @@ export class ExpenseEdit {
     params: () => ({ id: this.expenseId() }),
     loader: async ({ params }) => {
       const expense = await this.expenseStore.findById(params.id);
-      const users = await this.userStore.findByIds(expense.shares.map(s => s.userId));
+      const users = await this.userStore.findByIds(
+        expense.shares.map((s) => s.userId),
+      );
       const userNames = new Map<EntityId, string>();
-      users.forEach(u => userNames.set(u.id, u.name));
+      users.forEach((u) => userNames.set(u.id, u.name));
       return { expense, userNames };
     },
   });
 
   expenseLoadEffect = effect(() => {
-      if (this.resourceData.hasValue()) {
-        this.costRaw.set(formatNumber(this.resourceData.value().expense.cost));
-        this.descriptionRaw.set(this.resourceData.value().expense.description);
-        this.selectedCategory.set(this.categories.indexOf(this.resourceData.value().expense.category));
-      }
-    });
+    if (this.resourceData.hasValue()) {
+      this.costRaw.set(formatNumber(this.resourceData.value().expense.cost));
+      this.descriptionRaw.set(this.resourceData.value().expense.description);
+      this.selectedCategory.set(
+        this.categories.indexOf(this.resourceData.value().expense.category),
+      );
+    }
+  });
 
   expenseData: Signal<Expense> = computed(() => {
     if (!this.resourceData.hasValue()) {
       return {
-        id: '', cost: 0, description: '', currency: '', category: '',
-        date: new Date(), shares: [], createdBy: '', groupId: '',
-        createdAt: new Date(), updatedAt: new Date(),
+        id: '',
+        cost: 0,
+        description: '',
+        currency: '',
+        category: '',
+        date: new Date(),
+        shares: [],
+        createdBy: '',
+        groupId: '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
     }
     return {
@@ -72,31 +93,36 @@ export class ExpenseEdit {
   sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
   sharesRawInitialize = effect(() => {
     if (this.resourceData.hasValue()) {
-      this.sharesRaw.set(this.resourceData.value()?.expense.shares
-        .map((share => {
+      this.sharesRaw.set(
+        this.resourceData.value()?.expense.shares.map((share) => {
           return {
             userId: share.userId,
             owed: '',
             included: share.included,
           };
-        })));
+        }),
+      );
     }
   });
 
   shares: Signal<Share[]> = computed(() => {
-    const numberOfIncludedShares = this.sharesRaw()
-      .filter(s => s.included)
-      .length;
+    const numberOfIncludedShares = this.sharesRaw().filter(
+      (s) => s.included,
+    ).length;
     const amountManuallyDistributed = this.sharesRaw()
-      .filter(s => s.included)
-      .map(s => customParseFloat(s.owed))
+      .filter((s) => s.included)
+      .map((s) => customParseFloat(s.owed))
       .reduce((a, b) => a + b, 0);
-    const amountToDistributeAutomatically = Math.max(0, this.expenseData().cost - amountManuallyDistributed);
+    const amountToDistributeAutomatically = Math.max(
+      0,
+      this.expenseData().cost - amountManuallyDistributed,
+    );
     const numberOfComputedShares = this.sharesRaw()
-      .filter(s => s.included)
-      .filter(s => s.owed === '')
-      .length;
-    var whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(numberOfComputedShares);
+      .filter((s) => s.included)
+      .filter((s) => s.owed === '').length;
+    var whichIndexGetsTheRemainder = randomNumberBetweenZeroAndMax(
+      numberOfComputedShares,
+    );
     var automaticallyDistributedAmount: number;
     var remainderForExactDistribution: number;
     if (numberOfIncludedShares === 0) {
@@ -106,8 +132,13 @@ export class ExpenseEdit {
       automaticallyDistributedAmount = this.expenseData().cost;
       remainderForExactDistribution = this.expenseData().cost;
     } else {
-      automaticallyDistributedAmount = Math.round(amountToDistributeAutomatically / numberOfComputedShares);
-      remainderForExactDistribution = Math.round(amountToDistributeAutomatically - automaticallyDistributedAmount * (numberOfComputedShares - 1));
+      automaticallyDistributedAmount = Math.round(
+        amountToDistributeAutomatically / numberOfComputedShares,
+      );
+      remainderForExactDistribution = Math.round(
+        amountToDistributeAutomatically -
+          automaticallyDistributedAmount * (numberOfComputedShares - 1),
+      );
     }
     return this.sharesRaw().map((shareRaw) => {
       const share: Share = {
@@ -129,10 +160,12 @@ export class ExpenseEdit {
 
   saveEnabled = computed(() => {
     const sumOfShares = this.shares()
-      .filter(s => s.included)
-      .map(s => s.owed)
+      .filter((s) => s.included)
+      .map((s) => s.owed)
       .reduce((a, b) => a + b, 0);
-    return this.expenseData().cost > 0 && sumOfShares === this.expenseData().cost;
+    return (
+      this.expenseData().cost > 0 && sumOfShares === this.expenseData().cost
+    );
   });
 
   errorMessage = signal('');
@@ -176,17 +209,16 @@ export class ExpenseEdit {
   }
 
   toggleIncluded(index: number) {
-    this.sharesRaw.update(value => {
+    this.sharesRaw.update((value) => {
       value[index].included = !value[index].included;
       return [...value];
     });
   }
 
   updateShareOwed(index: number, owed: string) {
-    this.sharesRaw.update(value => {
+    this.sharesRaw.update((value) => {
       value[index].owed = owed;
       return [...value];
     });
   }
-
 }

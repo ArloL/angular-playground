@@ -11,8 +11,7 @@ describe('GroupsView', () => {
     await TestBed.configureTestingModule({
       imports: [GroupsView],
       providers: [provideRouter([])],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GroupsView);
     component = fixture.componentInstance;

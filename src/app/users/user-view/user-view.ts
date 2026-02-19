@@ -11,7 +11,6 @@ import { CurrentUserService } from '../../services/current-user';
   styleUrl: './user-view.scss',
 })
 export class UserView {
-
   private userStore = inject(UserStore);
   private currentUserServer = inject(CurrentUserService);
 
@@ -26,7 +25,7 @@ export class UserView {
       var friends = await this.userStore.findByIds(user.friends);
       return { user, friends };
     },
-  })
+  });
 
   async addFriend() {
     this.addFriendError.set('');
@@ -57,12 +56,17 @@ export class UserView {
       return;
     }
 
-    await this.userStore.save({ ...user, friends: [...user.friends, friend.id] });
-    await this.userStore.save({ ...friend, friends: [...friend.friends, user.id] });
+    await this.userStore.save({
+      ...user,
+      friends: [...user.friends, friend.id],
+    });
+    await this.userStore.save({
+      ...friend,
+      friends: [...friend.friends, user.id],
+    });
 
     this.friendEmail.set('');
     this.addFriendSuccess.set(`${friend.name} added as a friend!`);
     this.resourceData.reload();
   }
-
 }

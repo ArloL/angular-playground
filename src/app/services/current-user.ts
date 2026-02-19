@@ -6,7 +6,6 @@ import { UserStore } from './user-store';
   providedIn: 'root',
 })
 export class CurrentUserService {
-
   private userStore = inject(UserStore);
 
   user = signal<User | undefined>(undefined);
@@ -22,5 +21,4 @@ export class CurrentUserService {
   logout() {
     this.user.set(undefined);
   }
-
 }

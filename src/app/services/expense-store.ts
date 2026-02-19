@@ -7,9 +7,7 @@ import { AbstractStore } from './store';
   providedIn: 'root',
 })
 export class ExpenseStore extends AbstractStore<Expense> {
-
   findByGroupId(groupId: EntityId): Promise<Expense[]> {
-    return this.findWithFilter(expense => expense.groupId === groupId);
+    return this.findWithFilter((expense) => expense.groupId === groupId);
   }
-
 }

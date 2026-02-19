@@ -1,4 +1,11 @@
-import { Component, effect, inject, resource, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  resource,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { debounce, form, FormField, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { EntityId } from '../../models/entity';
@@ -20,17 +27,20 @@ interface SelectableUser {
   styleUrl: './group-create.scss',
 })
 export class GroupCreate {
-
   private currentUserService = inject(CurrentUserService);
   private groupStore = inject(GroupStore);
   private userStore = inject(UserStore);
   private router = inject(Router);
 
-  protected groupData = signal<NewGroup>({ name: '', users: [], createdBy: '' });
+  protected groupData = signal<NewGroup>({
+    name: '',
+    users: [],
+    createdBy: '',
+  });
 
   protected groupForm = form(this.groupData, (schemaPath) => {
     debounce(schemaPath.name, 150);
-    required(schemaPath.name)
+    required(schemaPath.name);
   });
 
   protected usersResource = resource({
@@ -43,9 +53,10 @@ export class GroupCreate {
     if (this.usersResource.hasValue() && currentUser) {
       const friendIds = new Set(currentUser.friends);
       this.selectableUsers.set(
-        this.usersResource.value()!
-          .filter(u => friendIds.has(u.id))
-          .map(u => ({ userId: u.id, name: u.name, selected: false }))
+        this.usersResource
+          .value()!
+          .filter((u) => friendIds.has(u.id))
+          .map((u) => ({ userId: u.id, name: u.name, selected: false })),
       );
     }
   });
@@ -54,7 +65,7 @@ export class GroupCreate {
   protected saving = signal(false);
 
   protected toggleUser(index: number) {
-    this.selectableUsers.update(value => {
+    this.selectableUsers.update((value) => {
       value[index].selected = !value[index].selected;
       return [...value];
     });
@@ -66,8 +77,8 @@ export class GroupCreate {
     try {
       const currentUserId = this.currentUserService.user()!.id;
       const selectedUserIds = this.selectableUsers()
-        .filter(u => u.selected)
-        .map(u => u.userId);
+        .filter((u) => u.selected)
+        .map((u) => u.userId);
       await this.groupStore.save({
         name: this.groupData().name,
         users: [currentUserId, ...selectedUserIds],
@@ -80,5 +91,4 @@ export class GroupCreate {
       this.saving.set(false);
     }
   }
-
 }

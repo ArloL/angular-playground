@@ -1,8 +1,7 @@
 import { generateId } from './generate-id';
 
 describe('GenerateId', () => {
-  beforeEach(async () => {
-  });
+  beforeEach(async () => {});
 
   it('should create', () => {
     expect(generateId).toBeTruthy();

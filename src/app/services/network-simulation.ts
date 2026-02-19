@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 
-export type NetworkErrorType = 'timeout' | 'connection-reset' | 'dns-failure' | 'offline';
+export type NetworkErrorType =
+  | 'timeout'
+  | 'connection-reset'
+  | 'dns-failure'
+  | 'offline';
 
 export class NetworkError extends Error {
-  constructor(public readonly type: NetworkErrorType, message: string) {
+  constructor(
+    public readonly type: NetworkErrorType,
+    message: string,
+  ) {
     super(message);
     this.name = 'NetworkError';
   }
@@ -67,7 +74,7 @@ export const NETWORK_SIMULATION_PROFILES = {
     timeoutChance: 0.5,
     timeoutDuration: 15000,
   },
-  'offline': {
+  offline: {
     label: 'Offline',
     enabled: true,
     latencyRange: [0, 0],
@@ -85,7 +92,6 @@ export type NetworkSimulationType = keyof typeof NETWORK_SIMULATION_PROFILES;
   providedIn: 'root',
 })
 export class NetworkSimulation {
-
   profile: NetworkSimulationProfile = { ...NETWORK_SIMULATION_PROFILES.none };
 
   use(type: NetworkSimulationType): void {
@@ -95,9 +101,10 @@ export class NetworkSimulation {
   simulatedLatency(): number {
     const cfg = this.profile;
     if (!cfg.enabled) return 0;
-    const [min, max] = Math.random() < cfg.spikeChance
-      ? cfg.spikeLatencyRange
-      : cfg.latencyRange;
+    const [min, max] =
+      Math.random() < cfg.spikeChance
+        ? cfg.spikeLatencyRange
+        : cfg.latencyRange;
     return min + Math.random() * (max - min);
   }
 
@@ -131,7 +138,10 @@ export class NetworkSimulation {
       const isTimeout = Math.random() < cfg.timeoutChance;
       const delay = isTimeout ? cfg.timeoutDuration : latency;
       const error = isTimeout
-        ? new NetworkError('timeout', `Request timed out after ${cfg.timeoutDuration}ms`)
+        ? new NetworkError(
+            'timeout',
+            `Request timed out after ${cfg.timeoutDuration}ms`,
+          )
         : failure;
 
       return new Promise<R>((_, reject) => {

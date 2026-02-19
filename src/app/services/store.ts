@@ -1,7 +1,7 @@
-import { inject } from "@angular/core";
-import { generateId } from "../helper/generate-id";
-import { Entity, EntityId } from "../models/entity";
-import { NetworkSimulation } from "./network-simulation";
+import { inject } from '@angular/core';
+import { generateId } from '../helper/generate-id';
+import { Entity, EntityId } from '../models/entity';
+import { NetworkSimulation } from './network-simulation';
 
 export class EntityNotFoundError extends Error {
   constructor(public readonly id: EntityId) {
@@ -18,11 +18,12 @@ export interface Store<T extends Entity> {
   count(): Promise<number>;
   delete(entity: T): Promise<void>;
   existsById(primaryKey: EntityId): Promise<boolean>;
-  findWithFilter(predicate: (value: T, index: number, array: T[]) => unknown): Promise<T[]>;
+  findWithFilter(
+    predicate: (value: T, index: number, array: T[]) => unknown,
+  ): Promise<T[]>;
 }
 
 export abstract class AbstractStore<T extends Entity> implements Store<T> {
-
   protected data: T[] = [];
   protected index: Map<EntityId, number> = new Map();
 
@@ -71,17 +72,19 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
 
   findByIds(primaryKeys: EntityId[]): Promise<T[]> {
     return this.networkSimulation.wrap(() =>
-      primaryKeys.map(key => {
+      primaryKeys.map((key) => {
         if (this.index.has(key)) {
           return this.data[this.index.get(key)!];
         }
         throw new EntityNotFoundError(key);
-      })
+      }),
     );
   }
 
   findAll(): Promise<T[]> {
-    return this.networkSimulation.wrap(() => this.data.map((value) => ({ ...value })));
+    return this.networkSimulation.wrap(() =>
+      this.data.map((value) => ({ ...value })),
+    );
   }
 
   count(): Promise<number> {
@@ -103,10 +106,11 @@ export abstract class AbstractStore<T extends Entity> implements Store<T> {
     return this.networkSimulation.wrap(() => this.index.has(primaryKey));
   }
 
-  findWithFilter(predicate: (value: T, index: number, array: T[]) => unknown): Promise<T[]> {
+  findWithFilter(
+    predicate: (value: T, index: number, array: T[]) => unknown,
+  ): Promise<T[]> {
     return this.networkSimulation.wrap(() =>
-      this.data.filter(predicate).map((value: T) => ({ ...value }))
+      this.data.filter(predicate).map((value: T) => ({ ...value })),
     );
   }
-
 }
