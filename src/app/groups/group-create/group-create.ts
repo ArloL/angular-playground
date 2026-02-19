@@ -8,17 +8,11 @@ import {
 } from '@angular/core';
 import { debounce, form, FormField, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
-import { EntityId } from '../../models/entity';
 import { NewGroup } from '../../models/group';
+import { SelectableUser } from '../../models/selectable-user';
 import { CurrentUserService } from '../../services/current-user';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
-
-interface SelectableUser {
-  userId: EntityId;
-  name: string;
-  selected: boolean;
-}
 
 @Component({
   selector: 'apezzi-group-create',

@@ -14,12 +14,7 @@ import { UserStore } from '../../services/user-store';
 import { CurrentUserService } from '../../services/current-user';
 import { EntityId } from '../../models/entity';
 import { Group } from '../../models/group';
-
-interface SelectableUser {
-  userId: EntityId;
-  name: string;
-  selected: boolean;
-}
+import { SelectableUser } from '../../models/selectable-user';
 
 @Component({
   selector: 'apezzi-group-edit',
