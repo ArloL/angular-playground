@@ -8,23 +8,23 @@
       </div>
     } @else {
       <p>Error: {{ resourceData.error() }}</p>
-      <button class="button" (click)="resourceData.reload()">Retry</button>
+      <button class="button" title="Retry" (click)="resourceData.reload()">🔄</button>
     }
   } @else if (resourceData.hasValue()) {
-  <h1 class="title">Group {{ resourceData.value().group.name }}</h1>
+  <h1 class="title">{{ resourceData.value().group.name }}</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
       <input class="input" type="text" [value]="resourceData.value().group.name" readonly />
     </div>
   </div>
-  <h2 class="subtitle">Members</h2>
+  <h2 class="subtitle">👥</h2>
   <ul>
     @for (member of resourceData.value().members; track member.id) {
       <li>{{ member.name }}</li>
     }
   </ul>
 
-  <a class="button is-primary" [routerLink]="['/group', groupId(), 'expenses', 'add']">Add expense</a>
+  <a class="button is-primary" title="Add expense" [routerLink]="['/group', groupId(), 'expenses', 'add']">➕🧾</a>
   }
 </div>
