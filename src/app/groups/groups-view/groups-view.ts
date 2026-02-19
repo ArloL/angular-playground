@@ -10,7 +10,6 @@ import { GroupStore } from '../../services/group-store';
   styleUrl: './groups-view.scss',
 })
 export class GroupsView {
-
   currentUserService = inject(CurrentUserService);
   groupStore = inject(GroupStore);
 
@@ -23,5 +22,4 @@ export class GroupsView {
       return this.groupStore.findAllWhereUserIsPartOf(currentUser.id);
     },
   });
-
 }

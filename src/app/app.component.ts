@@ -1,5 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CurrentUserService } from './services/current-user';
@@ -11,10 +16,9 @@ import { TestDataService } from './services/test-data';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-
   buildTimestamp = environment.buildTimestamp;
   menuOpen = signal(false);
 
@@ -66,5 +70,4 @@ export class AppComponent implements OnInit {
     await this.testData.generate();
     this.networkSimulation.use('3g');
   }
-
 }

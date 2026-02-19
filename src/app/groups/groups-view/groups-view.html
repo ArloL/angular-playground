@@ -1,16 +1,21 @@
 <div class="container">
   @if (groups.isLoading()) {
-    <progress class="progress is-small is-primary" max="100"></progress>
+  <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (groups.status() === 'error') {
-    <p>Error: {{ groups.error() }}</p>
-    <button class="button" title="Retry" (click)="groups.reload()">🔄</button>
+  <p>Error: {{ groups.error() }}</p>
+  <button class="button" title="Retry" (click)="groups.reload()">🔄</button>
   } @else if (groups.hasValue()) {
   <div class="level">
     <div class="level-left">
       <h1 class="title">👥</h1>
     </div>
     <div class="level-right">
-      <a class="button is-primary" title="Create group" [routerLink]="['/group/create']">➕👥</a>
+      <a
+        class="button is-primary"
+        title="Create group"
+        [routerLink]="['/group/create']"
+        >➕👥</a
+      >
     </div>
   </div>
   @for (group of groups.value(); track $index) {
@@ -23,12 +28,17 @@
       <a title="Edit group" [routerLink]="['/group', group.id, 'edit']">✏️</a>
     </li>
     <li>
-      <a title="View expenses" [routerLink]="['/group', group.id, 'expenses']">🧾</a>
+      <a title="View expenses" [routerLink]="['/group', group.id, 'expenses']"
+        >🧾</a
+      >
     </li>
     <li>
-      <a title="Add expense" [routerLink]="['/group', group.id, 'expenses', 'add']">➕🧾</a>
+      <a
+        title="Add expense"
+        [routerLink]="['/group', group.id, 'expenses', 'add']"
+        >➕🧾</a
+      >
     </li>
   </ul>
-  }
-  }
+  } }
 </div>

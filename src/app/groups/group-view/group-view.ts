@@ -11,7 +11,6 @@ import { UserStore } from '../../services/user-store';
   styleUrl: './group-view.scss',
 })
 export class GroupView {
-
   readonly groupId = input.required<EntityId>();
 
   private groupStore = inject(GroupStore);
@@ -25,5 +24,4 @@ export class GroupView {
       return { group, members };
     },
   });
-
 }

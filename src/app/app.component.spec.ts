@@ -9,8 +9,15 @@ describe('AppComponent', () => {
       imports: [AppComponent],
       providers: [
         provideRouter([]),
-        { provide: SwUpdate, useValue: { isEnabled: false, checkForUpdate: () => Promise.resolve(false), activateUpdate: () => Promise.resolve(true) } },
-      ]
+        {
+          provide: SwUpdate,
+          useValue: {
+            isEnabled: false,
+            checkForUpdate: () => Promise.resolve(false),
+            activateUpdate: () => Promise.resolve(true),
+          },
+        },
+      ],
     }).compileComponents();
   });
 

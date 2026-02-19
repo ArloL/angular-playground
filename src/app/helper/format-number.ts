@@ -7,6 +7,6 @@ export function formatNumber(number: number, digits = 2) {
   }
   return (number / 100).toLocaleString(navigator.language || 'en-US', {
     minimumFractionDigits: digits,
-    maximumFractionDigits: digits
+    maximumFractionDigits: digits,
   });
 }

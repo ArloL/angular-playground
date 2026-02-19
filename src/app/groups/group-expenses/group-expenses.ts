@@ -9,10 +9,9 @@ import { EntityId } from '../../models/entity';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './group-expenses.html',
-  styleUrl: './group-expenses.scss'
+  styleUrl: './group-expenses.scss',
 })
 export class GroupExpenses {
-
   formatNumber = formatNumber;
 
   expenseStore = inject(ExpenseStore);
@@ -23,5 +22,4 @@ export class GroupExpenses {
     params: () => ({ id: this.groupId() }),
     loader: ({ params }) => this.expenseStore.findByGroupId(params.id),
   });
-
 }
