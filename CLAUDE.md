@@ -46,6 +46,10 @@ Hash-based routing (for GitHub Pages). Routes defined in `app.routes.ts`:
 
 Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Component-level SCSS files.
 
+## Git
+
+- **Do not squash commits.** Use one focused commit per logical change so PRs are easy to review.
+
 ## TypeScript
 
 Strict mode fully enabled including `strictTemplates`, `strictInjectionParameters`, and `strictInputAccessModifiers`. Target ES2022 with bundler module resolution.
