@@ -8,7 +8,7 @@
       </div>
     } @else {
       <p>Error: {{ resourceData.error() }}</p>
-      <button class="button" (click)="resourceData.reload()">Retry</button>
+      <button class="button" title="Retry" (click)="resourceData.reload()">🔄</button>
     }
   } @else if (resourceData.hasValue()) {
   <h1 class="title">{{ resourceData.value().user.name }}</h1>
@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <h2 class="subtitle">Friends</h2>
+  <h2 class="subtitle">👥</h2>
   <table class="table">
     <tbody>
       @for (friend of resourceData.value().friends; track friend.id) {
@@ -31,14 +31,14 @@
     </tbody>
   </table>
 
-  <h2 class="subtitle">Add friend by email</h2>
+  <h2 class="subtitle">➕👤</h2>
   <div class="field has-addons">
     <div class="control is-expanded">
       <input class="input" type="email" placeholder="friend@example.com"
         [ngModel]="friendEmail()" (ngModelChange)="friendEmail.set($event)" />
     </div>
     <div class="control">
-      <button class="button is-primary" (click)="addFriend()">Add friend</button>
+      <button class="button is-primary" title="Add friend" (click)="addFriend()">➕👤</button>
     </div>
   </div>
   @if (addFriendError()) {

@@ -8,10 +8,10 @@
       </div>
     } @else {
       <p>Error: {{ resourceData.error() }}</p>
-      <button class="button" (click)="resourceData.reload()">Retry</button>
+      <button class="button" title="Retry" (click)="resourceData.reload()">🔄</button>
     }
   } @else if (resourceData.hasValue()) {
-  <h1 class="title">Edit expense {{ resourceData.value().expense.description }}</h1>
+  <h1 class="title">✏️ {{ resourceData.value().expense.description }}</h1>
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">

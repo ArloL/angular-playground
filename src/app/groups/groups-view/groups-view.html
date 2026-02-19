@@ -3,30 +3,30 @@
     <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (groups.status() === 'error') {
     <p>Error: {{ groups.error() }}</p>
-    <button class="button" (click)="groups.reload()">Retry</button>
+    <button class="button" title="Retry" (click)="groups.reload()">🔄</button>
   } @else if (groups.hasValue()) {
   <div class="level">
     <div class="level-left">
-      <h1 class="title">Groups</h1>
+      <h1 class="title">👥</h1>
     </div>
     <div class="level-right">
-      <a class="button is-primary" [routerLink]="['/group/create']">Create group</a>
+      <a class="button is-primary" title="Create group" [routerLink]="['/group/create']">➕👥</a>
     </div>
   </div>
   @for (group of groups.value(); track $index) {
-  <p>Group {{ group.name }}</p>
+  <p>{{ group.name }}</p>
   <ul>
     <li>
-      <a [routerLink]="['/group', group.id]">View group</a>
+      <a title="View group" [routerLink]="['/group', group.id]">👁</a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'edit']">Edit group</a>
+      <a title="Edit group" [routerLink]="['/group', group.id, 'edit']">✏️</a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'expenses']">View Expenses</a>
+      <a title="View expenses" [routerLink]="['/group', group.id, 'expenses']">🧾</a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'expenses', 'add']">Add Expense</a>
+      <a title="Add expense" [routerLink]="['/group', group.id, 'expenses', 'add']">➕🧾</a>
     </li>
   </ul>
   }

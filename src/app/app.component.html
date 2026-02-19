@@ -11,7 +11,7 @@
   <div class="navbar-menu" [class.is-active]="menuOpen()">
     <div class="navbar-start">
       <a class="navbar-item" [routerLink]="['/']" [ariaCurrentWhenActive]="'page'" [routerLinkActive]="'active'">
-        Home
+        🏠
       </a>
     </div>
 
@@ -19,14 +19,10 @@
       <div class="navbar-item">
         @if (currentUserService.user(); as user) {
           <a [routerLink]="['/account']">{{ user.name }}</a>
-          <a class="button is-primary" (click)="logout()">
-            <strong>Log out</strong>
-          </a>
+          <a class="button is-primary" title="Log out" (click)="logout()">🚪</a>
         } @else {
           <div class="buttons">
-            <a class="button is-light" [class.is-loading]="loggingIn()" (click)="login()">
-              Log in
-            </a>
+            <a class="button is-light" title="Log in" [class.is-loading]="loggingIn()" (click)="login()">🔑</a>
           </div>
           @if (loginError(); as error) {
             <p class="help is-danger">{{ error }}</p>
@@ -44,17 +40,9 @@
     <p>{{ buildTimestamp }}</p>
     @if (swUpdate.isEnabled) {
       @if (updateAvailable()) {
-        <button class="button is-success" (click)="applyUpdate()">
-          Update available — tap to reload
-        </button>
+        <button class="button is-success" title="Update available — tap to reload" (click)="applyUpdate()">🔄</button>
       } @else {
-        <button class="button is-small is-light" (click)="checkForUpdate()" [disabled]="checkingForUpdate()">
-          @if (checkingForUpdate()) {
-            Checking...
-          } @else {
-            Check for updates
-          }
-        </button>
+        <button class="button is-small is-light" title="Check for updates" (click)="checkForUpdate()" [disabled]="checkingForUpdate()">🔄</button>
       }
     }
   </div>

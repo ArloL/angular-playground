@@ -8,10 +8,10 @@
       </div>
     } @else {
       <p>Error: {{ usersResource.error() }}</p>
-      <button class="button" (click)="usersResource.reload()">Retry</button>
+      <button class="button" title="Retry" (click)="usersResource.reload()">🔄</button>
     }
   } @else if (usersResource.hasValue()) {
-  <h1 class="title">Create new group</h1>
+  <h1 class="title">➕👥</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
@@ -41,8 +41,8 @@
       <button class="button is-fullwidth is-flex is-justify-content-space-between"
         [class.is-success]="groupForm().valid()" [class.is-loading]="saving()"
         [disabled]="groupForm().invalid() || saving()" (click)="save()">
-        ➕
-        <span class="is-flex-grow-1">Create group "{{ groupData().name }}"</span>
+        ➕👥
+        <span class="is-flex-grow-1">{{ groupData().name }}</span>
       </button>
     </div>
   </div>
