@@ -19,8 +19,6 @@ import { TestDataService } from './services/test-data';
 })
 export class AppComponent implements OnInit {
   protected buildTimestamp = environment.buildTimestamp;
-  protected menuOpen = signal(false);
-
   protected currentUserService = inject(CurrentUserService);
   private networkSimulation = inject(NetworkSimulation);
   private testData = inject(TestDataService);
