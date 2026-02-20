@@ -8,6 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build` — Production build (runs environment timestamp generation first)
 - `npm test` — Run unit tests (Vitest)
 - `npm run test:ci` — CI test runner (`ng test --no-watch --no-progress`)
+- `npm run lint` — ESLint (`eslint src`)
+- `npm run format:check` — Prettier check
+- `npm run format` — Prettier auto-fix
 - `make server` — Dev server with auto-open
 - `make build` — Build with base-href and sync to `_site/`
 
@@ -53,9 +56,10 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 
 ## Testing
 
-- After making code changes, run `npm run test:ci` and ensure all tests pass
-  before considering the task complete.
+- After making code changes, run `npm run test:ci` and ensure all tests pass before considering the task complete.
 - Do not mark work as done if tests are failing.
+- Run `npm run lint` and fix any ESLint errors before finishing.
+- Run `npm run format:check` and fix formatting issues with `npm run format` before finishing.
 
 ## TypeScript
 
