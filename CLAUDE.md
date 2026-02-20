@@ -48,7 +48,8 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 
 ## Git
 
-- **Do not squash commits.** Use one focused commit per logical change so PRs are easy to review.
+- Make PRs easy to review by using focused commits and rewriting branch history
+  if later changes make previous commits obsolete
 
 ## TypeScript
 
