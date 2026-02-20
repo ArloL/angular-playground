@@ -1,12 +1,16 @@
 import {
+  afterNextRender,
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
+  Injector,
   input,
   resource,
   Signal,
   signal,
+  viewChild,
   WritableSignal,
 } from '@angular/core';
 import { customParseFloat } from '../../helper/custom-parse-float';
@@ -29,9 +33,13 @@ export class ExpenseEdit {
   public readonly groupId = input.required<EntityId>();
   public readonly expenseId = input.required<EntityId>();
 
+  private injector = inject(Injector);
   private userStore = inject(UserStore);
   private expenseStore = inject(ExpenseStore);
   private router = inject(Router);
+
+  private categoryButtons =
+    viewChild<ElementRef<HTMLElement>>('categoryButtons');
 
   protected formatNumber = formatNumber;
   protected currencies = currencies;
@@ -62,6 +70,16 @@ export class ExpenseEdit {
       this.descriptionRaw.set(this.resourceData.value().expense.description);
       this.selectedCategory.set(
         this.categories.indexOf(this.resourceData.value().expense.category),
+      );
+      afterNextRender(
+        () => {
+          const container = this.categoryButtons()?.nativeElement;
+          const selected = container?.querySelector('.is-selected');
+          if (selected && 'scrollIntoView' in selected) {
+            selected.scrollIntoView({ block: 'nearest', inline: 'center' });
+          }
+        },
+        { injector: this.injector },
       );
     }
   });
