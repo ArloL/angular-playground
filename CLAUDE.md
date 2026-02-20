@@ -51,6 +51,12 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 - Make PRs easy to review by using focused commits and rewriting branch history
   if later changes make previous commits obsolete
 
+## Testing
+
+- After making code changes, run `npm run test:ci` and ensure all tests pass
+  before considering the task complete.
+- Do not mark work as done if tests are failing.
+
 ## TypeScript
 
 Strict mode fully enabled including `strictTemplates`, `strictInjectionParameters`, and `strictInputAccessModifiers`. Target ES2022 with bundler module resolution.
