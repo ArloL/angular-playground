@@ -9,7 +9,7 @@ import {
 import { debounce, form, FormField, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { NewGroup } from '../../models/group';
-import { SelectableUser } from '../../models/selectable-user';
+import { Selectable } from '../../models/selectable';
 import { CurrentUserService } from '../../services/current-user';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
@@ -41,7 +41,7 @@ export class GroupCreate {
     loader: () => this.userStore.findAll(),
   });
 
-  protected selectableUsers: WritableSignal<SelectableUser[]> = signal([]);
+  protected selectableUsers: WritableSignal<Selectable[]> = signal([]);
   private selectableUsersInit = effect(() => {
     const currentUser = this.currentUserService.user();
     if (this.usersResource.hasValue() && currentUser) {
@@ -50,7 +50,7 @@ export class GroupCreate {
         this.usersResource
           .value()!
           .filter((u) => friendIds.has(u.id))
-          .map((u) => ({ userId: u.id, name: u.name, selected: false })),
+          .map((u) => ({ id: u.id, label: u.name, selected: false })),
       );
     }
   });
@@ -72,7 +72,7 @@ export class GroupCreate {
       const currentUserId = this.currentUserService.user()!.id;
       const selectedUserIds = this.selectableUsers()
         .filter((u) => u.selected)
-        .map((u) => u.userId);
+        .map((u) => u.id);
       await this.groupStore.save({
         name: this.groupData().name,
         users: [currentUserId, ...selectedUserIds],

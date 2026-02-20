@@ -14,7 +14,7 @@ import { UserStore } from '../../services/user-store';
 import { CurrentUserService } from '../../services/current-user';
 import { EntityId } from '../../models/entity';
 import { Group } from '../../models/group';
-import { SelectableUser } from '../../models/selectable-user';
+import { Selectable } from '../../models/selectable';
 
 @Component({
   selector: 'apezzi-group-edit',
@@ -47,7 +47,7 @@ export class GroupEdit {
     }
   });
 
-  protected selectableUsers: WritableSignal<SelectableUser[]> = signal([]);
+  protected selectableUsers: WritableSignal<Selectable[]> = signal([]);
   private selectableUsersInit = effect(() => {
     const currentUser = this.currentUserService.user();
     if (this.resourceData.hasValue() && currentUser) {
@@ -58,8 +58,8 @@ export class GroupEdit {
         users
           .filter((u) => friendIds.has(u.id))
           .map((u) => ({
-            userId: u.id,
-            name: u.name,
+            id: u.id,
+            label: u.name,
             selected: groupUserIds.has(u.id),
           })),
       );
@@ -98,7 +98,7 @@ export class GroupEdit {
         const currentUserId = this.currentUserService.user()!.id;
         const selectedUserIds = this.selectableUsers()
           .filter((u) => u.selected)
-          .map((u) => u.userId);
+          .map((u) => u.id);
         await this.groupStore.save({
           ...this.groupData(),
           users: [currentUserId, ...selectedUserIds],
