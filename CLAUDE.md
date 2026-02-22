@@ -49,6 +49,8 @@ Hash-based routing (for GitHub Pages). Routes defined in `app.routes.ts`:
 
 Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Component-level SCSS files.
 
+**Small screens only:** The app targets small/mobile screens exclusively. Do not add styles or layouts for larger viewports.
+
 ## Git
 
 - Make PRs easy to review by using focused commits and rewriting branch history
