@@ -51,6 +51,8 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 
 **Small screens only:** The app targets small/mobile screens exclusively. Do not add styles or layouts for larger viewports.
 
+**Icons only:** Use icons instead of text for buttons, labels, errors, and all other UI elements. Do not use English text in the UI.
+
 ## Git
 
 - Make PRs easy to review by using focused commits and rewriting branch history
