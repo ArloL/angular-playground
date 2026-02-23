@@ -17,6 +17,7 @@ export class UserView {
   protected friendEmail = signal('');
   protected addFriendError = signal('');
   protected addFriendSuccess = signal('');
+  protected addingFriend = signal(false);
 
   protected resourceData = resource({
     params: () => ({ id: this.currentUserService.user()!.id }),
@@ -37,36 +38,43 @@ export class UserView {
       return;
     }
 
-    const friend = await this.userStore.findByEmail(email);
-    if (!friend) {
-      this.addFriendError.set('No user found with that email.');
-      return;
+    this.addingFriend.set(true);
+    try {
+      const friend = await this.userStore.findByEmail(email);
+      if (!friend) {
+        this.addFriendError.set('No user found with that email.');
+        return;
+      }
+
+      const user = this.resourceData.value()?.user;
+      if (!user) return;
+
+      if (friend.id === user.id) {
+        this.addFriendError.set('You cannot add yourself as a friend.');
+        return;
+      }
+
+      if (user.friends.includes(friend.id)) {
+        this.addFriendError.set(`${friend.name} is already a friend.`);
+        return;
+      }
+
+      await this.userStore.save({
+        ...user,
+        friends: [...user.friends, friend.id],
+      });
+      await this.userStore.save({
+        ...friend,
+        friends: [...friend.friends, user.id],
+      });
+
+      this.friendEmail.set('');
+      this.addFriendSuccess.set(`${friend.name} added as a friend!`);
+      this.resourceData.reload();
+    } catch (e) {
+      this.addFriendError.set(String(e));
+    } finally {
+      this.addingFriend.set(false);
     }
-
-    const user = this.resourceData.value()?.user;
-    if (!user) return;
-
-    if (friend.id === user.id) {
-      this.addFriendError.set('You cannot add yourself as a friend.');
-      return;
-    }
-
-    if (user.friends.includes(friend.id)) {
-      this.addFriendError.set(`${friend.name} is already a friend.`);
-      return;
-    }
-
-    await this.userStore.save({
-      ...user,
-      friends: [...user.friends, friend.id],
-    });
-    await this.userStore.save({
-      ...friend,
-      friends: [...friend.friends, user.id],
-    });
-
-    this.friendEmail.set('');
-    this.addFriendSuccess.set(`${friend.name} added as a friend!`);
-    this.resourceData.reload();
   }
 }
