@@ -68,3 +68,43 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 ## TypeScript
 
 Strict mode fully enabled including `strictTemplates`, `strictInjectionParameters`, and `strictInputAccessModifiers`. Target ES2022 with bundler module resolution.
+
+## Style Guides
+
+Follow the [Angular Style Guide](https://angular.dev/style-guide) and the [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html). Key rules are summarized below.
+
+### Angular Style Guide
+
+- **Standalone only** — No NgModules. All components, directives, and pipes use `standalone: true` and import dependencies directly.
+- **`inject()` over constructor injection** — Use the `inject` function for dependency injection instead of constructor parameters.
+- **Signals** — Use Angular signals (`signal`, `computed`, `effect`, `input`, `output`, `model`) for reactive state.
+- **`readonly` for Angular-initialized properties** — Mark properties initialized by `input`, `model`, `output`, and queries as `readonly`.
+- **`protected` for template members** — Use `protected` access for members read from the component template, not `public`.
+- **Class member ordering** — Group Angular-specific properties (injected dependencies, inputs, outputs, queries) near the top of the class, before methods.
+- **File naming** — Hyphen-separated lowercase: `user-profile.ts`. Avoid generic names like `helpers.ts` or `utils.ts`.
+- **No type suffixes in class names** — Name classes for what they do, not their Angular type. Use `UserDataClient` instead of `UserService`. Exceptions: Pipes and NgModules keep their suffixes.
+- **Event handlers** — Name methods for what they do, not when they are called (e.g., `saveUser()` not `onSubmit()`).
+- **Directive selectors** — Use an app-specific camelCase prefix for attribute selectors.
+- **One concept per file** — Prefer one component, directive, or service per file. Keep files small.
+- **Flat directory structure** — Keep directories as flat as possible. Group related files together without deep nesting.
+- **Template control flow** — Use `@if` / `@for` blocks, not structural directives.
+
+### Google TypeScript Style Guide
+
+- **Naming conventions:**
+  - `UpperCamelCase` — Classes, interfaces, types, enums, decorators, type parameters.
+  - `lowerCamelCase` — Variables, functions, parameters, module aliases.
+  - `UPPER_SNAKE_CASE` — Global constants and enum values.
+  - Treat abbreviations as whole words: `loadHttpUrl`, not `loadHTTPURL`.
+- **No `_` prefix/suffix** — Do not use leading or trailing underscores on identifiers, including private members.
+- **Names must not duplicate type information** — e.g., `name: string`, not `nameString: string`.
+- **Descriptive names** — Names must be clear to a new reader. No ambiguous abbreviations.
+- **`const` by default** — Use `const` unless reassignment is needed, then `let`. Never use `var`.
+- **One variable per declaration** — No `let a = 1, b = 2;`.
+- **Interfaces over type aliases** — Use `interface` for object shapes. Do not prefix interfaces (no `IFoo`).
+- **No `any`** — Avoid `any`; prefer `unknown` or more specific types.
+- **No default exports** — Use named exports only.
+- **ES module imports** — Use `import {foo} from './bar';`. No `require`. Use relative paths within the project.
+- **No namespaces** — Use separate files for code organization.
+- **Use `enum`, not `const enum`**.
+- **Comments** — Use `/** JSDoc */` for public API documentation. Use `//` for implementation notes. Do not use `/* block */` for multi-line comments.
