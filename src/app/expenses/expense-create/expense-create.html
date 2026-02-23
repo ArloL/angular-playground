@@ -71,11 +71,10 @@
       <button
         class="button is-fullwidth is-flex is-justify-content-space-between"
         [disabled]="!saveEnabled() || saving()"
-        [class.is-loading]="saving()"
         (click)="save()"
         [class.is-success]="saveEnabled()"
       >
-        <i class="fa-solid fa-plus"></i>
+        <i [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-plus'"></i>
         <span class="is-flex-grow-1"
           ><i [class]="categories[selectedCategory()]"></i> {{
           formatNumber(this.expense().cost) }} {{ currencies[selectedCurrency]
