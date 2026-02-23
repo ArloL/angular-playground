@@ -11,6 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run lint` — ESLint (`eslint src`)
 - `npm run format:check` — Prettier check
 - `npm run format` — Prettier auto-fix
+- `npm run e2e` — Run Playwright e2e tests (starts dev server automatically)
+- `npm run e2e:update` — Update Playwright visual snapshots
 - `make server` — Dev server with auto-open
 - `make build` — Build with base-href and sync to `_site/`
 
@@ -80,6 +82,14 @@ Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Compone
 - Do not mark work as done if tests are failing.
 - Run `npm run lint` and fix any ESLint errors before finishing.
 - Run `npm run format:check` and fix formatting issues with `npm run format` before finishing.
+
+### E2E / Visual Regression Tests
+
+Playwright runs visual regression tests against a mobile viewport (Pixel 5). Tests live in the `e2e/` directory with baseline screenshots in `e2e/*.spec.ts-snapshots/`.
+
+- **CI:** The PR check workflow (`.github/workflows/pr-check.yaml`) installs Chromium, runs `npm run e2e`, and uploads the Playwright HTML report as an artifact on failure.
+- **Updating snapshots:** When a visual change is intentional, run `npm run e2e:update` locally on Linux to regenerate the baseline PNGs (snapshots are platform-specific). Commit the updated snapshots.
+- **Config:** `playwright.config.ts` — uses the dev server on port 58967, single `Mobile Chrome` project.
 
 ## TypeScript
 
