@@ -34,6 +34,14 @@ The app uses a custom in-memory store pattern (no NgRx/Akita):
 - **Forms:** Signals-based reactive forms (`@angular/forms/signals`) with `FormField` component
 - **Template control flow:** `@if` / `@for` blocks (not `*ngIf`/`*ngFor`)
 
+### Loading & Error Handling
+
+Every async interaction must have loading and error indicators to account for network issues:
+
+- **Data loading (`resource()`):** Show a `<progress>` bar while loading. On error, show the error and a retry button (`resource.reload()`). Handle `EntityNotFoundError` separately with a warning notification.
+- **Form submissions / actions:** Use a `signal(false)` for in-flight state (e.g. `saving`, `addingFriend`). Wrap the async call in `try/catch/finally`. Set the signal to `true` before the call, reset in `finally`. Show `[class.is-loading]` on the button and `[disabled]` while in-flight. Display errors in a `notification is-danger` block.
+- **Never** leave a store call (`save`, `findById`, `findByEmail`, etc.) without `try/catch` — all store operations go through `NetworkSimulation` and can throw `NetworkError`.
+
 ### Models
 
 Base `Entity` interface (`id`, `createdAt`, `updatedAt`) in `models/entity.ts`. Domain models (`User`, `Group`, `Expense`, `Share`) extend via composition. `NewX` types use `Omit` to exclude entity fields.
