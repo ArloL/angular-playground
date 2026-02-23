@@ -1,8 +1,7 @@
 # Contributing
 
 This guide covers everything you need to develop, test, and submit changes to
-this project. It applies equally to human contributors and AI coding agents
-(see [CLAUDE.md](CLAUDE.md) for how the AI agent consumes this documentation).
+this project.
 
 ## Build & Development Commands
 

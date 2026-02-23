@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** — Application architecture, component patterns, state management, routing, and design decisions.
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** — Build commands, testing, linting, formatting, git workflow, and style guides.
-- **[CLAUDE.md](CLAUDE.md)** — Entry point for [Claude Code](https://claude.ai/code); references the docs above.
+- **[CLAUDE.md](CLAUDE.md)** — References the docs above for use by [Claude Code](https://claude.ai/code).
 
 ## Development server
 

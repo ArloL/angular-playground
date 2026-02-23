@@ -1,8 +1,7 @@
 # Architecture
 
 This document describes the architecture, patterns, and design decisions for
-the project. It applies equally to human contributors and AI coding agents
-(see [CLAUDE.md](CLAUDE.md) for how the AI agent consumes this documentation).
+the project.
 
 ## Overview
 
