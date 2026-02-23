@@ -28,10 +28,16 @@ export class AppComponent implements OnInit {
   protected checkingForUpdate = signal(false);
   protected loggingIn = signal(false);
   protected loginError = signal('');
+  protected loggingOut = signal(false);
 
-  protected logout() {
-    this.currentUserService.logout();
-    this.router.navigate(['/']);
+  protected async logout() {
+    this.loggingOut.set(true);
+    try {
+      await this.currentUserService.logout();
+    } finally {
+      this.loggingOut.set(false);
+      this.router.navigate(['/']);
+    }
   }
 
   protected async login() {
