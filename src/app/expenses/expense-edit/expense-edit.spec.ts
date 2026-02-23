@@ -48,7 +48,7 @@ describe('ExpenseEdit', () => {
       cost: 6000,
       description: 'Dinner',
       currency: '€',
-      category: '🍽️',
+      category: 'fa-solid fa-utensils',
       date: new Date(),
       shares: [
         { userId: user1.id, owed: 3000, included: true },
@@ -72,7 +72,7 @@ describe('ExpenseEdit', () => {
   it('should load expense data', () => {
     expect(component.expenseData().cost).toBe(6000);
     expect(component.expenseData().description).toBe('Dinner');
-    expect(component.expenseData().category).toBe('🍽️');
+    expect(component.expenseData().category).toBe('fa-solid fa-utensils');
   });
 
   it('should reflect cost edits in expenseData', () => {

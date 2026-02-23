@@ -6,7 +6,7 @@
       [ariaCurrentWhenActive]="'page'"
       [routerLinkActive]="'is-active'"
     >
-      🏠
+      <i class="fa-solid fa-house"></i>
     </a>
 
     @if (currentUserService.user(); as user) {
@@ -15,13 +15,15 @@
         [routerLink]="['/account']"
         [ariaCurrentWhenActive]="'page'"
         [routerLinkActive]="['is-active']"
-        >👤</a
-      >
-      <a class="navbar-item" (click)="logout()">🚪</a>
+        ><i class="fa-solid fa-user"></i
+      ></a>
+      <a class="navbar-item" (click)="logout()"
+        ><i class="fa-solid fa-right-from-bracket"></i
+      ></a>
     } @else {
       <a class="navbar-item" [class.is-loading]="loggingIn()" (click)="login()"
-        >🔑</a
-      >
+        ><i class="fa-solid fa-key"></i
+      ></a>
       @if (loginError(); as error) {
         <p class="help is-danger">{{ error }}</p>
       }
@@ -41,7 +43,7 @@
           title="Update available — tap to reload"
           (click)="applyUpdate()"
         >
-          🔄
+          <i class="fa-solid fa-arrows-rotate"></i>
         </button>
       } @else {
         <button
@@ -50,7 +52,7 @@
           (click)="checkForUpdate()"
           [disabled]="checkingForUpdate()"
         >
-          🔄
+          <i class="fa-solid fa-arrows-rotate"></i>
         </button>
       }
     }

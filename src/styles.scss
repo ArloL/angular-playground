@@ -7,6 +7,8 @@
 @forward 'bulma/sass/helpers';
 @forward 'bulma/sass/themes';
 
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 html {
   font-size: 150%;
 }

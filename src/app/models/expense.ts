@@ -17,14 +17,14 @@ export interface NewExpense extends Omit<Expense, keyof Entity> {}
 export const currencies = ['€'];
 
 export const categories = [
-  '🍽️',
-  '🥐',
-  '🛒',
-  '🚂',
-  '🎟️',
-  '🏨',
-  '🧽',
-  '🚗',
-  '🧴',
-  '🪑',
+  'fa-solid fa-utensils',
+  'fa-solid fa-bread-slice',
+  'fa-solid fa-cart-shopping',
+  'fa-solid fa-train',
+  'fa-solid fa-ticket',
+  'fa-solid fa-hotel',
+  'fa-solid fa-soap',
+  'fa-solid fa-car',
+  'fa-solid fa-pump-soap',
+  'fa-solid fa-chair',
 ];
