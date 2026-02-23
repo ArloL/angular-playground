@@ -16,7 +16,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-**Angular 21 standalone app** — No NgModules. All components use `standalone: true` and directly import their dependencies.
+**Angular 21 standalone PWA** — A Progressive Web App designed primarily for mobile use on Android and iOS. No NgModules. All components use `standalone: true` and directly import their dependencies.
+
+### Progressive Web App
+
+The app is built as a PWA intended to be installed on Android and iOS home screens:
+
+- **Service worker:** Angular service worker (`@angular/service-worker`) registered via `provideServiceWorker` in `app.config.ts`. Enabled in production only, with `registerWhenStable:30000` strategy. Configuration in `ngsw-config.json` prefetches all app shell and asset files for offline use.
+- **Web manifest:** `public/manifest.webmanifest` defines the app with `"display": "standalone"` so it launches without browser chrome, like a native app. Includes maskable icons at sizes covering both Android and iOS requirements.
+- **iOS support:** `index.html` includes `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`, and `apple-touch-icon` links at all required sizes for iOS home screen installation.
+- **Update flow:** `AppComponent` uses `SwUpdate` to check for new versions and prompt the user to reload when an update is available.
+- **Mobile-only UI:** The app targets small/mobile screens exclusively. Do not add styles or layouts for larger viewports.
 
 ### State Management: Custom Signal-based Stores
 
@@ -56,8 +66,6 @@ Hash-based routing (for GitHub Pages). Routes defined in `app.routes.ts`:
 ### Styling
 
 Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Component-level SCSS files.
-
-**Small screens only:** The app targets small/mobile screens exclusively. Do not add styles or layouts for larger viewports.
 
 **Icons only:** Use icons instead of text for buttons, labels, errors, and all other UI elements. Do not use English text in the UI.
 
