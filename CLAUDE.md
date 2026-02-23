@@ -1,136 +1,22 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to [Claude Code](https://claude.ai/code) when
+working with code in this repository. Claude Code reads this file automatically
+at the start of every session.
 
-## Build & Development Commands
+## About this documentation
 
-- `npm start` — Dev server on port 58967, served under `/angular-playground/`
-- `npm run build` — Production build (runs environment timestamp generation first)
-- `npm test` — Run unit tests (Vitest)
-- `npm run test:ci` — CI test runner (`ng test --no-watch --no-progress`)
-- `npm run lint` — ESLint (`eslint src`)
-- `npm run format:check` — Prettier check
-- `npm run format` — Prettier auto-fix
-- `npm run e2e` — Run Playwright e2e tests (starts dev server automatically)
-- `npm run e2e:update` — Update Playwright visual snapshots
-- `make server` — Dev server with auto-open
-- `make build` — Build with base-href and sync to `_site/`
+The project documentation lives in standard files that are written for **all
+contributors -- human and AI alike**:
 
-## Architecture
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** — Build commands, testing, linting,
+  formatting, git workflow, TypeScript configuration, and style guides.
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** — Application architecture, component
+  patterns, state management, routing, styling, and design decisions.
 
-**Angular 21 standalone PWA** — A Progressive Web App designed primarily for mobile use on Android and iOS. No NgModules. All components use `standalone: true` and directly import their dependencies.
+All of the guidance in those files applies to Claude Code sessions. Rather than
+duplicating content here, CLAUDE.md references them so there is a single source
+of truth that stays useful regardless of who -- or what -- is reading it.
 
-### Progressive Web App
-
-The app is built as a PWA intended to be installed on Android and iOS home screens:
-
-- **Service worker:** Angular service worker (`@angular/service-worker`) registered via `provideServiceWorker` in `app.config.ts`. Enabled in production only, with `registerWhenStable:30000` strategy. Configuration in `ngsw-config.json` prefetches all app shell and asset files for offline use.
-- **Web manifest:** `public/manifest.webmanifest` defines the app with `"display": "standalone"` so it launches without browser chrome, like a native app. Includes maskable icons at sizes covering both Android and iOS requirements.
-- **iOS support:** `index.html` includes `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`, and `apple-touch-icon` links at all required sizes for iOS home screen installation.
-- **Update flow:** `AppComponent` uses `SwUpdate` to check for new versions and prompt the user to reload when an update is available.
-- **Mobile-only UI:** The app targets small/mobile screens exclusively. Do not add styles or layouts for larger viewports.
-
-### State Management: Custom Signal-based Stores
-
-The app uses a custom in-memory store pattern (no NgRx/Akita):
-
-- `services/store.ts` — Abstract `AbstractStore<T extends Entity>` providing CRUD operations via Promise-based API with optional simulated delay
-- Concrete stores: `UserStore`, `GroupStore`, `ExpenseStore` — each injectable, initialized with sample data in `app.component.ts` `ngOnInit`
-- Stores use an internal index map for O(1) lookups and auto-generate IDs (base64 UUID) and timestamps
-
-### Component Patterns
-
-- **Inputs:** `input.required<T>()` signal inputs
-- **Data loading:** Angular `resource({ params, loader })` API for async data
-- **Derived state:** `computed()` signals
-- **Forms:** Signals-based reactive forms (`@angular/forms/signals`) with `FormField` component
-- **Template control flow:** `@if` / `@for` blocks (not `*ngIf`/`*ngFor`)
-
-### Loading & Error Handling
-
-Every async interaction must have loading and error indicators to account for network issues:
-
-- **Data loading (`resource()`):** Show a `<progress>` bar while loading. On error, show the error and a retry button (`resource.reload()`). Handle `EntityNotFoundError` separately with a warning notification.
-- **Form submissions / actions:** Use a `signal(false)` for in-flight state (e.g. `saving`, `addingFriend`). Wrap the async call in `try/catch/finally`. Set the signal to `true` before the call, reset in `finally`. Show `[class.is-loading]` on the button and `[disabled]` while in-flight. Display errors in a `notification is-danger` block.
-- **Never** leave a store call (`save`, `findById`, `findByEmail`, etc.) without `try/catch` — all store operations go through `NetworkSimulation` and can throw `NetworkError`.
-
-### Models
-
-Base `Entity` interface (`id`, `createdAt`, `updatedAt`) in `models/entity.ts`. Domain models (`User`, `Group`, `Expense`, `Share`) extend via composition. `NewX` types use `Omit` to exclude entity fields.
-
-### Routing
-
-Hash-based routing (for GitHub Pages). Routes defined in `app.routes.ts`:
-- `/users`, `/groups` — list views
-- `/group/create`, `/group/:groupId`, `/group/:groupId/edit` — group CRUD
-- `/group/:groupId/expenses`, `/group/:groupId/expenses/add` — expense management
-
-### Styling
-
-Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Component-level SCSS files.
-
-**Icons only:** Use icons instead of text for buttons, labels, errors, and all other UI elements. Do not use English text in the UI.
-
-## Git
-
-- Make PRs easy to review by using focused commits and rewriting branch history
-  if later changes make previous commits obsolete
-
-## Testing
-
-- After making code changes, run `npm run test:ci` and ensure all tests pass before considering the task complete.
-- Do not mark work as done if tests are failing.
-- Run `npm run lint` and fix any ESLint errors before finishing.
-- Run `npm run format:check` and fix formatting issues with `npm run format` before finishing.
-
-### E2E / Visual Regression Tests
-
-Playwright runs visual regression tests against a mobile viewport (Pixel 5). Tests live in the `e2e/` directory with baseline screenshots in `e2e/*.spec.ts-snapshots/`.
-
-- **CI:** The PR check workflow (`.github/workflows/pr-check.yaml`) installs Chromium, runs `npm run e2e`, and uploads the Playwright HTML report as an artifact on failure.
-- **Updating snapshots:** When a visual change is intentional, run `npm run e2e:update` locally on Linux to regenerate the baseline PNGs (snapshots are platform-specific). Commit the updated snapshots.
-- **Config:** `playwright.config.ts` — uses the dev server on port 58967, single `Mobile Chrome` project.
-
-## TypeScript
-
-Strict mode fully enabled including `strictTemplates`, `strictInjectionParameters`, and `strictInputAccessModifiers`. Target ES2022 with bundler module resolution.
-
-## Style Guides
-
-Follow the [Angular Style Guide](https://angular.dev/style-guide) and the [Google TypeScript Style Guide](https://google.github.io/styleguide/tsguide.html). Key rules are summarized below.
-
-### Angular Style Guide
-
-- **Standalone only** — No NgModules. All components, directives, and pipes use `standalone: true` and import dependencies directly.
-- **`inject()` over constructor injection** — Use the `inject` function for dependency injection instead of constructor parameters.
-- **Signals** — Use Angular signals (`signal`, `computed`, `effect`, `input`, `output`, `model`) for reactive state.
-- **`readonly` for Angular-initialized properties** — Mark properties initialized by `input`, `model`, `output`, and queries as `readonly`.
-- **`protected` for template members** — Use `protected` access for members read from the component template, not `public`.
-- **Class member ordering** — Group Angular-specific properties (injected dependencies, inputs, outputs, queries) near the top of the class, before methods.
-- **File naming** — Hyphen-separated lowercase: `user-profile.ts`. Avoid generic names like `helpers.ts` or `utils.ts`.
-- **No type suffixes in class names** — Name classes for what they do, not their Angular type. Use `UserDataClient` instead of `UserService`. Exceptions: Pipes and NgModules keep their suffixes.
-- **Event handlers** — Name methods for what they do, not when they are called (e.g., `saveUser()` not `onSubmit()`).
-- **Directive selectors** — Use an app-specific camelCase prefix for attribute selectors.
-- **One concept per file** — Prefer one component, directive, or service per file. Keep files small.
-- **Flat directory structure** — Keep directories as flat as possible. Group related files together without deep nesting.
-- **Template control flow** — Use `@if` / `@for` blocks, not structural directives.
-
-### Google TypeScript Style Guide
-
-- **Naming conventions:**
-  - `UpperCamelCase` — Classes, interfaces, types, enums, decorators, type parameters.
-  - `lowerCamelCase` — Variables, functions, parameters, module aliases.
-  - `UPPER_SNAKE_CASE` — Global constants and enum values.
-  - Treat abbreviations as whole words: `loadHttpUrl`, not `loadHTTPURL`.
-- **No `_` prefix/suffix** — Do not use leading or trailing underscores on identifiers, including private members.
-- **Names must not duplicate type information** — e.g., `name: string`, not `nameString: string`.
-- **Descriptive names** — Names must be clear to a new reader. No ambiguous abbreviations.
-- **`const` by default** — Use `const` unless reassignment is needed, then `let`. Never use `var`.
-- **One variable per declaration** — No `let a = 1, b = 2;`.
-- **Interfaces over type aliases** — Use `interface` for object shapes. Do not prefix interfaces (no `IFoo`).
-- **No `any`** — Avoid `any`; prefer `unknown` or more specific types.
-- **No default exports** — Use named exports only.
-- **ES module imports** — Use `import {foo} from './bar';`. No `require`. Use relative paths within the project.
-- **No namespaces** — Use separate files for code organization.
-- **Use `enum`, not `const enum`**.
-- **Comments** — Use `/** JSDoc */` for public API documentation. Use `//` for implementation notes. Do not use `/* block */` for multi-line comments.
+If you are a human contributor, read those files directly. If you are an AI
+agent, treat them as authoritative project context.
