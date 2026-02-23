@@ -20,3 +20,5 @@
 #/typings
 
 /_site
+
+/src/environments/environment.production.ts
