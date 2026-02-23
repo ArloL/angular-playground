@@ -19,6 +19,6 @@ export class GroupExpenses {
 
   protected expenses = resource({
     params: () => ({ id: this.groupId() }),
-    loader: ({ params }) => this.expenseStore.findByGroupId(params.id),
+    loader: ({ params }) => this.expenseStore.findByGroupIdSortByDateDesc(params.id),
   });
 }
