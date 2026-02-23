@@ -1,42 +1,38 @@
 @charset "utf-8";
 
 // Base
-@forward 'bulma/sass/base/minireset';
-@forward 'bulma/sass/base/generic';
-@forward 'bulma/sass/base/animations';
+@use 'bulma/sass/base';
+@use 'bulma/sass/themes';
 
 // Layout (container, level, footer)
-@forward 'bulma/sass/layout/container';
-@forward 'bulma/sass/layout/level';
-@forward 'bulma/sass/layout/footer';
+@use 'bulma/sass/layout/container';
+@use 'bulma/sass/layout/level';
+@use 'bulma/sass/layout/footer';
 
 // Components
-@forward 'bulma/sass/components/navbar';
+@use 'bulma/sass/components/navbar';
 
 // Elements
-@forward 'bulma/sass/elements/box';
-@forward 'bulma/sass/elements/button';
-@forward 'bulma/sass/elements/content';
-@forward 'bulma/sass/elements/notification';
-@forward 'bulma/sass/elements/progress';
-@forward 'bulma/sass/elements/table';
-@forward 'bulma/sass/elements/title';
+@use 'bulma/sass/elements/box';
+@use 'bulma/sass/elements/button';
+@use 'bulma/sass/elements/content';
+@use 'bulma/sass/elements/notification';
+@use 'bulma/sass/elements/progress';
+@use 'bulma/sass/elements/table';
+@use 'bulma/sass/elements/title';
 
 // Form
-@forward 'bulma/sass/form/shared';
-@forward 'bulma/sass/form/input-textarea';
-@forward 'bulma/sass/form/checkbox-radio';
-@forward 'bulma/sass/form/select';
-@forward 'bulma/sass/form/tools';
+@use 'bulma/sass/form/shared';
+@use 'bulma/sass/form/input-textarea';
+@use 'bulma/sass/form/checkbox-radio';
+@use 'bulma/sass/form/select';
+@use 'bulma/sass/form/tools';
 
 // Helpers
-@forward 'bulma/sass/helpers/color';
-@forward 'bulma/sass/helpers/flexbox';
-@forward 'bulma/sass/helpers/spacing';
-@forward 'bulma/sass/helpers/typography';
-
-// Themes
-@forward 'bulma/sass/themes';
+@use 'bulma/sass/helpers/color';
+@use 'bulma/sass/helpers/flexbox';
+@use 'bulma/sass/helpers/spacing';
+@use 'bulma/sass/helpers/typography';
 
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
