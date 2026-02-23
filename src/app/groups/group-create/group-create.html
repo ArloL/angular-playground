@@ -53,11 +53,14 @@
       <button
         class="button is-fullwidth is-flex is-justify-content-space-between"
         [class.is-success]="groupForm().valid()"
-        [class.is-loading]="saving()"
         [disabled]="groupForm().invalid() || saving()"
         (click)="save()"
       >
-        <i class="fa-solid fa-plus"></i><i class="fa-solid fa-users"></i>
+        @if (saving()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        } @else {
+          <i class="fa-solid fa-plus"></i><i class="fa-solid fa-users"></i>
+        }
         <span class="is-flex-grow-1">{{ groupData().name }}</span>
       </button>
     </div>
