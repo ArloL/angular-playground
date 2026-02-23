@@ -13,7 +13,9 @@
     "lint": "eslint src",
     "lint:ci": "eslint --max-warnings 0 src",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "e2e": "playwright test",
+    "e2e:update": "playwright test --update-snapshots"
   },
   "private": true,
   "dependencies": {
@@ -34,6 +36,7 @@
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.2",
+    "@playwright/test": "^1.56.1",
     "@types/jasmine": "~6.0.0",
     "angular-eslint": "^21.2.0",
     "eslint": "^9.39.2",

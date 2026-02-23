@@ -22,3 +22,7 @@
 /_site
 
 /src/environments/environment.production.ts
+
+# Playwright
+/test-results/
+/playwright-report/
