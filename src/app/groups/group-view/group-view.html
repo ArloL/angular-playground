@@ -9,7 +9,7 @@
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
   <button class="button" title="Retry" (click)="resourceData.reload()">
-    🔄
+    <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
   <h1 class="title">{{ resourceData.value().group.name }}</h1>
@@ -24,7 +24,7 @@
       />
     </div>
   </div>
-  <h2 class="subtitle">👥</h2>
+  <h2 class="subtitle"><i class="fa-solid fa-users"></i></h2>
   <ul>
     @for (member of resourceData.value().members; track member.id) {
     <li>{{ member.name }}</li>
@@ -33,9 +33,8 @@
 
   <a
     class="button is-primary"
-    title="Add expense"
     [routerLink]="['/group', groupId(), 'expenses', 'add']"
-    >➕🧾</a
-  >
+    ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
+  ></a>
   }
 </div>

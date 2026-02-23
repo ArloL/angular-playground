@@ -9,10 +9,12 @@
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
   <button class="button" title="Retry" (click)="resourceData.reload()">
-    🔄
+    <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
-  <h1 class="title">➕ {{ resourceData.value().group.name }}</h1>
+  <h1 class="title">
+    <i class="fa-solid fa-plus"></i> {{ resourceData.value().group.name }}
+  </h1>
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">
@@ -43,7 +45,7 @@
       [class.is-selected]="selectedCategory() === $index"
       (click)="selectedCategory.set($index)"
     >
-      {{ category }}
+      <i [class]="category"></i>
     </button>
     }
     <button class="button">…</button>
@@ -73,9 +75,9 @@
         (click)="save()"
         [class.is-success]="saveEnabled()"
       >
-        ➕
+        <i class="fa-solid fa-plus"></i>
         <span class="is-flex-grow-1"
-          >{{ categories[selectedCategory()] }} {{
+          ><i [class]="categories[selectedCategory()]"></i> {{
           formatNumber(this.expense().cost) }} {{ currencies[selectedCurrency]
           }}</span
         >

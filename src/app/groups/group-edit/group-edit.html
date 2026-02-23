@@ -9,10 +9,10 @@
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
   <button class="button" title="Retry" (click)="resourceData.reload()">
-    🔄
+    <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
-  <h1 class="title">✏️ {{ groupData().name }}</h1>
+  <h1 class="title"><i class="fa-solid fa-pen"></i> {{ groupData().name }}</h1>
   <div class="field">
     <label class="label">Name</label>
     <div class="control is-expanded">
@@ -55,7 +55,7 @@
         [disabled]="groupForm().invalid() || saving()"
         (click)="save()"
       >
-        ➕
+        <i class="fa-solid fa-floppy-disk"></i>
         <span class="is-flex-grow-1">{{ groupData().name }}</span>
       </button>
     </div>
