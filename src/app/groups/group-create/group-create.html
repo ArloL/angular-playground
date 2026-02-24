@@ -8,12 +8,7 @@
   </div>
   } @else {
   <p>Error: {{ usersResource.error() }}</p>
-  <button
-    class="button"
-    data-testid="retry-button"
-    title="Retry"
-    (click)="usersResource.reload()"
-  >
+  <button class="button" title="Retry" (click)="usersResource.reload()">
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (usersResource.hasValue()) {
@@ -26,7 +21,6 @@
       <input
         autofocus
         class="input"
-        data-testid="group-name-input"
         type="text"
         placeholder="e.g. Paris 2025"
         [formField]="groupForm.name"
@@ -42,7 +36,6 @@
       <label class="checkbox">
         <input
           type="checkbox"
-          data-testid="member-checkbox"
           [checked]="user.selected"
           (change)="toggleUser($index)"
         />
@@ -59,7 +52,6 @@
     <div class="control is-expanded">
       <button
         class="button is-fullwidth is-flex is-justify-content-space-between"
-        data-testid="save-button"
         [class.is-success]="groupForm().valid()"
         [disabled]="groupForm().invalid() || saving()"
         (click)="save()"

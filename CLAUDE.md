@@ -34,10 +34,6 @@ IMPORTANT: Always run `npm test`, `npm run lint`, and `npm run format:check` aft
 - No default exports. Use named exports only.
 - `const` by default. `let` only when reassignment is needed. Never `var`.
 
-## `data-testid` attributes
-
-- Every interactive element (`<button>`, `<a>`, `<input>`, `<select>`, etc.) MUST have a `data-testid` attribute for e2e test selectors. Use kebab-case names describing purpose (e.g. `save-button`, `group-name-input`). See @CONTRIBUTING.md for full details.
-
 ## E2E snapshots
 
 Snapshots are platform-specific (Linux). Run `npm run e2e:update` on Linux to regenerate baselines. Commit updated snapshots when visual changes are intentional.
