@@ -12,7 +12,9 @@ export class ExpenseStore extends AbstractStore<Expense> {
     limit: number,
     offset: number,
   ): Promise<{ expenses: Expense[]; total: number }> {
-    const all = await this.findWithFilter((expense) => expense.groupId === groupId);
+    const all = await this.findWithFilter(
+      (expense) => expense.groupId === groupId,
+    );
     all.sort((a, b) => b.date.getTime() - a.date.getTime());
     return { expenses: all.slice(offset, offset + limit), total: all.length };
   }

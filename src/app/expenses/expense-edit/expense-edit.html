@@ -71,7 +71,9 @@
         (click)="save()"
         [class.is-success]="saveEnabled()"
       >
-        <i [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"></i>
+        <i
+          [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
+        ></i>
         <span class="is-flex-grow-1"
           ><i [class]="categories[selectedCategory()]"></i> {{
           formatNumber(this.expenseData().cost) }} {{

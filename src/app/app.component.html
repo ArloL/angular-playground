@@ -18,11 +18,21 @@
         ><i class="fa-solid fa-user"></i
       ></a>
       <a class="navbar-item" (click)="logout()"
-        ><i [class]="loggingOut() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-right-from-bracket'"></i
+        ><i
+          [class]="
+            loggingOut()
+              ? 'fa-solid fa-spinner fa-spin'
+              : 'fa-solid fa-right-from-bracket'
+          "
+        ></i
       ></a>
     } @else {
       <a class="navbar-item" (click)="login()"
-        ><i [class]="loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'"></i
+        ><i
+          [class]="
+            loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'
+          "
+        ></i
       ></a>
       @if (loginError(); as error) {
         <p class="help is-danger">{{ error }}</p>
