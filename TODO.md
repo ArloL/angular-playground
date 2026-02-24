@@ -4,11 +4,6 @@ Ordered by implementation sequence. Each item is a user-facing feature; technica
 
 ---
 
-- [ ] **Login screen** — Explicit user picker: list all users from `UserStore`, tap to select, navigate to `/home`. Replaces the current random-login mechanic.
-  - Update `CurrentUserService.login()` to accept a `userId` parameter.
-  - Add `/home` route (stub `HomeView`) and update `/` to redirect to `/home` when logged in.
-  - See SPEC §3.
-
 - [ ] **Home screen** — Single scrollable page: recent groups with balances at top, inline quick-entry form below.
   - **Recent groups:** Pinned Personal card (always first, shows expense count, no balance) then 3 most recently active shared groups with net balance label. "See all" link → `/groups`. All cards tap → `/group/:groupId`.
   - **Context selector:** Horizontal scrollable chip strip — `Personal` first, then one chip per group. Selected chip scopes the form.
@@ -38,6 +33,11 @@ Ordered by implementation sequence. Each item is a user-facing feature; technica
 - [ ] **Group edit** — Pre-populated form (name + member checkboxes) accessible from the group detail overflow menu. Members can be added or removed post-creation. Block removal of a member with unsettled expenses; show an inline error directing the user to settle up first.
   - When a member is newly checked, show an inline period picker (All time / Last 30 days / Last 10 days / Last 7 days / Last 3 days / None), defaulting to **All time**. Show matching expense count and a fixed "splits will change to equal" note. On save, for each matched expense: add the new member with `included: true` and recalculate equal shares across all current group members — `floor(cost / memberCount)` each, remainder to payer. Overwrites any existing custom splits.
   - See SPEC §5.4a.
+
+- [ ] **Login screen** — Explicit user picker: list all users from `UserStore`, tap to select, navigate to `/home`. Replaces the current random-login mechanic.
+  - Update `CurrentUserService.login()` to accept a `userId` parameter.
+  - Add `/home` route (stub `HomeView`) and update `/` to redirect to `/home` when logged in.
+  - See SPEC §3.
 
 ---
 
