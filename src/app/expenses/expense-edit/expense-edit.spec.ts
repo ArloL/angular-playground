@@ -7,6 +7,7 @@ import { GroupStore } from '../../services/group-store';
 import { ExpenseStore } from '../../services/expense-store';
 import { NetworkSimulation } from '../../services/network-simulation';
 import { CurrentUserService } from '../../services/current-user';
+import { PlainDateLike } from '../../models/plain-date-like';
 
 describe('ExpenseEdit', () => {
   let component: ExpenseEdit;
@@ -49,7 +50,7 @@ describe('ExpenseEdit', () => {
       description: 'Dinner',
       currency: '€',
       category: 'fa-solid fa-utensils',
-      date: new Date(),
+      date: PlainDateLike.now(),
       shares: [
         { userId: user1.id, owed: 3000, included: true },
         { userId: user2.id, owed: 3000, included: true },

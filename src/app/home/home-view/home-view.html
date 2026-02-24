@@ -1,0 +1,90 @@
+@if (homeData.isLoading()) {
+<progress class="progress is-primary" max="100"></progress>
+} @else if (homeData.status() === 'error') {
+<p class="has-text-danger">
+  <i class="fa-solid fa-triangle-exclamation"></i>
+</p>
+<button class="button" title="Retry" (click)="homeData.reload()">
+  <i class="fa-solid fa-arrows-rotate"></i>
+</button>
+} @else if (homeData.hasValue() && homeData.value(); as data) { @if
+(data.personalGroup; as personalGroup) {
+<a class="box" [routerLink]="['/group', personalGroup.id, 'expenses']">
+  <div class="level">
+    <div class="level-left">
+      <i class="fa-solid fa-user mr-2"></i>
+      <span>Personal</span>
+    </div>
+    <div class="level-right">
+      <span class="has-text-grey is-size-7">
+        {{ data.personalExpenseCount }}
+        <i class="fa-solid fa-receipt ml-1"></i>
+      </span>
+    </div>
+  </div>
+</a>
+}
+
+<div class="level mb-2">
+  <div class="level-left">
+    <i class="fa-solid fa-users"></i>
+  </div>
+  <div class="level-right">
+    <a [routerLink]="['/groups']">
+      <i class="fa-solid fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+
+@for (group of data.recentSharedGroups; track group.id) { @let balance =
+data.groupBalances.get(group.id) ?? 0;
+<a class="box" [routerLink]="['/group', group.id, 'expenses']">
+  <p class="has-text-weight-semibold">{{ group.name }}</p>
+  @if (balance > 0) {
+  <p class="has-text-success is-size-7">
+    {{ formatNumber(balance) }} {{ currencies[0] }}
+  </p>
+  } @else if (balance < 0) {
+  <p class="has-text-danger is-size-7">
+    {{ formatNumber(abs(balance)) }} {{ currencies[0] }}
+  </p>
+  } @else {
+  <p class="has-text-grey is-size-7">
+    <i class="fa-solid fa-check"></i>
+  </p>
+  }
+</a>
+} @if (data.recentSharedGroups.length === 0) {
+<p class="has-text-grey mb-4">
+  <i class="fa-solid fa-users-slash"></i>
+</p>
+}
+
+<div class="buttons is-scrollable-x mt-4">
+  @if (data.personalGroup; as personalGroup) {
+  <button
+    class="button"
+    [class.is-selected]="effectiveContextId() === personalGroup.id"
+    (click)="selectContext(personalGroup.id)"
+  >
+    <i class="fa-solid fa-user"></i>
+  </button>
+  } @for (group of data.allSharedGroups; track group.id) {
+  <button
+    class="button"
+    [class.is-selected]="effectiveContextId() === group.id"
+    (click)="selectContext(group.id)"
+  >
+    {{ group.name }}
+  </button>
+  }
+</div>
+
+@if (effectiveContextId(); as contextId) {
+<apezzi-expense-create
+  [groupId]="contextId"
+  [navigateAfterSave]="false"
+  [collapsible]="true"
+  (expenseSaved)="homeData.reload()"
+/>
+} }
