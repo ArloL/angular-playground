@@ -1,6 +1,6 @@
 <div class="container">
   @if (usersResource.isLoading()) {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  <progress class="progress is-primary" max="100"></progress>
   } @else if (usersResource.status() === 'error') { @if
   (usersResource.error()?.name === 'EntityNotFoundError') {
   <div class="notification is-warning">
