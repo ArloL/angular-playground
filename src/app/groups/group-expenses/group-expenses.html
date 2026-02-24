@@ -3,7 +3,12 @@
   <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (expenses.status() === 'error') {
   <p>Error: {{ expenses.error() }}</p>
-  <button class="button" title="Retry" (click)="expenses.reload()">
+  <button
+    class="button"
+    data-testid="retry-button"
+    title="Retry"
+    (click)="expenses.reload()"
+  >
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } @else if (expenses.hasValue()) {
@@ -14,6 +19,7 @@
     <div class="level-right">
       <a
         class="button is-primary"
+        data-testid="add-expense-link"
         [routerLink]="['/group', groupId(), 'expenses', 'add']"
         ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
       ></a>
@@ -24,6 +30,7 @@
   } @for (expense of expenses.value().expenses; track expense.id) {
   <a
     class="box is-flex is-align-items-center"
+    data-testid="expense-link"
     [routerLink]="['/group', groupId(), 'expenses', expense.id, 'edit']"
   >
     <span class="is-size-3 mr-4"><i [class]="expense.category"></i></span>
