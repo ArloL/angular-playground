@@ -7,7 +7,12 @@
 </div>
 } @else {
 <p>Error: {{ usersResource.error() }}</p>
-<button class="button" title="Retry" (click)="usersResource.reload()">
+<button
+  class="button"
+  title="Retry"
+  (click)="usersResource.reload()"
+  data-testid="retry-button"
+>
   <i class="fa-solid fa-arrows-rotate"></i>
 </button>
 } } @else if (usersResource.hasValue()) {
@@ -25,6 +30,7 @@
       [formField]="groupForm.name"
       [class.is-success]="groupForm.name().touched() && groupForm.name().valid()"
       [class.is-danger]="groupForm.name().touched() && groupForm.name().invalid()"
+      data-testid="group-name-input"
     />
   </div>
 </div>
@@ -37,6 +43,7 @@
         type="checkbox"
         [checked]="user.selected"
         (change)="toggleUser($index)"
+        data-testid="member-checkbox"
       />
       {{ user.label }}
     </label>
@@ -54,6 +61,7 @@
       [class.is-success]="groupForm().valid()"
       [disabled]="groupForm().invalid() || saving()"
       (click)="save()"
+      data-testid="save-button"
     >
       @if (saving()) {
       <i class="fa-solid fa-spinner fa-spin"></i>
