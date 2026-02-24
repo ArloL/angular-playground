@@ -8,7 +8,7 @@ this project.
 - `npm start` — Dev server on port 58967, served under `/angular-playground/`
 - `npm run build` — Production build (runs environment timestamp generation first)
 - `npm test` — Run unit tests (Vitest)
-- `npm run lint` — ESLint (`eslint src`)
+- `npm run lint` — ESLint (warnings treated as errors)
 - `npm run format:check` — Prettier check
 - `npm run format` — Prettier auto-fix
 - `npm run e2e` — Run Playwright e2e tests (starts dev server automatically)
