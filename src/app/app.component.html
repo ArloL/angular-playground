@@ -6,6 +6,7 @@
         [routerLink]="['/home']"
         [ariaCurrentWhenActive]="'page'"
         [routerLinkActive]="'is-active'"
+        data-testid="nav-home"
       >
         <i class="fa-solid fa-house"></i>
       </a>
@@ -25,10 +26,11 @@
                 ? 'fa-solid fa-spinner fa-spin'
                 : 'fa-solid fa-right-from-bracket'
             "
+            data-testid="nav-logout"
           ></i
         ></a>
       } @else {
-        <a class="navbar-item" (click)="login()" data-testid="button-login"
+        <a class="navbar-item" (click)="login()" data-testid="nav-login"
           ><i
             [class]="
               loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'
