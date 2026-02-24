@@ -28,7 +28,7 @@
           ></i
         ></a>
       } @else {
-        <a class="navbar-item" (click)="login()"
+        <a class="navbar-item" (click)="login()" data-testid="button-login"
           ><i
             [class]="
               loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'

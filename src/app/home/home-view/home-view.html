@@ -9,7 +9,11 @@
 </button>
 } @else if (homeData.hasValue() && homeData.value(); as data) { @if
 (data.personalGroup; as personalGroup) {
-<a class="box" [routerLink]="['/group', personalGroup.id, 'expenses']">
+<a
+  class="box"
+  [routerLink]="['/group', personalGroup.id, 'expenses']"
+  data-testid="link-group-personal"
+>
   <div class="level">
     <div class="level-left">
       <i class="fa-solid fa-user mr-2"></i>
