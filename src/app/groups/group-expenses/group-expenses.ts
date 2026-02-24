@@ -1,5 +1,13 @@
-import { Component, inject, input, resource } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  resource,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Expense } from '../../models/expense';
 import { ExpenseStore } from '../../services/expense-store';
 import { formatNumber } from '../../helper/format-number';
 import { EntityId } from '../../models/entity';
@@ -19,6 +27,7 @@ export class GroupExpenses {
 
   protected expenses = resource({
     params: () => ({ id: this.groupId() }),
-    loader: ({ params }) => this.expenseStore.findByGroupIdSortByDateDesc(params.id),
+    loader: ({ params }) =>
+      this.expenseStore.findByGroupIdSortByDateDesc(params.id, 20, 0),
   });
 }
