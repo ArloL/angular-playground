@@ -8,5 +8,14 @@
   "vulnerabilityAlerts": {
     "schedule": ["at any time"],
     "minimumReleaseAge": "0 days"
-  }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["\\.sh$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>[^\\s]+?)\\n[A-Z_]+=\"[^:]+:(?<currentValue>[^\"]+)\""
+      ]
+    }
+  ]
 }
