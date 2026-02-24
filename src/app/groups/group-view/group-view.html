@@ -8,12 +8,7 @@
   </div>
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
-  <button
-    class="button"
-    data-testid="retry-button"
-    title="Retry"
-    (click)="resourceData.reload()"
-  >
+  <button class="button" title="Retry" (click)="resourceData.reload()">
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
@@ -38,7 +33,6 @@
 
   <a
     class="button is-primary"
-    data-testid="add-expense-link"
     [routerLink]="['/group', groupId(), 'expenses', 'add']"
     ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
   ></a>
