@@ -3,6 +3,7 @@ import { EntityId } from '../models/entity';
 import { UserStore } from './user-store';
 import { GroupStore } from './group-store';
 import { ExpenseStore } from './expense-store';
+import { PlainDateLike } from '../models/plain-date-like';
 
 type ExpenseTemplate = {
   category: string;
@@ -463,6 +464,22 @@ export class TestDataService {
     user2 = await this.userStore.save({ ...user2, friends: [user3.id] });
     user3 = await this.userStore.save({ ...user3, friends: [user1.id] });
 
+    const personal1 = await this.groupStore.save({
+      name: 'Personal',
+      users: [user1.id],
+      createdBy: user1.id,
+    });
+    const personal2 = await this.groupStore.save({
+      name: 'Personal',
+      users: [user2.id],
+      createdBy: user2.id,
+    });
+    const personal3 = await this.groupStore.save({
+      name: 'Personal',
+      users: [user3.id],
+      createdBy: user3.id,
+    });
+
     const group1 = await this.groupStore.save({
       name: 'Bloemendaal aan Zee 2025',
       users: [user1.id, user2.id],
@@ -479,9 +496,68 @@ export class TestDataService {
       createdBy: user3.id,
     });
 
+    await this.addPersonalExpenses(personal1.id, user1.id);
+    await this.addPersonalExpenses(personal2.id, user2.id);
+    await this.addPersonalExpenses(personal3.id, user3.id);
+
     await this.addExpenses(group1.id, user1.id, user2.id, bloemendaalExpenses);
     await this.addExpenses(group2.id, user2.id, user3.id, parisExpenses);
     await this.addExpenses(group3.id, user3.id, user1.id, spainExpenses);
+  }
+
+  private async addPersonalExpenses(
+    groupId: EntityId,
+    userId: EntityId,
+  ): Promise<void> {
+    const daysAgo = (n: number) => {
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return PlainDateLike.fromDate(d);
+    };
+    const personalExpenses = [
+      {
+        category: 'fa-solid fa-cart-shopping',
+        description: 'Groceries',
+        cost: 4230,
+        day: 1,
+      },
+      {
+        category: 'fa-solid fa-train',
+        description: 'Train ticket',
+        cost: 890,
+        day: 3,
+      },
+      {
+        category: 'fa-solid fa-utensils',
+        description: 'Lunch',
+        cost: 1450,
+        day: 5,
+      },
+      {
+        category: 'fa-solid fa-bread-slice',
+        description: 'Bakery',
+        cost: 380,
+        day: 7,
+      },
+      {
+        category: 'fa-solid fa-car',
+        description: 'Petrol',
+        cost: 6800,
+        day: 10,
+      },
+    ];
+    for (const { category, description, cost, day } of personalExpenses) {
+      await this.expenseStore.save({
+        groupId,
+        createdBy: userId,
+        currency: '€',
+        category,
+        description,
+        cost,
+        date: daysAgo(day),
+        shares: [{ userId, owed: cost, included: true }],
+      });
+    }
   }
 
   private async addExpenses(
@@ -503,7 +579,7 @@ export class TestDataService {
     const daysAgo = (n: number) => {
       const d = new Date();
       d.setDate(d.getDate() - n);
-      return d;
+      return PlainDateLike.fromDate(d);
     };
 
     for (let i = 0; i < expenses.length; i++) {
