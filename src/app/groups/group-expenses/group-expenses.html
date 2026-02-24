@@ -1,6 +1,6 @@
 <div class="container">
   @if (expenses.isLoading()) {
-  <progress class="progress is-small is-primary" max="100"></progress>
+  <progress class="progress is-primary" max="100"></progress>
   } @else if (expenses.status() === 'error') {
   <p>Error: {{ expenses.error() }}</p>
   <button class="button" title="Retry" (click)="expenses.reload()">
