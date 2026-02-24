@@ -22,6 +22,7 @@ import { categories, currencies, Expense } from '../../models/expense';
 import { formatNumber } from '../../helper/format-number';
 import { Share, ShareRaw } from '../../models/share';
 import { UserStore } from '../../services/user-store';
+import { PlainDateLike } from '../../models/plain-date-like';
 
 @Component({
   selector: 'apezzi-expense-edit',
@@ -50,6 +51,7 @@ export class ExpenseEdit {
 
   public costRaw = signal('');
   public descriptionRaw = signal('');
+  protected dateRaw = signal('');
 
   protected resourceData = resource({
     params: () => ({ id: this.expenseId() }),
@@ -68,6 +70,7 @@ export class ExpenseEdit {
     if (this.resourceData.hasValue()) {
       this.costRaw.set(formatNumber(this.resourceData.value().expense.cost));
       this.descriptionRaw.set(this.resourceData.value().expense.description);
+      this.dateRaw.set(this.resourceData.value().expense.date.toInputValue());
       this.selectedCategory.set(
         this.categories.indexOf(this.resourceData.value().expense.category),
       );
@@ -92,7 +95,7 @@ export class ExpenseEdit {
         description: '',
         currency: '',
         category: '',
-        date: new Date(),
+        date: PlainDateLike.now(),
         shares: [],
         createdBy: '',
         groupId: '',
@@ -105,6 +108,7 @@ export class ExpenseEdit {
       cost: customParseFloat(this.costRaw()),
       description: this.descriptionRaw(),
       category: this.categories[this.selectedCategory()],
+      date: PlainDateLike.fromInputValue(this.dateRaw()),
     };
   });
 

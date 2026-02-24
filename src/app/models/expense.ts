@@ -1,4 +1,5 @@
 import { Entity, EntityId } from './entity';
+import { PlainDateLike } from './plain-date-like';
 import { Share } from './share';
 
 export interface Expense extends Entity {
@@ -6,7 +7,7 @@ export interface Expense extends Entity {
   description: string;
   currency: string;
   category: string;
-  date: Date;
+  date: PlainDateLike;
   shares: Share[];
   createdBy: EntityId;
   groupId: EntityId;

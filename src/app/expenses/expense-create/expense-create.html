@@ -54,6 +54,16 @@
     <div class="control">
       <input
         class="input"
+        type="date"
+        [value]="dateRaw()"
+        (change)="dateRaw.set($event.target.value)"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <input
+        class="input"
         type="text"
         placeholder="…"
         [value]="descriptionRaw()"
