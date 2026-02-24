@@ -10,10 +10,11 @@
 <button class="button" title="Retry" (click)="resourceData.reload()">
   <i class="fa-solid fa-arrows-rotate"></i>
 </button>
-} } @else if (resourceData.hasValue()) {
+} } @else if (resourceData.hasValue()) { @if (!collapsible()) {
 <h1 class="title">
   <i class="fa-solid fa-plus"></i> {{ resourceData.value().group.name }}
 </h1>
+}
 <div class="field has-addons">
   <div class="control">
     <span class="select is-success">
@@ -49,6 +50,7 @@
   }
   <button class="button">…</button>
 </div>
+@if (!collapsible()) {
 <div class="field">
   <div class="control">
     <input
@@ -59,6 +61,7 @@
     />
   </div>
 </div>
+}
 <div class="field">
   <div class="control">
     <input
@@ -74,7 +77,7 @@
 <div class="notification is-danger">
   <p>{{ errorMessage() }}</p>
 </div>
-}
+} @if (!collapsible()) {
 <div class="field is-grouped">
   <div class="control is-expanded">
     <button
@@ -92,6 +95,59 @@
         }}</span
       >
     </button>
+  </div>
+</div>
+} @else {
+<div class="field is-grouped">
+  <div class="control">
+    <button
+      class="button"
+      (click)="moreOptionsOpen.set(!moreOptionsOpen())"
+      title="More options"
+    >
+      <i
+        [class]="
+          moreOptionsOpen() ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'
+        "
+      ></i>
+    </button>
+  </div>
+  <div class="control is-expanded">
+    <button
+      class="button is-primary is-fullwidth"
+      [disabled]="!saveEnabled() || saving()"
+      (click)="save()"
+      title="Add expense"
+    >
+      <i
+        [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-plus'"
+      ></i>
+    </button>
+  </div>
+</div>
+} @if (!collapsible() || moreOptionsOpen()) { @if (collapsible()) {
+<div class="field">
+  <div class="control">
+    <input
+      class="input"
+      type="date"
+      [value]="dateRaw()"
+      (change)="dateRaw.set($event.target.value)"
+    />
+  </div>
+</div>
+} @if (!isPersonalContext()) {
+<div class="field">
+  <div class="control">
+    <div class="select is-fullwidth">
+      <select [value]="payerIdComputed()" (change)="setPayerFromEvent($event)">
+        @for (userId of resourceData.value().group.users; track userId) {
+        <option [value]="userId">
+          {{ resourceData.value().userNames.get(userId) ?? userId }}
+        </option>
+        }
+      </select>
+    </div>
   </div>
 </div>
 @for (share of shares(); track $index) {
@@ -122,4 +178,4 @@
     <a class="button is-static"> {{ currencies[selectedCurrency] }} </a>
   </div>
 </div>
-} }
+} } } }
