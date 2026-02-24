@@ -4,13 +4,13 @@ For full details see @CONTRIBUTING.md and @ARCHITECTURE.md.
 
 ## Commands
 
-- `npm run test:ci` — Run unit tests (use this, not `npm test`, to avoid watch mode)
-- `npm run lint` — ESLint
+- `npm test` — Run unit tests
+- `npm run lint` — ESLint (warnings treated as errors)
 - `npm run format:check` — Prettier check (`npm run format` to auto-fix)
 - `npm run e2e` — Playwright visual regression tests (starts dev server automatically)
 - `npm start` — Dev server on port 58967, served under `/angular-playground/`
 
-IMPORTANT: Always run `npm run test:ci`, `npm run lint`, and `npm run format:check` after making changes. Do not consider work done if any of these fail.
+IMPORTANT: Always run `npm test`, `npm run lint`, and `npm run format:check` after making changes. Do not consider work done if any of these fail.
 
 ## Architecture
 
