@@ -11,6 +11,7 @@
     "test": "ng test --no-watch --no-progress",
     "test:watch": "ng test",
     "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
     "lint:ci": "eslint --max-warnings 0 src",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
