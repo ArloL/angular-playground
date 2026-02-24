@@ -1,22 +1,39 @@
 # CLAUDE.md
 
-This file provides guidance to [Claude Code](https://claude.ai/code) when
-working with code in this repository. Claude Code reads this file automatically
-at the start of every session.
+For full details see @CONTRIBUTING.md and @ARCHITECTURE.md.
 
-## About this documentation
+## Commands
 
-The project documentation lives in standard files that are written for **all
-contributors -- human and AI alike**:
+- `npm run test:ci` — Run unit tests (use this, not `npm test`, to avoid watch mode)
+- `npm run lint` — ESLint
+- `npm run format:check` — Prettier check (`npm run format` to auto-fix)
+- `npm run e2e` — Playwright visual regression tests (starts dev server automatically)
+- `npm start` — Dev server on port 58967, served under `/angular-playground/`
 
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** — Build commands, testing, linting,
-  formatting, git workflow, TypeScript configuration, and style guides.
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** — Application architecture, component
-  patterns, state management, routing, styling, and design decisions.
+IMPORTANT: Always run `npm run test:ci`, `npm run lint`, and `npm run format:check` after making changes. Do not consider work done if any of these fail.
 
-All of the guidance in those files applies to Claude Code sessions. Rather than
-duplicating content here, CLAUDE.md references them so there is a single source
-of truth that stays useful regardless of who -- or what -- is reading it.
+## Architecture
 
-If you are a human contributor, read those files directly. If you are an AI
-agent, treat them as authoritative project context.
+- Angular 21 standalone PWA — **no NgModules**. All components use `standalone: true`.
+- **Mobile-only UI.** Do not add styles or layouts for larger viewports.
+- **Icons only.** Use icons instead of text for buttons, labels, errors, and all UI elements. Do not use English text in the UI.
+- Custom signal-based stores in `services/store.ts` (no NgRx). Stores simulate network latency and can throw `NetworkError`.
+- Every store call (`save`, `findById`, `findByEmail`, etc.) MUST be wrapped in `try/catch` — all operations go through `NetworkSimulation`.
+- Async data loading uses Angular `resource()`. Show `<progress>` while loading, show error + retry on failure.
+- Bulma v1.0.4 CSS framework via SCSS.
+
+## Code style
+
+- Use `inject()` for dependency injection, not constructor parameters.
+- Use Angular signals (`signal`, `computed`, `input`, `output`, `model`) for reactive state.
+- Use `@if` / `@for` template control flow, not structural directives.
+- `readonly` for properties initialized by `input`, `model`, `output`, and queries.
+- `protected` for members read from the component template.
+- **No type suffixes in class names** — use `UserDataClient`, not `UserService`. Exceptions: Pipes and NgModules.
+- No `any` — use `unknown` or specific types.
+- No default exports. Use named exports only.
+- `const` by default. `let` only when reassignment is needed. Never `var`.
+
+## E2E snapshots
+
+Snapshots are platform-specific (Linux). Run `npm run e2e:update` on Linux to regenerate baselines. Commit updated snapshots when visual changes are intentional.
