@@ -20,6 +20,7 @@ import { CurrentUserService } from '../../services/current-user';
 import { ExpenseStore } from '../../services/expense-store';
 import { GroupStore } from '../../services/group-store';
 import { UserStore } from '../../services/user-store';
+import { PlainDateLike } from '../../models/plain-date-like';
 
 @Component({
   selector: 'apezzi-expense-create',
@@ -55,13 +56,14 @@ export class ExpenseCreate {
 
   public costRaw = signal('');
   protected descriptionRaw = signal('');
+  protected dateRaw = signal(PlainDateLike.now().toInputValue());
   protected expense: Signal<NewExpense> = computed(() => {
     return {
       cost: customParseFloat(this.costRaw()),
       description: '',
       currency: '€',
       category: this.categories[this.selectedCategory()],
-      date: new Date(),
+      date: PlainDateLike.fromInputValue(this.dateRaw()),
       shares: [],
       createdBy: this.currentUserService.user()!.id,
       groupId: this.groupId(),
