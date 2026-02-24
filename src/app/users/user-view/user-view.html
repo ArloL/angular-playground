@@ -54,7 +54,9 @@
         [disabled]="addingFriend()"
         (click)="addFriend()"
       >
-        <i [class]="addingFriend() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-user-plus'"></i>
+        <i
+          [class]="addingFriend() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-user-plus'"
+        ></i>
       </button>
     </div>
   </div>

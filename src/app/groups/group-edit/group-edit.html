@@ -54,7 +54,9 @@
         [disabled]="groupForm().invalid() || saving()"
         (click)="save()"
       >
-        <i [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"></i>
+        <i
+          [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"
+        ></i>
         <span class="is-flex-grow-1">{{ groupData().name }}</span>
       </button>
     </div>
