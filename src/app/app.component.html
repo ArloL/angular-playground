@@ -17,16 +17,16 @@
           [routerLink]="['/account']"
           [ariaCurrentWhenActive]="'page'"
           [routerLinkActive]="['is-active']"
+          data-testid="nav-account"
           ><i class="fa-solid fa-user"></i
         ></a>
-        <a class="navbar-item" (click)="logout()"
+        <a class="navbar-item" (click)="logout()" data-testid="nav-logout"
           ><i
             [class]="
               loggingOut()
                 ? 'fa-solid fa-spinner fa-spin'
                 : 'fa-solid fa-right-from-bracket'
             "
-            data-testid="nav-logout"
           ></i
         ></a>
       } @else {
@@ -55,6 +55,7 @@
             class="button is-success"
             title="Update available — tap to reload"
             (click)="applyUpdate()"
+            data-testid="apply-update-button"
           >
             <i class="fa-solid fa-arrows-rotate"></i>
           </button>
@@ -64,6 +65,7 @@
             title="Check for updates"
             (click)="checkForUpdate()"
             [disabled]="checkingForUpdate()"
+            data-testid="check-update-button"
           >
             <i class="fa-solid fa-arrows-rotate"></i>
           </button>

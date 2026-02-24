@@ -7,14 +7,19 @@
 </div>
 } @else {
 <p>Error: {{ resourceData.error() }}</p>
-<button class="button" title="Retry" (click)="resourceData.reload()">
+<button
+  class="button"
+  title="Retry"
+  (click)="resourceData.reload()"
+  data-testid="retry-button"
+>
   <i class="fa-solid fa-arrows-rotate"></i>
 </button>
 } } @else if (resourceData.hasValue()) {
 <div class="field has-addons">
   <div class="control">
     <span class="select is-success">
-      <select>
+      <select data-testid="currency-select">
         @for (currency of currencies; track $index) {
         <option [value]="$index">{{ currency }}</option>
         }
@@ -30,6 +35,7 @@
       [placeholder]="formatNumber(0)"
       [value]="costRaw()"
       (input)="costRaw.set($event.target.value)"
+      data-testid="cost-input"
     />
   </div>
 </div>
@@ -40,11 +46,12 @@
     [class.is-success]="selectedCategory() === $index"
     [class.is-selected]="selectedCategory() === $index"
     (click)="selectedCategory.set($index)"
+    data-testid="category-button"
   >
     <i [class]="category"></i>
   </button>
   }
-  <button class="button">…</button>
+  <button class="button" data-testid="more-categories-button">…</button>
 </div>
 <div class="field">
   <div class="control">
@@ -53,6 +60,7 @@
       type="date"
       [value]="dateRaw()"
       (change)="dateRaw.set($event.target.value)"
+      data-testid="date-input"
     />
   </div>
 </div>
@@ -64,6 +72,7 @@
       placeholder="…"
       [value]="descriptionRaw()"
       (input)="descriptionRaw.set($event.target.value)"
+      data-testid="description-input"
     />
   </div>
 </div>
@@ -79,6 +88,7 @@
       [disabled]="!saveEnabled() || saving()"
       (click)="save()"
       [class.is-success]="saveEnabled()"
+      data-testid="save-button"
     >
       <i
         [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
@@ -99,6 +109,7 @@
         type="checkbox"
         [checked]="share.included"
         (change)="toggleIncluded($index)"
+        data-testid="share-included-checkbox"
       />
       {{ resourceData.value().userNames.get(share.userId) }}
     </label>
@@ -113,6 +124,7 @@
       placeholder="{{ formatNumber(share.owed) }}"
       [disabled]="!share.included"
       (input)="updateShareOwed($index, $event.target.value)"
+      data-testid="share-owed-input"
     />
   </div>
   <div class="control">

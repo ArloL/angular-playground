@@ -28,6 +28,15 @@ this project.
 - Run `npm run lint` and fix any ESLint errors before finishing.
 - Run `npm run format:check` and fix formatting issues with `npm run format` before finishing.
 
+### `data-testid` Attributes
+
+All interactive elements must have a `data-testid` attribute to support e2e test selectors. This includes buttons, links, inputs, selects, checkboxes, and any element with a click handler.
+
+- **Naming:** Use lowercase kebab-case describing the element's purpose, e.g. `data-testid="save-button"`, `data-testid="group-name-input"`.
+- **Scoping:** When multiple similar elements exist on a page (e.g. list items), the `data-testid` identifies the type of element. Tests can combine it with other selectors or indices to target a specific instance.
+- **Required on:** `<button>`, `<a>` with `routerLink` or click handlers, `<input>`, `<select>`, `<textarea>`, and any element with `(click)` or similar event bindings.
+- **Review:** PRs that add or change interactive elements without `data-testid` attributes will be asked to add them.
+
 ### E2E / Visual Regression Tests
 
 Playwright runs visual regression tests against a mobile viewport (Pixel 5). Tests live in the `e2e/` directory with baseline screenshots in `e2e/*.spec.ts-snapshots/`.

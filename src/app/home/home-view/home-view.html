@@ -4,7 +4,12 @@
 <p class="has-text-danger">
   <i class="fa-solid fa-triangle-exclamation"></i>
 </p>
-<button class="button" title="Retry" (click)="homeData.reload()">
+<button
+  class="button"
+  title="Retry"
+  (click)="homeData.reload()"
+  data-testid="retry-button"
+>
   <i class="fa-solid fa-arrows-rotate"></i>
 </button>
 } @else if (homeData.hasValue() && homeData.value(); as data) { @if
@@ -34,7 +39,7 @@
     <i class="fa-solid fa-users"></i>
   </div>
   <div class="level-right">
-    <a [routerLink]="['/groups']">
+    <a [routerLink]="['/groups']" data-testid="link-groups">
       <i class="fa-solid fa-chevron-right"></i>
     </a>
   </div>
@@ -42,7 +47,11 @@
 
 @for (group of data.recentSharedGroups; track group.id) { @let balance =
 data.groupBalances.get(group.id) ?? 0;
-<a class="box" [routerLink]="['/group', group.id, 'expenses']">
+<a
+  class="box"
+  [routerLink]="['/group', group.id, 'expenses']"
+  data-testid="link-group-expenses"
+>
   <p class="has-text-weight-semibold">{{ group.name }}</p>
   @if (balance > 0) {
   <p class="has-text-success is-size-7">
@@ -70,6 +79,7 @@ data.groupBalances.get(group.id) ?? 0;
     class="button"
     [class.is-selected]="effectiveContextId() === personalGroup.id"
     (click)="selectContext(personalGroup.id)"
+    data-testid="select-personal-context-button"
   >
     <i class="fa-solid fa-user"></i>
   </button>
@@ -78,6 +88,7 @@ data.groupBalances.get(group.id) ?? 0;
     class="button"
     [class.is-selected]="effectiveContextId() === group.id"
     (click)="selectContext(group.id)"
+    data-testid="select-group-context-button"
   >
     {{ group.name }}
   </button>
