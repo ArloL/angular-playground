@@ -8,7 +8,12 @@
   </div>
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
-  <button class="button" title="Retry" (click)="resourceData.reload()">
+  <button
+    class="button"
+    data-testid="retry-button"
+    title="Retry"
+    (click)="resourceData.reload()"
+  >
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
@@ -30,7 +35,11 @@
     <tbody>
       @for (friend of resourceData.value().friends; track friend.id) {
       <tr>
-        <td><a [routerLink]="['/user', friend.id]">{{ friend.name }}</a></td>
+        <td>
+          <a data-testid="friend-link" [routerLink]="['/user', friend.id]"
+            >{{ friend.name }}</a
+          >
+        </td>
         <td>{{ friend.email }}</td>
       </tr>
       }
@@ -42,6 +51,7 @@
     <div class="control is-expanded">
       <input
         class="input"
+        data-testid="friend-email-input"
         type="email"
         placeholder="friend@example.com"
         [ngModel]="friendEmail()"
@@ -51,6 +61,7 @@
     <div class="control">
       <button
         class="button is-primary"
+        data-testid="add-friend-button"
         [disabled]="addingFriend()"
         (click)="addFriend()"
       >

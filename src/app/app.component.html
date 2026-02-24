@@ -2,6 +2,7 @@
   <div class="navbar-brand">
     <a
       class="navbar-item"
+      data-testid="nav-home-link"
       [routerLink]="['/']"
       [ariaCurrentWhenActive]="'page'"
       [routerLinkActive]="'is-active'"
@@ -12,12 +13,13 @@
     @if (currentUserService.user(); as user) {
       <a
         class="navbar-item"
+        data-testid="nav-account-link"
         [routerLink]="['/account']"
         [ariaCurrentWhenActive]="'page'"
         [routerLinkActive]="['is-active']"
         ><i class="fa-solid fa-user"></i
       ></a>
-      <a class="navbar-item" (click)="logout()"
+      <a class="navbar-item" data-testid="nav-logout-button" (click)="logout()"
         ><i
           [class]="
             loggingOut()
@@ -27,7 +29,7 @@
         ></i
       ></a>
     } @else {
-      <a class="navbar-item" (click)="login()"
+      <a class="navbar-item" data-testid="nav-login-button" (click)="login()"
         ><i
           [class]="
             loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'
@@ -50,6 +52,7 @@
       @if (updateAvailable()) {
         <button
           class="button is-success"
+          data-testid="update-apply-button"
           title="Update available — tap to reload"
           (click)="applyUpdate()"
         >
@@ -58,6 +61,7 @@
       } @else {
         <button
           class="button is-small is-light"
+          data-testid="update-check-button"
           title="Check for updates"
           (click)="checkForUpdate()"
           [disabled]="checkingForUpdate()"

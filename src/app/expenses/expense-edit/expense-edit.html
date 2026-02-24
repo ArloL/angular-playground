@@ -8,14 +8,19 @@
   </div>
   } @else {
   <p>Error: {{ resourceData.error() }}</p>
-  <button class="button" title="Retry" (click)="resourceData.reload()">
+  <button
+    class="button"
+    data-testid="retry-button"
+    title="Retry"
+    (click)="resourceData.reload()"
+  >
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } } @else if (resourceData.hasValue()) {
   <div class="field has-addons">
     <div class="control">
       <span class="select is-success">
-        <select>
+        <select data-testid="currency-select">
           @for (currency of currencies; track $index) {
           <option [value]="$index">{{ currency }}</option>
           }
@@ -26,6 +31,7 @@
       <input
         autofocus
         class="input is-success"
+        data-testid="cost-input"
         type="text"
         inputmode="decimal"
         [placeholder]="formatNumber(0)"
@@ -38,6 +44,7 @@
     @for (category of categories; track $index) {
     <button
       class="button"
+      data-testid="category-button"
       [class.is-success]="selectedCategory() === $index"
       [class.is-selected]="selectedCategory() === $index"
       (click)="selectedCategory.set($index)"
@@ -45,12 +52,13 @@
       <i [class]="category"></i>
     </button>
     }
-    <button class="button">…</button>
+    <button class="button" data-testid="category-expand-button">…</button>
   </div>
   <div class="field">
     <div class="control">
       <input
         class="input"
+        data-testid="description-input"
         type="text"
         placeholder="…"
         [value]="descriptionRaw()"
@@ -67,6 +75,7 @@
     <div class="control is-expanded">
       <button
         class="button is-fullwidth is-flex is-justify-content-space-between"
+        data-testid="save-button"
         [disabled]="!saveEnabled() || saving()"
         (click)="save()"
         [class.is-success]="saveEnabled()"
@@ -88,6 +97,7 @@
       <label class="checkbox">
         <input
           type="checkbox"
+          data-testid="share-included-checkbox"
           [checked]="share.included"
           (change)="toggleIncluded($index)"
         />
@@ -99,6 +109,7 @@
     <div class="control is-expanded">
       <input
         class="input"
+        data-testid="share-owed-input"
         type="text"
         inputmode="decimal"
         placeholder="{{ formatNumber(share.owed) }}"

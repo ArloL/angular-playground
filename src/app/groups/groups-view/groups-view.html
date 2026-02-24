@@ -3,7 +3,12 @@
   <progress class="progress is-small is-primary" max="100"></progress>
   } @else if (groups.status() === 'error') {
   <p>Error: {{ groups.error() }}</p>
-  <button class="button" title="Retry" (click)="groups.reload()">
+  <button
+    class="button"
+    data-testid="retry-button"
+    title="Retry"
+    (click)="groups.reload()"
+  >
     <i class="fa-solid fa-arrows-rotate"></i>
   </button>
   } @else if (groups.hasValue()) {
@@ -12,7 +17,10 @@
       <h1 class="title"><i class="fa-solid fa-users"></i></h1>
     </div>
     <div class="level-right">
-      <a class="button is-primary" [routerLink]="['/group/create']"
+      <a
+        class="button is-primary"
+        data-testid="create-group-link"
+        [routerLink]="['/group/create']"
         ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-users"></i
       ></a>
     </div>
@@ -21,20 +29,28 @@
   <p>{{ group.name }}</p>
   <ul>
     <li>
-      <a [routerLink]="['/group', group.id]"><i class="fa-solid fa-eye"></i></a>
+      <a data-testid="view-group-link" [routerLink]="['/group', group.id]"
+        ><i class="fa-solid fa-eye"></i
+      ></a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'edit']"
+      <a
+        data-testid="edit-group-link"
+        [routerLink]="['/group', group.id, 'edit']"
         ><i class="fa-solid fa-pen"></i
       ></a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'expenses']"
+      <a
+        data-testid="group-expenses-link"
+        [routerLink]="['/group', group.id, 'expenses']"
         ><i class="fa-solid fa-receipt"></i
       ></a>
     </li>
     <li>
-      <a [routerLink]="['/group', group.id, 'expenses', 'add']"
+      <a
+        data-testid="add-expense-link"
+        [routerLink]="['/group', group.id, 'expenses', 'add']"
         ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
       ></a>
     </li>
