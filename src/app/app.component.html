@@ -1,70 +1,72 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a
-      class="navbar-item"
-      [routerLink]="['/']"
-      [ariaCurrentWhenActive]="'page'"
-      [routerLinkActive]="'is-active'"
-    >
-      <i class="fa-solid fa-house"></i>
-    </a>
-
-    @if (currentUserService.user(); as user) {
+<div class="container">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
       <a
         class="navbar-item"
-        [routerLink]="['/account']"
+        [routerLink]="['/']"
         [ariaCurrentWhenActive]="'page'"
-        [routerLinkActive]="['is-active']"
-        ><i class="fa-solid fa-user"></i
-      ></a>
-      <a class="navbar-item" (click)="logout()"
-        ><i
-          [class]="
-            loggingOut()
-              ? 'fa-solid fa-spinner fa-spin'
-              : 'fa-solid fa-right-from-bracket'
-          "
-        ></i
-      ></a>
-    } @else {
-      <a class="navbar-item" (click)="login()"
-        ><i
-          [class]="
-            loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'
-          "
-        ></i
-      ></a>
-      @if (loginError(); as error) {
-        <p class="help is-danger">{{ error }}</p>
-      }
-    }
-  </div>
-</nav>
+        [routerLinkActive]="'is-active'"
+      >
+        <i class="fa-solid fa-house"></i>
+      </a>
 
-<router-outlet />
-
-<footer class="footer">
-  <div class="content has-text-centered">
-    <p>{{ buildTimestamp }}</p>
-    @if (swUpdate.isEnabled) {
-      @if (updateAvailable()) {
-        <button
-          class="button is-success"
-          title="Update available — tap to reload"
-          (click)="applyUpdate()"
-        >
-          <i class="fa-solid fa-arrows-rotate"></i>
-        </button>
+      @if (currentUserService.user(); as user) {
+        <a
+          class="navbar-item"
+          [routerLink]="['/account']"
+          [ariaCurrentWhenActive]="'page'"
+          [routerLinkActive]="['is-active']"
+          ><i class="fa-solid fa-user"></i
+        ></a>
+        <a class="navbar-item" (click)="logout()"
+          ><i
+            [class]="
+              loggingOut()
+                ? 'fa-solid fa-spinner fa-spin'
+                : 'fa-solid fa-right-from-bracket'
+            "
+          ></i
+        ></a>
       } @else {
-        <button
-          class="button is-small is-light"
-          title="Check for updates"
-          (click)="checkForUpdate()"
-          [disabled]="checkingForUpdate()"
-        >
-          <i class="fa-solid fa-arrows-rotate"></i>
-        </button>
+        <a class="navbar-item" (click)="login()"
+          ><i
+            [class]="
+              loggingIn() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-key'
+            "
+          ></i
+        ></a>
+        @if (loginError(); as error) {
+          <p class="help is-danger">{{ error }}</p>
+        }
       }
-    }
-  </div>
-</footer>
+    </div>
+  </nav>
+
+  <router-outlet />
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>{{ buildTimestamp }}</p>
+      @if (swUpdate.isEnabled) {
+        @if (updateAvailable()) {
+          <button
+            class="button is-success"
+            title="Update available — tap to reload"
+            (click)="applyUpdate()"
+          >
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        } @else {
+          <button
+            class="button is-small is-light"
+            title="Check for updates"
+            (click)="checkForUpdate()"
+            [disabled]="checkingForUpdate()"
+          >
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        }
+      }
+    </div>
+  </footer>
+</div>

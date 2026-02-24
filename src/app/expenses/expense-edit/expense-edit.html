@@ -1,124 +1,122 @@
-<div class="container">
-  @if (resourceData.isLoading()) {
-  <progress class="progress is-primary" max="100"></progress>
-  } @else if (resourceData.status() === 'error') { @if
-  (resourceData.error()?.name === 'EntityNotFoundError') {
-  <div class="notification is-warning">
-    <p>Entity not found.</p>
-  </div>
-  } @else {
-  <p>Error: {{ resourceData.error() }}</p>
-  <button class="button" title="Retry" (click)="resourceData.reload()">
-    <i class="fa-solid fa-arrows-rotate"></i>
-  </button>
-  } } @else if (resourceData.hasValue()) {
-  <div class="field has-addons">
-    <div class="control">
-      <span class="select is-success">
-        <select>
-          @for (currency of currencies; track $index) {
-          <option [value]="$index">{{ currency }}</option>
-          }
-        </select>
-      </span>
-    </div>
-    <div class="control is-expanded">
-      <input
-        autofocus
-        class="input is-success"
-        type="text"
-        inputmode="decimal"
-        [placeholder]="formatNumber(0)"
-        [value]="costRaw()"
-        (input)="costRaw.set($event.target.value)"
-      />
-    </div>
-  </div>
-  <div class="buttons has-addons is-scrollable-x" #categoryButtons>
-    @for (category of categories; track $index) {
-    <button
-      class="button"
-      [class.is-success]="selectedCategory() === $index"
-      [class.is-selected]="selectedCategory() === $index"
-      (click)="selectedCategory.set($index)"
-    >
-      <i [class]="category"></i>
-    </button>
-    }
-    <button class="button">…</button>
-  </div>
-  <div class="field">
-    <div class="control">
-      <input
-        class="input"
-        type="date"
-        [value]="dateRaw()"
-        (change)="dateRaw.set($event.target.value)"
-      />
-    </div>
-  </div>
-  <div class="field">
-    <div class="control">
-      <input
-        class="input"
-        type="text"
-        placeholder="…"
-        [value]="descriptionRaw()"
-        (input)="descriptionRaw.set($event.target.value)"
-      />
-    </div>
-  </div>
-  @if (errorMessage()) {
-  <div class="notification is-danger">
-    <p>{{ errorMessage() }}</p>
-  </div>
-  }
-  <div class="field is-grouped">
-    <div class="control is-expanded">
-      <button
-        class="button is-fullwidth is-flex is-justify-content-space-between"
-        [disabled]="!saveEnabled() || saving()"
-        (click)="save()"
-        [class.is-success]="saveEnabled()"
-      >
-        <i
-          [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
-        ></i>
-        <span class="is-flex-grow-1"
-          ><i [class]="categories[selectedCategory()]"></i> {{
-          formatNumber(this.expenseData().cost) }} {{
-          currencies[selectedCurrency] }}</span
-        >
-      </button>
-    </div>
-  </div>
-  @for (share of shares(); track $index) {
-  <div class="field">
-    <div class="control">
-      <label class="checkbox">
-        <input
-          type="checkbox"
-          [checked]="share.included"
-          (change)="toggleIncluded($index)"
-        />
-        {{ resourceData.value().userNames.get(share.userId) }}
-      </label>
-    </div>
-  </div>
-  <div class="field has-addons">
-    <div class="control is-expanded">
-      <input
-        class="input"
-        type="text"
-        inputmode="decimal"
-        placeholder="{{ formatNumber(share.owed) }}"
-        [disabled]="!share.included"
-        (input)="updateShareOwed($index, $event.target.value)"
-      />
-    </div>
-    <div class="control">
-      <a class="button is-static"> {{ currencies[selectedCurrency] }} </a>
-    </div>
-  </div>
-  } }
+@if (resourceData.isLoading()) {
+<progress class="progress is-primary" max="100"></progress>
+} @else if (resourceData.status() === 'error') { @if (resourceData.error()?.name
+=== 'EntityNotFoundError') {
+<div class="notification is-warning">
+  <p>Entity not found.</p>
 </div>
+} @else {
+<p>Error: {{ resourceData.error() }}</p>
+<button class="button" title="Retry" (click)="resourceData.reload()">
+  <i class="fa-solid fa-arrows-rotate"></i>
+</button>
+} } @else if (resourceData.hasValue()) {
+<div class="field has-addons">
+  <div class="control">
+    <span class="select is-success">
+      <select>
+        @for (currency of currencies; track $index) {
+        <option [value]="$index">{{ currency }}</option>
+        }
+      </select>
+    </span>
+  </div>
+  <div class="control is-expanded">
+    <input
+      autofocus
+      class="input is-success"
+      type="text"
+      inputmode="decimal"
+      [placeholder]="formatNumber(0)"
+      [value]="costRaw()"
+      (input)="costRaw.set($event.target.value)"
+    />
+  </div>
+</div>
+<div class="buttons has-addons is-scrollable-x" #categoryButtons>
+  @for (category of categories; track $index) {
+  <button
+    class="button"
+    [class.is-success]="selectedCategory() === $index"
+    [class.is-selected]="selectedCategory() === $index"
+    (click)="selectedCategory.set($index)"
+  >
+    <i [class]="category"></i>
+  </button>
+  }
+  <button class="button">…</button>
+</div>
+<div class="field">
+  <div class="control">
+    <input
+      class="input"
+      type="date"
+      [value]="dateRaw()"
+      (change)="dateRaw.set($event.target.value)"
+    />
+  </div>
+</div>
+<div class="field">
+  <div class="control">
+    <input
+      class="input"
+      type="text"
+      placeholder="…"
+      [value]="descriptionRaw()"
+      (input)="descriptionRaw.set($event.target.value)"
+    />
+  </div>
+</div>
+@if (errorMessage()) {
+<div class="notification is-danger">
+  <p>{{ errorMessage() }}</p>
+</div>
+}
+<div class="field is-grouped">
+  <div class="control is-expanded">
+    <button
+      class="button is-fullwidth is-flex is-justify-content-space-between"
+      [disabled]="!saveEnabled() || saving()"
+      (click)="save()"
+      [class.is-success]="saveEnabled()"
+    >
+      <i
+        [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
+      ></i>
+      <span class="is-flex-grow-1"
+        ><i [class]="categories[selectedCategory()]"></i> {{
+        formatNumber(this.expenseData().cost) }} {{ currencies[selectedCurrency]
+        }}</span
+      >
+    </button>
+  </div>
+</div>
+@for (share of shares(); track $index) {
+<div class="field">
+  <div class="control">
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        [checked]="share.included"
+        (change)="toggleIncluded($index)"
+      />
+      {{ resourceData.value().userNames.get(share.userId) }}
+    </label>
+  </div>
+</div>
+<div class="field has-addons">
+  <div class="control is-expanded">
+    <input
+      class="input"
+      type="text"
+      inputmode="decimal"
+      placeholder="{{ formatNumber(share.owed) }}"
+      [disabled]="!share.included"
+      (input)="updateShareOwed($index, $event.target.value)"
+    />
+  </div>
+  <div class="control">
+    <a class="button is-static"> {{ currencies[selectedCurrency] }} </a>
+  </div>
+</div>
+} }

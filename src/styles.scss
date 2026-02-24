@@ -5,7 +5,9 @@
 @use 'bulma/sass/themes';
 
 // Layout (container, level, footer)
-@use 'bulma/sass/layout/container';
+@use 'bulma/sass/layout/container' with (
+  $container-max-width: 430
+);
 @use 'bulma/sass/layout/level';
 @use 'bulma/sass/layout/footer';
 
@@ -53,10 +55,6 @@ body {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
-}
-
-body {
-  margin: 0.5rem;
 }
 
 .buttons.is-scrollable-x {
