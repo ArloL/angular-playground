@@ -4,14 +4,13 @@ Ordered by implementation sequence. Each item is a user-facing feature; technica
 
 ---
 
-- [ ] **Home screen** — Single scrollable page: recent groups with balances at top, inline quick-entry form below.
+- [x] **Home screen** — Single scrollable page: recent groups with balances at top, inline quick-entry form below.
   - **Recent groups:** Pinned Personal card (always first, shows expense count, no balance) then 3 most recently active shared groups with net balance label. "See all" link → `/groups`. All cards tap → `/group/:groupId`.
   - **Context selector:** Horizontal scrollable chip strip — `Personal` first, then one chip per group. Selected chip scopes the form.
   - **Quick-entry form:** Amount (`€` prefix, numeric), category icon strip, note field, "Add" button (disabled when amount = 0). On success, reset amount + note only.
   - **More options:** Collapsible — date picker (defaults today); payer dropdown + per-person split inputs for group context only. Split must equal total; show running difference in red.
   - Add `BalanceService.computePairwiseBalances()` and `ExpenseStore.findRecentGroupActivity()` when building this screen.
   - Ensure each user has an auto-created single-member personal group (seeded alongside test data). The "Personal" chip targets this group; no model changes needed to `Expense`.
-  - Verify `formatNumber` outputs `€12.50` (prefix, always 2 decimal places); fix if not.
   - See SPEC §5.1, §6.1, §7, §8.5.
 
 - [ ] **Group detail** — Unified group page replacing the current split `GroupView` + `GroupExpenses`.
@@ -21,7 +20,7 @@ Ordered by implementation sequence. Each item is a user-facing feature; technica
   - **Inline edit:** Edit amount and note only within the expanded row. No navigation.
   - **Delete:** Removes expense, collapses row. No confirmation.
   - **Settle up:** Sticky button at bottom (safe-area padded), disabled when all balances zero. Tapping opens confirmation sheet showing full debt summary; confirming writes one settlement record per non-zero directional debt.
-  - Remove dead routes `/group/:groupId/expenses`, `/group/:groupId/expenses/add`, `/group/:groupId/expenses/:expenseId/edit` when building this.
+  - Keep existing routes `/group/:groupId/expenses`, `/group/:groupId/expenses/add`, `/group/:groupId/expenses/:expenseId/edit`.
   - Add `Expense.type: 'expense' | 'settlement'` and update `NewExpense` when building settle-up.
   - Add `bulma/sass/components/modal` to `styles.scss` when building the settle-up sheet.
   - See SPEC §5.3, §6.1, §6.3.

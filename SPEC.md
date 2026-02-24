@@ -441,9 +441,8 @@ Add Bulma module imports to `styles.scss` as each component is built, rather tha
 
 ### 8.5 Number Formatting
 
-- Display: `€12.50` (prefix, 2 decimal places always).
+- Display: `12.50 €` (suffix, 2 decimal places always).
 - Storage: integer cents (e.g., `1250` = €12.50).
-- Existing `formatNumber` helper must be verified/updated to handle this correctly.
 - Do not display cent values like `€12.5` or `€12` — always 2 decimal places.
 
 ---
