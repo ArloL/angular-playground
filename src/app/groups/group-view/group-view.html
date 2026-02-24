@@ -1,40 +1,38 @@
-<div class="container">
-  @if (resourceData.isLoading()) {
-  <progress class="progress is-primary" max="100"></progress>
-  } @else if (resourceData.status() === 'error') { @if
-  (resourceData.error()?.name === 'EntityNotFoundError') {
-  <div class="notification is-warning">
-    <p>Group not found.</p>
-  </div>
-  } @else {
-  <p>Error: {{ resourceData.error() }}</p>
-  <button class="button" title="Retry" (click)="resourceData.reload()">
-    <i class="fa-solid fa-arrows-rotate"></i>
-  </button>
-  } } @else if (resourceData.hasValue()) {
-  <h1 class="title">{{ resourceData.value().group.name }}</h1>
-  <div class="field">
-    <label class="label">Name</label>
-    <div class="control is-expanded">
-      <input
-        class="input"
-        type="text"
-        [value]="resourceData.value().group.name"
-        readonly
-      />
-    </div>
-  </div>
-  <h2 class="subtitle"><i class="fa-solid fa-users"></i></h2>
-  <ul>
-    @for (member of resourceData.value().members; track member.id) {
-    <li>{{ member.name }}</li>
-    }
-  </ul>
-
-  <a
-    class="button is-primary"
-    [routerLink]="['/group', groupId(), 'expenses', 'add']"
-    ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
-  ></a>
-  }
+@if (resourceData.isLoading()) {
+<progress class="progress is-primary" max="100"></progress>
+} @else if (resourceData.status() === 'error') { @if (resourceData.error()?.name
+=== 'EntityNotFoundError') {
+<div class="notification is-warning">
+  <p>Group not found.</p>
 </div>
+} @else {
+<p>Error: {{ resourceData.error() }}</p>
+<button class="button" title="Retry" (click)="resourceData.reload()">
+  <i class="fa-solid fa-arrows-rotate"></i>
+</button>
+} } @else if (resourceData.hasValue()) {
+<h1 class="title">{{ resourceData.value().group.name }}</h1>
+<div class="field">
+  <label class="label">Name</label>
+  <div class="control is-expanded">
+    <input
+      class="input"
+      type="text"
+      [value]="resourceData.value().group.name"
+      readonly
+    />
+  </div>
+</div>
+<h2 class="subtitle"><i class="fa-solid fa-users"></i></h2>
+<ul>
+  @for (member of resourceData.value().members; track member.id) {
+  <li>{{ member.name }}</li>
+  }
+</ul>
+
+<a
+  class="button is-primary"
+  [routerLink]="['/group', groupId(), 'expenses', 'add']"
+  ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
+></a>
+}

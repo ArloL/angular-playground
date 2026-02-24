@@ -2,7 +2,10 @@ import { Entity, EntityId } from './entity';
 import { PlainDateLike } from './plain-date-like';
 import { Share } from './share';
 
+export type ExpenseType = 'expense' | 'settlement';
+
 export interface Expense extends Entity {
+  type?: ExpenseType; // optional for backward compat; treat missing as 'expense'
   cost: number;
   description: string;
   currency: string;

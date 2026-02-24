@@ -7,6 +7,7 @@ import { GroupCreate } from './groups/group-create/group-create';
 import { GroupEdit } from './groups/group-edit/group-edit';
 import { GroupView } from './groups/group-view/group-view';
 import { GroupsView } from './groups/groups-view/groups-view';
+import { HomeView } from './home/home-view/home-view';
 import { CurrentUserService } from './services/current-user';
 import { UserView } from './users/user-view/user-view';
 
@@ -16,9 +17,9 @@ const requireAuth = () => {
     : inject(Router).createUrlTree(['/']);
 };
 
-const redirectToGroupsIfLoggedIn = () => {
+const redirectToHomeIfLoggedIn = () => {
   return inject(CurrentUserService).user()
-    ? inject(Router).createUrlTree(['/groups'])
+    ? inject(Router).createUrlTree(['/home'])
     : true;
 };
 
@@ -26,9 +27,10 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    canActivate: [redirectToGroupsIfLoggedIn],
+    canActivate: [redirectToHomeIfLoggedIn],
     children: [],
   },
+  { path: 'home', component: HomeView, canActivate: [requireAuth] },
   { path: 'account', component: UserView, canActivate: [requireAuth] },
   { path: 'groups', component: GroupsView, canActivate: [requireAuth] },
   { path: 'group/create', component: GroupCreate, canActivate: [requireAuth] },
