@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   input,
+  output,
   resource,
   Signal,
   signal,
@@ -39,6 +40,9 @@ export class ExpenseCreate {
   protected categories = categories;
 
   public readonly groupId = input.required<EntityId>();
+  public readonly navigateAfterSave = input(true);
+  public readonly collapsible = input(false);
+  public readonly expenseSaved = output<void>();
 
   protected resourceData = resource({
     params: () => ({ id: this.groupId() }),
@@ -57,15 +61,24 @@ export class ExpenseCreate {
   public costRaw = signal('');
   protected descriptionRaw = signal('');
   protected dateRaw = signal(PlainDateLike.now().toInputValue());
+  protected selectedPayerId = signal<EntityId | null>(null);
+  protected payerIdComputed = computed(
+    () => this.selectedPayerId() ?? this.currentUserService.user()?.id ?? null,
+  );
+  protected isPersonalContext = computed(
+    () => (this.resourceData.value()?.group?.users?.length ?? 0) <= 1,
+  );
+  protected moreOptionsOpen = signal(false);
+
   protected expense: Signal<NewExpense> = computed(() => {
     return {
       cost: customParseFloat(this.costRaw()),
-      description: '',
+      description: this.descriptionRaw(),
       currency: '€',
       category: this.categories[this.selectedCategory()],
       date: PlainDateLike.fromInputValue(this.dateRaw()),
       shares: [],
-      createdBy: this.currentUserService.user()!.id,
+      createdBy: this.payerIdComputed()!,
       groupId: this.groupId(),
     };
   });
@@ -81,6 +94,7 @@ export class ExpenseCreate {
   protected sharesRaw: WritableSignal<ShareRaw[]> = signal([]);
   private sharesRawInitialize = effect(() => {
     if (this.resourceData.hasValue()) {
+      this.selectedPayerId.set(null);
       this.sharesRaw.set(
         this.resourceData.value()?.group.users.map((userId) => {
           return {
@@ -157,7 +171,13 @@ export class ExpenseCreate {
         ...this.expense(),
         shares: this.shares(),
       });
-      this.router.navigate(['/group', this.groupId(), 'expenses']);
+      if (this.navigateAfterSave()) {
+        this.router.navigate(['/group', this.groupId(), 'expenses']);
+      } else {
+        this.costRaw.set('');
+        this.descriptionRaw.set('');
+        this.expenseSaved.emit();
+      }
     } catch (e) {
       this.errorMessage.set(String(e));
     } finally {
@@ -183,5 +203,9 @@ export class ExpenseCreate {
       value[index].owed = owed;
       return [...value];
     });
+  }
+
+  protected setPayerFromEvent(event: Event) {
+    this.selectedPayerId.set((event.target as HTMLSelectElement).value);
   }
 }
