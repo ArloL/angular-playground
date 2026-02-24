@@ -7,8 +7,13 @@ import { AbstractStore } from './store';
   providedIn: 'root',
 })
 export class ExpenseStore extends AbstractStore<Expense> {
-  public async findByGroupIdSortByDateDesc(groupId: EntityId): Promise<Expense[]> {
-    const expenses = await this.findWithFilter((expense) => expense.groupId === groupId);
-    return expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+  public async findByGroupIdSortByDateDesc(
+    groupId: EntityId,
+    limit: number,
+    offset: number,
+  ): Promise<{ expenses: Expense[]; total: number }> {
+    const all = await this.findWithFilter((expense) => expense.groupId === groupId);
+    all.sort((a, b) => b.date.getTime() - a.date.getTime());
+    return { expenses: all.slice(offset, offset + limit), total: all.length };
   }
 }

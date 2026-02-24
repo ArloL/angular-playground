@@ -19,9 +19,9 @@
       ></a>
     </div>
   </div>
-  @if (expenses.value().length === 0) {
+  @if (expenses.value().expenses.length === 0) {
   <p class="has-text-grey">No expenses yet.</p>
-  } @for (expense of expenses.value(); track expense.id) {
+  } @for (expense of expenses.value().expenses; track expense.id) {
   <a
     class="box is-flex is-align-items-center"
     [routerLink]="['/group', groupId(), 'expenses', expense.id, 'edit']"
