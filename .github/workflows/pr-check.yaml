@@ -50,7 +50,7 @@ jobs:
     - run: npm ci
     - run: npm run format:check
     - run: npm run lint:ci
-    - run: npm run test:ci
+    - run: npm test
     - run: npm run build
     - name: Make sure build did not change anything
       run: git diff --exit-code
