@@ -37,3 +37,9 @@ IMPORTANT: Always run `npm run test:ci`, `npm run lint`, and `npm run format:che
 ## E2E snapshots
 
 Snapshots are platform-specific (Linux). Run `npm run e2e:update` on Linux to regenerate baselines. Commit updated snapshots when visual changes are intentional.
+
+## Working style
+
+- **SPEC.md is the specification.** It contains everything the app is supposed to become now. If something is unclear, ask. Keep it up to date as work progresses. 
+- **TODO.md is the task list.** Each item is a user-facing feature. Work through it in order. Check it at the start of each session and keep it up to date as work progresses.
+- **No upfront preparatory tasks.** Model changes, service additions, new imports, and routing updates are done inline as part of the feature that needs them — not as separate preceding tasks.
