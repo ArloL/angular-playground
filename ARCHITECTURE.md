@@ -56,4 +56,4 @@ Hash-based routing (for GitHub Pages). Routes defined in `app.routes.ts`:
 
 Bulma v1.0.4 CSS framework via SCSS. Global styles in `src/styles.scss`. Component-level SCSS files.
 
-**Icons only:** Use icons instead of text for buttons, labels, errors, and all other UI elements. Do not use English text in the UI.
+**Icons only:** Use icons instead of text for buttons, labels, errors, and all other UI elements. Do not use English text in the UI. Be sure to add a `<span class="icon">` around all fontawesome icons.
