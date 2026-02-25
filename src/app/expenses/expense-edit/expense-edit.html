@@ -13,7 +13,9 @@
   (click)="resourceData.reload()"
   data-testid="retry-button"
 >
-  <i class="fa-solid fa-arrows-rotate"></i>
+  <span class="icon">
+    <i class="fa-solid fa-arrows-rotate"></i>
+  </span>
 </button>
 } } @else if (resourceData.hasValue()) {
 <div class="field has-addons">
@@ -90,9 +92,11 @@
       [class.is-success]="saveEnabled()"
       data-testid="save-button"
     >
-      <i
-        [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
-      ></i>
+      <span class="icon">
+        <i
+          [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-pen'"
+        ></i>
+      </span>
       <span class="is-flex-grow-1"
         ><i [class]="categories[selectedCategory()]"></i> {{
         formatNumber(this.expenseData().cost) }} {{ currencies[selectedCurrency]

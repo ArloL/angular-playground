@@ -13,10 +13,17 @@
   (click)="resourceData.reload()"
   data-testid="retry-button"
 >
-  <i class="fa-solid fa-arrows-rotate"></i>
+  <span class="icon">
+    <i class="fa-solid fa-arrows-rotate"></i>
+  </span>
 </button>
 } } @else if (resourceData.hasValue()) {
-<h1 class="title"><i class="fa-solid fa-pen"></i> {{ groupData().name }}</h1>
+<h1 class="title">
+  <span class="icon">
+    <i class="fa-solid fa-pen"></i>
+  </span>
+  {{ groupData().name }}
+</h1>
 <div class="field">
   <label class="label">Name</label>
   <div class="control is-expanded">
@@ -61,9 +68,11 @@
       (click)="save()"
       data-testid="save-button"
     >
-      <i
-        [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"
-      ></i>
+      <span class="icon">
+        <i
+          [class]="saving() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-floppy-disk'"
+        ></i>
+      </span>
       <span class="is-flex-grow-1">{{ groupData().name }}</span>
     </button>
   </div>

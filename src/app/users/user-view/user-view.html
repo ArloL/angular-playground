@@ -14,7 +14,9 @@
     (click)="resourceData.reload()"
     data-testid="retry-button"
   >
-    <i class="fa-solid fa-arrows-rotate"></i>
+    <span class="icon">
+      <i class="fa-solid fa-arrows-rotate"></i>
+    </span>
   </button>
   } } @else if (resourceData.hasValue()) {
   <h1 class="title">{{ resourceData.value().user.name }}</h1>
@@ -31,7 +33,9 @@
     </div>
   </div>
 
-  <h2 class="subtitle"><i class="fa-solid fa-users"></i></h2>
+  <h2 class="subtitle">
+    <span class="icon"><i class="fa-solid fa-users"></i></span>
+  </h2>
   <table class="table">
     <tbody>
       @for (friend of resourceData.value().friends; track friend.id) {
@@ -47,7 +51,11 @@
     </tbody>
   </table>
 
-  <h2 class="subtitle"><i class="fa-solid fa-user-plus"></i></h2>
+  <h2 class="subtitle">
+    <span class="icon">
+      <i class="fa-solid fa-user-plus"></i>
+    </span>
+  </h2>
   <div class="field has-addons">
     <div class="control is-expanded">
       <input
@@ -66,9 +74,11 @@
         (click)="addFriend()"
         data-testid="add-friend-button"
       >
-        <i
-          [class]="addingFriend() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-user-plus'"
-        ></i>
+        <span class="icon">
+          <i
+            [class]="addingFriend() ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-user-plus'"
+          ></i>
+        </span>
       </button>
     </div>
   </div>

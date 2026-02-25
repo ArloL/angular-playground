@@ -13,11 +13,14 @@
   (click)="usersResource.reload()"
   data-testid="retry-button"
 >
-  <i class="fa-solid fa-arrows-rotate"></i>
+  <span class="icon">
+    <i class="fa-solid fa-arrows-rotate"></i>
+  </span>
 </button>
 } } @else if (usersResource.hasValue()) {
 <h1 class="title">
-  <i class="fa-solid fa-plus"></i><i class="fa-solid fa-users"></i>
+  <span class="icon"><i class="fa-solid fa-plus"></i></span>
+  <span class="icon"><i class="fa-solid fa-users"></i></span>
 </h1>
 <div class="field">
   <label class="label">Name</label>
@@ -64,9 +67,10 @@
       data-testid="save-button"
     >
       @if (saving()) {
-      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span class="icon"><i class="fa-solid fa-spinner fa-spin"></i></span>
       } @else {
-      <i class="fa-solid fa-plus"></i><i class="fa-solid fa-users"></i>
+      <span class="icon"><i class="fa-solid fa-plus"></i></span>
+      <span class="icon"><i class="fa-solid fa-users"></i></span>
       }
       <span class="is-flex-grow-1">{{ groupData().name }}</span>
     </button>
