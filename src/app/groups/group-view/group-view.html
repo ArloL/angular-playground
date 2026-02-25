@@ -3,55 +3,208 @@
 } @else if (resourceData.status() === 'error') { @if (resourceData.error()?.name
 === 'EntityNotFoundError') {
 <div class="notification is-warning">
-  <p>Group not found.</p>
+  <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
 </div>
 } @else {
-<p>Error: {{ resourceData.error() }}</p>
+<p>
+  <span class="icon is-danger"
+    ><i class="fa-solid fa-circle-exclamation"></i
+  ></span>
+</p>
 <button
   class="button"
-  title="Retry"
   (click)="resourceData.reload()"
   data-testid="retry-button"
 >
-  <span class="icon">
-    <i class="fa-solid fa-arrows-rotate"></i>
-  </span>
+  <span class="icon"><i class="fa-solid fa-arrows-rotate"></i></span>
 </button>
 } } @else if (resourceData.hasValue()) {
-<h1 class="title">{{ resourceData.value().group.name }}</h1>
-<div class="field">
-  <label class="label">Name</label>
-  <div class="control is-expanded">
-    <input
-      class="input"
-      type="text"
-      [value]="resourceData.value().group.name"
-      readonly
-      data-testid="group-name-input"
-    />
+<nav class="level is-mobile mb-4">
+  <div class="level-left">
+    <button
+      class="button is-ghost"
+      (click)="router.navigate(['/groups'])"
+      data-testid="back-button"
+    >
+      <span class="icon"><i class="fa-solid fa-arrow-left"></i></span>
+    </button>
+  </div>
+  <div class="level-item">
+    <p class="title is-5 has-text-truncated">
+      {{ resourceData.value().group.name }}
+    </p>
+  </div>
+  <div class="level-right">
+    <a
+      class="button is-ghost"
+      [routerLink]="['/group', groupId(), 'edit']"
+      data-testid="edit-group-link"
+    >
+      <span class="icon"><i class="fa-solid fa-ellipsis-vertical"></i></span>
+    </a>
+  </div>
+</nav>
+
+@if (!isPersonalGroup() && pairwiseBalances().length > 0) {
+<div class="box mb-4">
+  @for (b of pairwiseBalances(); track b.from + b.to) {
+  <div class="level is-mobile">
+    <div class="level-left">
+      <p>{{ balanceLabel(b) }}</p>
+    </div>
+    <div class="level-right">
+      <p>{{ formatCost(b.amount) }}</p>
+    </div>
+  </div>
+  }
+</div>
+} @if (groupedExpenses().length === 0) {
+<p class="has-text-grey">
+  <span class="icon"><i class="fa-solid fa-receipt"></i></span>
+</p>
+} @for (group of groupedExpenses(); track group.label) {
+<p class="has-text-grey is-size-7 is-uppercase mb-1">{{ group.label }}</p>
+@for (expense of group.expenses; track expense.id) {
+<div
+  class="box mb-2"
+  (click)="toggleExpand(expense.id)"
+  data-testid="expense-row"
+>
+  <div class="is-flex is-align-items-center">
+    @if (expense.type !== 'settlement') {
+    <span class="icon is-large mr-3"><i [class]="expense.category"></i></span>
+    } @else {
+    <span class="icon is-large mr-3"
+      ><i class="fa-solid fa-handshake"></i
+    ></span>
+    }
+    <div class="is-flex-grow-1">
+      <p class="has-overflow-ellipsis">{{ expense.description }}</p>
+      <p class="is-size-7 has-text-grey">
+        {{ getUserName(expense.createdBy) }}
+      </p>
+    </div>
+    <span>{{ formatCost(expense.cost) }}</span>
+  </div>
+
+  @if (expandedExpenseId() === expense.id) {
+  <hr class="my-2" />
+
+  @if (editingExpenseId() === expense.id) {
+  <div class="field">
+    <div class="control">
+      <input
+        class="input"
+        type="number"
+        inputmode="decimal"
+        [value]="editAmountRaw()"
+        (input)="editAmountRaw.set($any($event.target).value)"
+        data-testid="edit-amount-input"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        [value]="editNoteRaw()"
+        (input)="editNoteRaw.set($any($event.target).value)"
+        data-testid="edit-note-input"
+      />
+    </div>
+  </div>
+  <div class="buttons">
+    <button
+      class="button is-primary is-small"
+      (click)="saveEdit(); $event.stopPropagation()"
+      [disabled]="isSaving()"
+      data-testid="save-edit-button"
+    >
+      <span class="icon"><i class="fa-solid fa-check"></i></span>
+    </button>
+    <button
+      class="button is-small"
+      (click)="cancelEditing(); $event.stopPropagation()"
+      data-testid="cancel-edit-button"
+    >
+      <span class="icon"><i class="fa-solid fa-xmark"></i></span>
+    </button>
+  </div>
+  } @else {
+  <p class="mb-2">{{ getUserName(expense.createdBy) }}</p>
+  @for (share of expense.shares; track share.userId) { @if (share.included) {
+  <div class="is-flex is-justify-content-space-between">
+    <span>{{ getUserName(share.userId) }}</span>
+    <span>{{ formatCost(share.owed) }}</span>
+  </div>
+  } } @if (expense.type !== 'settlement') {
+  <div class="buttons mt-3">
+    <button
+      class="button is-small"
+      (click)="startEditing(expense); $event.stopPropagation()"
+      data-testid="edit-expense-button"
+    >
+      <span class="icon"><i class="fa-solid fa-pen"></i></span>
+    </button>
+    <button
+      class="button is-danger is-small"
+      (click)="deleteExpense(expense); $event.stopPropagation()"
+      data-testid="delete-expense-button"
+    >
+      <span class="icon"><i class="fa-solid fa-trash"></i></span>
+    </button>
+  </div>
+  } } }
+</div>
+} } } @if (!isPersonalGroup()) {
+<div class="settle-up-footer">
+  <button
+    class="button is-fullwidth is-primary"
+    [disabled]="allSettled() || !resourceData.hasValue()"
+    (click)="openSettleUp()"
+    data-testid="settle-up-button"
+  >
+    <span class="icon"><i class="fa-solid fa-handshake"></i></span>
+  </button>
+</div>
+} @if (settleUpOpen()) {
+<div class="modal is-active">
+  <div
+    class="modal-background"
+    (click)="settleUpOpen.set(false)"
+    data-testid="modal-background"
+  ></div>
+  <div class="modal-card">
+    <section class="modal-card-body">
+      @for (b of pairwiseBalances(); track b.from + b.to) {
+      <div class="level is-mobile">
+        <div class="level-left">
+          <p>{{ balanceLabel(b) }}</p>
+        </div>
+        <div class="level-right">
+          <p>{{ formatCost(b.amount) }}</p>
+        </div>
+      </div>
+      }
+    </section>
+    <footer class="modal-card-foot">
+      <button
+        class="button is-primary"
+        (click)="confirmSettleUp()"
+        [disabled]="isSaving()"
+        data-testid="confirm-settle-up-button"
+      >
+        <span class="icon"><i class="fa-solid fa-check"></i></span>
+      </button>
+      <button
+        class="button"
+        (click)="settleUpOpen.set(false)"
+        data-testid="cancel-settle-up-button"
+      >
+        <span class="icon"><i class="fa-solid fa-xmark"></i></span>
+      </button>
+    </footer>
   </div>
 </div>
-<h2 class="subtitle">
-  <span class="icon">
-    <i class="fa-solid fa-users"></i>
-  </span>
-</h2>
-<ul>
-  @for (member of resourceData.value().members; track member.id) {
-  <li>{{ member.name }}</li>
-  }
-</ul>
-
-<a
-  class="button is-primary"
-  [routerLink]="['/group', groupId(), 'expenses', 'add']"
-  data-testid="add-expense-link"
->
-  <span class="icon">
-    <i class="fa-solid fa-plus"></i>
-  </span>
-  <span class="icon">
-    <i class="fa-solid fa-receipt"></i>
-  </span>
-</a>
 }
