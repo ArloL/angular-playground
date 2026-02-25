@@ -19,40 +19,24 @@
   [routerLink]="['/group', personalGroup.id, 'expenses']"
   data-testid="link-group-personal"
 >
-  <div class="level">
-    <div class="level-left">
-      <i class="fa-solid fa-user mr-2"></i>
-      <span>Personal</span>
-    </div>
-    <div class="level-right">
-      <span class="has-text-grey is-size-7">
-        {{ data.personalExpenseCount }}
-        <i class="fa-solid fa-receipt ml-1"></i>
-      </span>
-    </div>
-  </div>
+  <span class="is-flex is-align-items-center">
+    <i class="fa-solid fa-user mr-2"></i>
+    <span>{{ personalGroup.name }}</span>
+  </span>
 </a>
-}
-
-<div class="level mb-2">
-  <div class="level-left">
-    <i class="fa-solid fa-users"></i>
-  </div>
-  <div class="level-right">
-    <a [routerLink]="['/groups']" data-testid="link-groups">
-      <i class="fa-solid fa-chevron-right"></i>
-    </a>
-  </div>
-</div>
-
-@for (group of data.recentSharedGroups; track group.id) { @let balance =
+} @for (group of data.recentSharedGroups; track group.id) { @let balance =
 data.groupBalances.get(group.id) ?? 0;
 <a
   class="box"
   [routerLink]="['/group', group.id, 'expenses']"
   data-testid="link-group-expenses"
 >
-  <p class="has-text-weight-semibold">{{ group.name }}</p>
+  <span class="is-flex is-align-items-center">
+    <span class="icon">
+      <i class="fa-solid fa-users mr-2"></i>
+    </span>
+    <p class="has-text-weight-semibold">{{ group.name }}</p>
+  </span>
   @if (balance > 0) {
   <p class="has-text-success is-size-7">
     {{ formatNumber(balance) }} {{ currencies[0] }}
@@ -73,20 +57,44 @@ data.groupBalances.get(group.id) ?? 0;
 </p>
 }
 
+<a
+  class="button is-fullwidth"
+  [routerLink]="['/groups']"
+  data-testid="link-groups"
+>
+  <span class="icon">
+    <i class="fa-solid fa-users"></i>
+    …
+  </span>
+</a>
+
+<a
+  class="button is-fullwidth"
+  [routerLink]="['/groups']"
+  data-testid="link-groups"
+>
+  <span class="icon">
+    <i class="fa-solid fa-users"></i>
+    …
+  </span>
+</a>
+
 <div class="buttons is-scrollable-x mt-4">
   @if (data.personalGroup; as personalGroup) {
   <button
     class="button"
-    [class.is-selected]="effectiveContextId() === personalGroup.id"
+    [class.is-primary]="effectiveContextId() === personalGroup.id"
     (click)="selectContext(personalGroup.id)"
     data-testid="select-personal-context-button"
   >
-    <i class="fa-solid fa-user"></i>
+    <span class="icon">
+      <i class="fa-solid fa-user"></i>
+    </span>
   </button>
   } @for (group of data.allSharedGroups; track group.id) {
   <button
     class="button"
-    [class.is-selected]="effectiveContextId() === group.id"
+    [class.is-primary]="effectiveContextId() === group.id"
     (click)="selectContext(group.id)"
     data-testid="select-group-context-button"
   >
@@ -99,7 +107,6 @@ data.groupBalances.get(group.id) ?? 0;
 <apezzi-expense-create
   [groupId]="contextId"
   [navigateAfterSave]="false"
-  [collapsible]="true"
   (expenseSaved)="homeData.reload()"
 />
 } }

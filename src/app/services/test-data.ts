@@ -465,17 +465,17 @@ export class TestDataService {
     user3 = await this.userStore.save({ ...user3, friends: [user1.id] });
 
     const personal1 = await this.groupStore.save({
-      name: 'Personal',
+      name: user1.name,
       users: [user1.id],
       createdBy: user1.id,
     });
     const personal2 = await this.groupStore.save({
-      name: 'Personal',
+      name: user2.name,
       users: [user2.id],
       createdBy: user2.id,
     });
     const personal3 = await this.groupStore.save({
-      name: 'Personal',
+      name: user3.name,
       users: [user3.id],
       createdBy: user3.id,
     });

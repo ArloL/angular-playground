@@ -13,7 +13,9 @@
   (click)="resourceData.reload()"
   data-testid="retry-button"
 >
-  <i class="fa-solid fa-arrows-rotate"></i>
+  <span class="icon">
+    <i class="fa-solid fa-arrows-rotate"></i>
+  </span>
 </button>
 } } @else if (resourceData.hasValue()) {
 <h1 class="title">{{ resourceData.value().group.name }}</h1>
@@ -29,7 +31,11 @@
     />
   </div>
 </div>
-<h2 class="subtitle"><i class="fa-solid fa-users"></i></h2>
+<h2 class="subtitle">
+  <span class="icon">
+    <i class="fa-solid fa-users"></i>
+  </span>
+</h2>
 <ul>
   @for (member of resourceData.value().members; track member.id) {
   <li>{{ member.name }}</li>
@@ -40,6 +46,12 @@
   class="button is-primary"
   [routerLink]="['/group', groupId(), 'expenses', 'add']"
   data-testid="add-expense-link"
-  ><i class="fa-solid fa-plus"></i><i class="fa-solid fa-receipt"></i
-></a>
+>
+  <span class="icon">
+    <i class="fa-solid fa-plus"></i>
+  </span>
+  <span class="icon">
+    <i class="fa-solid fa-receipt"></i>
+  </span>
+</a>
 }

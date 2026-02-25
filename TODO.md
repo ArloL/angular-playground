@@ -4,15 +4,6 @@ Ordered by implementation sequence. Each item is a user-facing feature; technica
 
 ---
 
-- [x] **Home screen** — Single scrollable page: recent groups with balances at top, inline quick-entry form below.
-  - **Recent groups:** Pinned Personal card (always first, shows expense count, no balance) then 3 most recently active shared groups with net balance label. "See all" link → `/groups`. All cards tap → `/group/:groupId`.
-  - **Context selector:** Horizontal scrollable chip strip — `Personal` first, then one chip per group. Selected chip scopes the form.
-  - **Quick-entry form:** Amount (`€` prefix, numeric), category icon strip, note field, "Add" button (disabled when amount = 0). On success, reset amount + note only.
-  - **More options:** Collapsible — date picker (defaults today); payer dropdown + per-person split inputs for group context only. Split must equal total; show running difference in red.
-  - Add `BalanceService.computePairwiseBalances()` and `ExpenseStore.findRecentGroupActivity()` when building this screen.
-  - Ensure each user has an auto-created single-member personal group (seeded alongside test data). The "Personal" chip targets this group; no model changes needed to `Expense`.
-  - See SPEC §5.1, §6.1, §7, §8.5.
-
 - [ ] **Group detail** — Unified group page replacing the current split `GroupView` + `GroupExpenses`.
   - **Balance section:** Pairwise balances at the top, current-user-relative language (`"You owe …"` / `"… owes you"`). Hidden when zero.
   - **Expense list:** Date-grouped (`Today`, `Yesterday`, `Mon 3 Mar`…), newest first. Settlement records shown in muted style with no actions.

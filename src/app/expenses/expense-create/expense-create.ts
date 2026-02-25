@@ -41,7 +41,6 @@ export class ExpenseCreate {
 
   public readonly groupId = input.required<EntityId>();
   public readonly navigateAfterSave = input(true);
-  public readonly collapsible = input(false);
   public readonly expenseSaved = output<void>();
 
   protected resourceData = resource({
@@ -68,7 +67,6 @@ export class ExpenseCreate {
   protected isPersonalContext = computed(
     () => (this.resourceData.value()?.group?.users?.length ?? 0) <= 1,
   );
-  protected moreOptionsOpen = signal(false);
 
   protected expense: Signal<NewExpense> = computed(() => {
     return {
