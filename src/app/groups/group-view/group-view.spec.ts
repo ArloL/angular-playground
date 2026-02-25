@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { provideRouter } from '@angular/router';
+import { CurrentUserService } from '../../services/current-user';
 import { GroupStore } from '../../services/group-store';
 import { GroupView } from './group-view';
 import { UserStore } from '../../services/user-store';
@@ -42,6 +43,9 @@ describe('GroupEdit', () => {
       users: [user1.id, user2.id, user3.id],
       createdBy: user1.id,
     });
+
+    const currentUser = TestBed.inject(CurrentUserService);
+    await currentUser.login();
 
     fixture = TestBed.createComponent(GroupView);
     fixture.componentRef.setInput('groupId', group.id);
