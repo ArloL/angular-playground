@@ -6,7 +6,7 @@ For full details see @CONTRIBUTING.md and @ARCHITECTURE.md.
 
 - `npm test` — Run unit tests
 - `npm run lint` — ESLint (warnings treated as errors)
-- `npm run format:check` — Prettier check (`npm run format` to auto-fix)
+- `npm run format` — Run Prettier for formatting
 - `npm run e2e` — Playwright visual regression tests (starts dev server automatically)
 - `npm start` — Dev server on port 58967, served under `/angular-playground/`
 
