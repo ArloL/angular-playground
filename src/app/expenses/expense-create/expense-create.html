@@ -54,7 +54,7 @@
     (click)="selectedCategory.set($index)"
     data-testid="category-button"
   >
-    <i [class]="category"></i>
+    <span class="icon"><i [class]="category"></i></span>
   </button>
   }
   <button class="button" data-testid="more-categories-button">…</button>
@@ -102,8 +102,10 @@
         ></i>
       </span>
       <span class="is-flex-grow-1"
-        ><i [class]="categories[selectedCategory()]"></i> {{
-        formatNumber(this.expense().cost) }} {{ currencies[selectedCurrency]
+        ><span class="icon"
+          ><i [class]="categories[selectedCategory()]"></i
+        ></span>
+        {{ formatNumber(this.expense().cost) }} {{ currencies[selectedCurrency]
         }}</span
       >
     </button>

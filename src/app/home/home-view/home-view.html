@@ -2,7 +2,7 @@
 <progress class="progress is-primary" max="100"></progress>
 } @else if (homeData.status() === 'error') {
 <p class="has-text-danger">
-  <i class="fa-solid fa-triangle-exclamation"></i>
+  <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
 </p>
 <button
   class="button"
@@ -10,7 +10,7 @@
   (click)="homeData.reload()"
   data-testid="retry-button"
 >
-  <i class="fa-solid fa-arrows-rotate"></i>
+  <span class="icon"><i class="fa-solid fa-arrows-rotate"></i></span>
 </button>
 } @else if (homeData.hasValue() && homeData.value(); as data) { @if
 (data.personalGroup; as personalGroup) {
@@ -20,7 +20,7 @@
   data-testid="link-group-personal"
 >
   <span class="is-flex is-align-items-center">
-    <i class="fa-solid fa-user mr-2"></i>
+    <span class="icon mr-2"><i class="fa-solid fa-user"></i></span>
     <span>{{ personalGroup.name }}</span>
   </span>
 </a>
@@ -47,13 +47,13 @@ data.groupBalances.get(group.id) ?? 0;
   </p>
   } @else {
   <p class="has-text-grey is-size-7">
-    <i class="fa-solid fa-check"></i>
+    <span class="icon"><i class="fa-solid fa-check"></i></span>
   </p>
   }
 </a>
 } @if (data.recentSharedGroups.length === 0) {
 <p class="has-text-grey mb-4">
-  <i class="fa-solid fa-users-slash"></i>
+  <span class="icon"><i class="fa-solid fa-users-slash"></i></span>
 </p>
 }
 
