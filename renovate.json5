@@ -1,0 +1,36 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "addLabels": [
+        "{{manager}}",
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": [
+                "\\.sh$",
+            ],
+            "matchStrings": [
+                "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>[^\\s]+?)\\n[A-Z_]+=\"[^:]+:(?<currentValue>[^\"]+)\"",
+            ],
+        },
+    ],
+    "extends": [
+        "config:recommended",
+    ],
+    "labels": [
+        "dependencies",
+    ],
+    "minimumReleaseAge": "7 days",
+    "schedule": [
+        "on the 20th day of the month",
+    ],
+    "vulnerabilityAlerts": {
+        "addLabels": [
+            "security",
+        ],
+        "minimumReleaseAge": "0 days",
+        "schedule": [
+            "at any time",
+        ],
+    },
+}
