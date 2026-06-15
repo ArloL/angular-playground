@@ -6,8 +6,8 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": [
-                "\\.sh$",
+            "managerFilePatterns": [
+                "/\\.sh$/",
             ],
             "matchStrings": [
                 "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>[^\\s]+?)\\n[A-Z_]+=\"[^:]+:(?<currentValue>[^\"]+)\"",
