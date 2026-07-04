@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export type NetworkErrorType =
-  | 'timeout'
-  | 'connection-reset'
-  | 'dns-failure'
-  | 'offline';
+  'timeout' | 'connection-reset' | 'dns-failure' | 'offline';
 
 export class NetworkError extends Error {
   constructor(
