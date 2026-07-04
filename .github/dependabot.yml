@@ -6,6 +6,11 @@ updates:
     interval: "monthly"
   cooldown:
     default-days: 7
+  open-pull-requests-limit: 10
+  groups:
+    github-codeql-action:
+      patterns:
+      - "github/codeql-action*"
 - package-ecosystem: "npm"
   directory: "/"
   schedule:
@@ -17,9 +22,11 @@ updates:
       - "@angular*"
   cooldown:
     default-days: 7
+  open-pull-requests-limit: 10
 - package-ecosystem: "devcontainers"
   directory: "/"
   schedule:
     interval: "monthly"
   cooldown:
     default-days: 7
+  open-pull-requests-limit: 10
