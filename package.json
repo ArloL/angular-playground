@@ -24,7 +24,6 @@
     "@angular/core": "^22.0.8",
     "@angular/forms": "^22.0.8",
     "@angular/platform-browser": "^22.0.8",
-    "@angular/platform-browser-dynamic": "^22.0.4",
     "@angular/router": "^22.0.8",
     "@angular/service-worker": "^22.0.8",
     "@fortawesome/fontawesome-free": "^7.3.1",
