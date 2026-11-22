@@ -22,6 +22,21 @@
         "dependencies",
     ],
     "minimumReleaseAge": "7 days",
+    "packageRules": [
+        {
+            // @angular/build pins a single TypeScript minor in its
+            // peerDependencies, so any newer minor fails npm ci.
+            // Approve from the dashboard once a release allows it.
+            "matchPackageNames": [
+                "typescript",
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "major",
+            ],
+            "dependencyDashboardApproval": true,
+        },
+    ],
     "prConcurrentLimit": 10,
     "prHourlyLimit": 5,
     "schedule": [
